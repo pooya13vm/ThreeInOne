@@ -1,3 +1,4 @@
+import React from 'react';
 import {Text, View, StyleSheet, StatusBar, SafeAreaView} from 'react-native';
 
 const Layout = ({children, left, right, title, footer}) => {
