@@ -1,81 +1,81 @@
 import React from 'react';
-import {createContext, useEffect, useState} from 'react';
-import {Alert} from 'react-native';
+import {createContext, useState} from 'react';
 import uuid from 'react-native-uuid';
-import {NoteRealmDb} from '../App/db/db';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const NoteContext = createContext({});
 
-export const NoteProvider = props => {
+export const NoteProvider = ({navigation, children}) => {
   const [notes, setNotes] = useState([]);
   const [getTitle, setTitle] = useState('');
   const [getContent, setContent] = useState('');
+  const [EditingTitleValue, setEditingTitleValue] = useState('');
+  const [EditingContentValue, setEditingContentValue] = useState('');
 
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     try {
-  //       await dataAction('Sync');
-  //     } catch (error) {
-  //       Alert.alert('There is some problem in dataBase');
-  //     }
-  //   };
-  //   getData();
-  // }, []);
+  /// storage handler ///
 
-  const saveNote = async props => {
+  const checkStorage = async () => {
+    const getST = await AsyncStorage.getItem('@myNote');
+    const parsST = JSON.parse(getST);
+    if (parsST.length == 0) {
+      setNotes([]);
+    } else {
+      setNotes(parsST);
+    }
+  };
+
+  const saveToStorage = async noteList => {
+    try {
+      const stringifiedNote = await JSON.stringify(noteList);
+      await AsyncStorage.setItem('@myNote', stringifiedNote);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Add Note //
+
+  const saveNote = async ({navigation}) => {
     const note = {
       _id: uuid.v4(),
       title: getTitle,
       content: getContent,
     };
-    setNotes([note, ...notes]);
-    console.log(note);
+    let noteList = [note, ...notes];
+    setNotes(noteList);
+    saveToStorage(noteList);
     setTitle('');
     setContent('');
-    addNote(note);
+    navigation.navigate('Home');
+  };
+
+  //  Editing note  //
+
+  const findEditNote = id => {
+    targetNote = notes.filter(item => item._id == id);
+    setEditingTitleValue(targetNote[0].title);
+    setEditingContentValue(targetNote[0].content);
+  };
+
+  const updateListAfterEdit = props => {
+    let id = props.route.params.id;
+    const note = {
+      _id: id,
+      title: EditingTitleValue,
+      content: EditingContentValue,
+    };
+    const index = notes.findIndex(item => item._id == id);
+    const noteList = [...notes];
+    noteList[index] = note;
+    setNotes(noteList);
+    saveToStorage(noteList);
     props.navigation.navigate('Home');
   };
 
-  const addNote = async note => {
-    await dataAction('Add', note);
-    await dataAction('Sync');
-  };
-  const updateNote = async (note, id) => {
-    await dataAction('Update', note, id);
-    await dataAction('Sync');
-  };
-  const deleteNote = async id => {
-    await dataAction('Delete', null, id);
-    await dataAction('Sync');
-  };
-
-  const dataAction = async (action, note, id) => {
-    try {
-      const realm = await NoteRealmDb();
-      switch (action) {
-        case 'Sync':
-          const storedNotes = realm.objects('Note');
-          setNotes(storedNotes);
-          break;
-        case 'Add':
-          return realm.write(() => {
-            realm.create('Note', note);
-          });
-        case 'Update':
-          return realm.write(() => {
-            const item = realm.objectForPrimaryKey('note', id);
-            item.title = note.title;
-            item.content = note.content;
-          });
-        case 'Delete':
-          return realm.write(() => {
-            realm.delete(realm.objectForPrimaryKey('Note', id));
-          });
-      }
-      realm.close();
-    } catch (error) {
-      Alert.alert(error);
-    }
+  const deleteHandler = id => {
+    const filteredList = notes.filter(item => item._id != id);
+    setNotes(filteredList);
+    saveToStorage(filteredList);
   };
 
   return (
@@ -88,11 +88,16 @@ export const NoteProvider = props => {
         getContent,
         setContent,
         saveNote,
-        addNote,
-        updateNote,
-        deleteNote,
+        checkStorage,
+        findEditNote,
+        updateListAfterEdit,
+        EditingTitleValue,
+        setEditingTitleValue,
+        EditingContentValue,
+        setEditingContentValue,
+        deleteHandler,
       }}>
-      {props.children}
+      {children}
     </NoteContext.Provider>
   );
 };

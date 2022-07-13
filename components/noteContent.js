@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Text} from 'react-native';
-import {Card} from '@rneui/base';
+import {Card} from '@rneui/themed';
 
 const NoteContent = ({note}) => {
   return (
