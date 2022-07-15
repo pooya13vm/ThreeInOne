@@ -1,11 +1,13 @@
 import React, {useContext, useEffect} from 'react';
 import {Text, FlatList, TouchableOpacity, View, StyleSheet} from 'react-native';
 import {Button} from '@rneui/themed';
-import Layout from '../components/layout';
-import NoteContent from '../components/noteContent';
-import {NoteContext} from '../contexts/noteContext';
+import Layout from '../../components/layout';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import NoteContent from '../../components/noteContent';
+import {NoteContext} from '../../contexts/noteContext';
+import {Icon} from '@rneui/base';
 
-const HomeScreen = props => {
+const NoteHomeScreen = props => {
   const {notes, checkStorage, findEditNote, deleteHandler} =
     useContext(NoteContext);
 
@@ -14,22 +16,27 @@ const HomeScreen = props => {
   }, []);
 
   return (
+    // <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    //   <Text>note HomeScreen</Text>
+    // </View>
+
     <Layout
       title="MY NOTES"
       footer={
         <Button
           onPress={() => props.navigation.navigate('ADD')}
-          title="Add new note"
-          buttonStyle={{
-            height: '100%',
-            backgroundColor: 'rgba(127, 220, 103, 1)',
+          icon={{name: 'plus', type: 'entypo', size: 30}}
+          iconContainerStyle={{
+            margin: 0,
+            padding: 0,
+            width: 60,
           }}
-          titleStyle={{fontWeight: 'bold', fontSize: 32, color: 'white'}}
-          containerStyle={{
-            width: '100%',
-          }}>
-          <Text>Add new note</Text>
-        </Button>
+          buttonStyle={{
+            backgroundColor: 'rgba(127, 220, 103, 1)',
+            borderRadius: 50,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}></Button>
       }
       left="l"
       right="r">
@@ -52,7 +59,7 @@ const HomeScreen = props => {
               onPress={() => {
                 deleteHandler(note.item._id);
               }}>
-              <Text>Delete</Text>
+              <Icon style={styles.delete} name="delete" type="antdesign" />
             </TouchableOpacity>
           </View>
         )}
@@ -81,4 +88,4 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 });
-export default HomeScreen;
+export default NoteHomeScreen;

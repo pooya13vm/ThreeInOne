@@ -2,16 +2,21 @@ import React from 'react';
 import {useContext} from 'react';
 import {Button, Input} from '@rneui/base';
 import {View, Text, StyleSheet, TextInput} from 'react-native';
-import Layout from '../components/layout';
-import {NoteContext} from '../contexts/noteContext';
+import Layout from '../../components/layout';
+import {NoteContext} from '../../contexts/noteContext';
 
-const AddScreen = props => {
-  const {getTitle, setTitle, getContent, setContent, saveNote} =
-    useContext(NoteContext);
+const EditScreen = props => {
+  const {
+    updateListAfterEdit,
+    EditingContentValue,
+    setEditingContentValue,
+    EditingTitleValue,
+    setEditingTitleValue,
+  } = useContext(NoteContext);
 
   return (
     <Layout
-      title="ADD NOTE"
+      title="ADD NOTE new"
       footer={
         <View style={styles.Buttons}>
           <Button
@@ -24,7 +29,7 @@ const AddScreen = props => {
             <Text>Cancel</Text>
           </Button>
           <Button
-            onPress={() => saveNote(props)}
+            onPress={() => updateListAfterEdit(props)}
             title="Save note"
             buttonStyle={{
               height: '100%',
@@ -44,8 +49,8 @@ const AddScreen = props => {
         <View>
           <Text style={{fontSize: 24, fontWeight: 'bold'}}>Title : </Text>
           <Input
-            value={getTitle}
-            onChangeText={val => setTitle(val)}
+            value={EditingTitleValue}
+            onChangeText={val => setEditingTitleValue(val)}
             style={{fontWeight: 'bold'}}></Input>
         </View>
         <View>
@@ -61,8 +66,8 @@ const AddScreen = props => {
               marginTop: 5,
               borderRadius: 3,
             }}
-            value={getContent}
-            onChangeText={val => setContent(val)}></TextInput>
+            value={EditingContentValue}
+            onChangeText={val => setEditingContentValue(val)}></TextInput>
         </View>
       </View>
     </Layout>
@@ -79,4 +84,4 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 });
-export default AddScreen;
+export default EditScreen;

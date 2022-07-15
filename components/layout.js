@@ -46,10 +46,11 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   footer: {
-    backgroundColor: 'green',
     height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: 50,
+    alignSelf: 'flex-end',
+    margin: 25,
+    zIndex: 100,
   },
 });
 export default Layout;
