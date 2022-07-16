@@ -1,47 +1,37 @@
 import React, {useContext, useEffect} from 'react';
-import {Text, FlatList, TouchableOpacity, View, StyleSheet} from 'react-native';
-import {Button} from '@rneui/themed';
-import Layout from '../../components/layout';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {FlatList, TouchableOpacity, View, StyleSheet} from 'react-native';
+import {Icon} from '@rneui/base';
+import HomesLayout from '../../components/homesLayout';
 import NoteContent from '../../components/noteContent';
 import {NoteContext} from '../../contexts/noteContext';
-import {Icon} from '@rneui/base';
+import AddBtn from '../../components/AddBtn';
+import DropdownComponent from '../../components/dropDown';
 
 const NoteHomeScreen = props => {
-  const {notes, checkStorage, findEditNote, deleteHandler} =
-    useContext(NoteContext);
+  const {
+    checkStorage,
+    findEditNote,
+    deleteHandler,
+    categoryList,
+    filteredCategory,
+    filteredList,
+  } = useContext(NoteContext);
 
   useEffect(() => {
     checkStorage();
   }, []);
 
   return (
-    // <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-    //   <Text>note HomeScreen</Text>
-    // </View>
-
-    <Layout
+    <HomesLayout
       title="MY NOTES"
-      footer={
-        <Button
-          onPress={() => props.navigation.navigate('ADD')}
-          icon={{name: 'plus', type: 'entypo', size: 30}}
-          iconContainerStyle={{
-            margin: 0,
-            padding: 0,
-            width: 60,
-          }}
-          buttonStyle={{
-            backgroundColor: 'rgba(127, 220, 103, 1)',
-            borderRadius: 50,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}></Button>
-      }
-      left="l"
-      right="r">
+      footer={<AddBtn navigation={props.navigation} color="green" />}>
+      <DropdownComponent
+        placeholder="Select Category"
+        categoryList={categoryList}
+        setDDvalue={filteredCategory}
+      />
       <FlatList
-        data={notes}
+        data={filteredList}
         keyExtractor={note => note._id}
         //in renderItem the note param return an object that the ".item" include the param
         renderItem={note => (
@@ -64,7 +54,7 @@ const NoteHomeScreen = props => {
           </View>
         )}
       />
-    </Layout>
+    </HomesLayout>
   );
 };
 const styles = StyleSheet.create({

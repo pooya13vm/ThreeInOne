@@ -1,55 +1,47 @@
 import React from 'react';
 import {useContext} from 'react';
-import {Button, Input} from '@rneui/base';
+import {Input} from '@rneui/base';
 import {View, Text, StyleSheet, TextInput} from 'react-native';
-import Layout from '../../components/layout';
+import ScreensLayout from '../../components/screensLayout';
 import {NoteContext} from '../../contexts/noteContext';
+import DropdownComponent from '../../components/dropDown';
 
 const AddScreen = props => {
-  const {getTitle, setTitle, getContent, setContent, saveNote} =
-    useContext(NoteContext);
+  const {
+    getTitle,
+    setTitle,
+    getContent,
+    setContent,
+    saveNote,
+    categoryList,
+    setCategory,
+  } = useContext(NoteContext);
+
+  const category = [...categoryList];
+  category.shift();
 
   return (
-    <Layout
+    <ScreensLayout
       title="ADD NOTE"
-      footer={
-        <View style={styles.Buttons}>
-          <Button
-            onPress={() => props.navigation.navigate('Home')}
-            buttonStyle={{
-              height: '100%',
-              backgroundColor: 'rgba(214, 61, 57, 1)',
-            }}
-            containerStyle={{width: '50%'}}>
-            <Text>Cancel</Text>
-          </Button>
-          <Button
-            onPress={() => saveNote(props)}
-            title="Save note"
-            buttonStyle={{
-              height: '100%',
-              backgroundColor: 'rgba(127, 220, 103, 1)',
-            }}
-            containerStyle={{
-              width: '50%',
-            }}
-            titleStyle={{fontWeight: 'bold', fontSize: 32, color: 'white'}}>
-            <Text>Save Note</Text>
-          </Button>
-        </View>
-      }
+      props={props}
+      onPressFun={saveNote}
       left="l"
       right="r">
       <View>
         <View>
-          <Text style={{fontSize: 24, fontWeight: 'bold'}}>Title : </Text>
+          <DropdownComponent
+            placeholder="Select Category"
+            categoryList={category}
+            setDDvalue={setCategory}
+          />
           <Input
+            label="Title"
             value={getTitle}
             onChangeText={val => setTitle(val)}
-            style={{fontWeight: 'bold'}}></Input>
+            style={{fontWeight: 'bold', height: 40}}></Input>
         </View>
         <View>
-          <Text style={{fontSize: 22, fontWeight: 'bold'}}>Note : </Text>
+          <Text style={{fontSize: 18, fontWeight: 'bold'}}>Note : </Text>
           <TextInput
             multiline
             style={{
@@ -65,18 +57,12 @@ const AddScreen = props => {
             onChangeText={val => setContent(val)}></TextInput>
         </View>
       </View>
-    </Layout>
+    </ScreensLayout>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  Buttons: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '100%',
-    height: '100%',
   },
 });
 export default AddScreen;

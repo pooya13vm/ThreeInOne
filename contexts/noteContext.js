@@ -11,6 +11,14 @@ export const NoteProvider = ({navigation, children}) => {
   const [getContent, setContent] = useState('');
   const [EditingTitleValue, setEditingTitleValue] = useState('');
   const [EditingContentValue, setEditingContentValue] = useState('');
+  const [EditingCategoryValue, setEditingCategoryValue] = useState('');
+  const [getCategory, setCategory] = useState('');
+  const [filteredList, setFilteredList] = useState([]);
+  const [categoryList, setCategoryList] = useState([
+    {label: 'All notes', value: 'all'},
+    {label: 'Poem', value: 'poem'},
+    {label: 'Article', value: 'article'},
+  ]);
 
   /// storage handler ///
 
@@ -19,8 +27,10 @@ export const NoteProvider = ({navigation, children}) => {
     const parsST = JSON.parse(getST);
     if (parsST.length == 0) {
       setNotes([]);
+      setFilteredList([]);
     } else {
       setNotes(parsST);
+      setFilteredList(parsST);
     }
   };
 
@@ -40,13 +50,17 @@ export const NoteProvider = ({navigation, children}) => {
       _id: uuid.v4(),
       title: getTitle,
       content: getContent,
+      category: getCategory,
     };
+
     let noteList = [note, ...notes];
     setNotes(noteList);
+    setFilteredList(noteList);
     saveToStorage(noteList);
     setTitle('');
     setContent('');
     navigation.navigate('Home');
+    console.log(notes);
   };
 
   //  Editing note  //
@@ -55,6 +69,7 @@ export const NoteProvider = ({navigation, children}) => {
     targetNote = notes.filter(item => item._id == id);
     setEditingTitleValue(targetNote[0].title);
     setEditingContentValue(targetNote[0].content);
+    setEditingCategoryValue(targetNote[0].category);
   };
 
   const updateListAfterEdit = props => {
@@ -63,11 +78,13 @@ export const NoteProvider = ({navigation, children}) => {
       _id: id,
       title: EditingTitleValue,
       content: EditingContentValue,
+      category: EditingCategoryValue,
     };
     const index = notes.findIndex(item => item._id == id);
     const noteList = [...notes];
     noteList[index] = note;
     setNotes(noteList);
+    setFilteredList(noteList);
     saveToStorage(noteList);
     props.navigation.navigate('Home');
   };
@@ -75,7 +92,20 @@ export const NoteProvider = ({navigation, children}) => {
   const deleteHandler = id => {
     const filteredList = notes.filter(item => item._id != id);
     setNotes(filteredList);
+    setFilteredList(filteredList);
     saveToStorage(filteredList);
+  };
+
+  // filtering categories
+
+  const filteredCategory = cat => {
+    if (cat == 'all' || !cat) {
+      setFilteredList(notes);
+    } else {
+      const notesCopy = [...notes];
+      const filteredList = notesCopy.filter(item => item.category == cat);
+      setFilteredList(filteredList);
+    }
   };
 
   return (
@@ -95,7 +125,14 @@ export const NoteProvider = ({navigation, children}) => {
         setEditingTitleValue,
         EditingContentValue,
         setEditingContentValue,
+        EditingCategoryValue,
+        setEditingCategoryValue,
         deleteHandler,
+        categoryList,
+        getCategory,
+        setCategory,
+        filteredCategory,
+        filteredList,
       }}>
       {children}
     </NoteContext.Provider>

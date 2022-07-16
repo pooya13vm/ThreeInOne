@@ -7,6 +7,7 @@ const NoteContent = ({note}) => {
     <Card>
       <Card.Title>{note.item.title}</Card.Title>
       <Text>{note.item.content}</Text>
+      <Text>{note.item.category}</Text>
     </Card>
   );
 };

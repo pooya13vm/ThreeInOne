@@ -1,54 +1,42 @@
 import React from 'react';
 import {useContext} from 'react';
-import {Button, Input} from '@rneui/base';
+import {Input} from '@rneui/base';
 import {View, Text, StyleSheet, TextInput} from 'react-native';
-import Layout from '../../components/layout';
+import ScreensLayout from '../../components/screensLayout';
 import {NoteContext} from '../../contexts/noteContext';
+import DropdownComponent from '../../components/dropDown';
 
 const EditScreen = props => {
   const {
+    categoryList,
     updateListAfterEdit,
     EditingContentValue,
     setEditingContentValue,
     EditingTitleValue,
     setEditingTitleValue,
+    EditingCategoryValue,
+    setEditingCategoryValue,
   } = useContext(NoteContext);
 
+  const category = [...categoryList];
+  category.shift();
+
   return (
-    <Layout
-      title="ADD NOTE new"
-      footer={
-        <View style={styles.Buttons}>
-          <Button
-            onPress={() => props.navigation.navigate('Home')}
-            buttonStyle={{
-              height: '100%',
-              backgroundColor: 'rgba(214, 61, 57, 1)',
-            }}
-            containerStyle={{width: '50%'}}>
-            <Text>Cancel</Text>
-          </Button>
-          <Button
-            onPress={() => updateListAfterEdit(props)}
-            title="Save note"
-            buttonStyle={{
-              height: '100%',
-              backgroundColor: 'rgba(127, 220, 103, 1)',
-            }}
-            containerStyle={{
-              width: '50%',
-            }}
-            titleStyle={{fontWeight: 'bold', fontSize: 32, color: 'white'}}>
-            <Text>Save Note</Text>
-          </Button>
-        </View>
-      }
+    <ScreensLayout
+      title="EDIT NOTE"
+      props={props}
+      onPressFun={updateListAfterEdit}
       left="l"
       right="r">
       <View>
+        <DropdownComponent
+          categoryList={category}
+          placeholder={EditingCategoryValue}
+          setDDvalue={setEditingCategoryValue}
+        />
         <View>
-          <Text style={{fontSize: 24, fontWeight: 'bold'}}>Title : </Text>
           <Input
+            label="Title"
             value={EditingTitleValue}
             onChangeText={val => setEditingTitleValue(val)}
             style={{fontWeight: 'bold'}}></Input>
@@ -70,18 +58,12 @@ const EditScreen = props => {
             onChangeText={val => setEditingContentValue(val)}></TextInput>
         </View>
       </View>
-    </Layout>
+    </ScreensLayout>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  Buttons: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '100%',
-    height: '100%',
   },
 });
 export default EditScreen;
