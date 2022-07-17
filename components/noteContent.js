@@ -8,6 +8,7 @@ const NoteContent = ({note}) => {
       <Card.Title>{note.item.title}</Card.Title>
       <Text>{note.item.content}</Text>
       <Text>{note.item.category}</Text>
+      <Text>{note.item.date}</Text>
     </Card>
   );
 };

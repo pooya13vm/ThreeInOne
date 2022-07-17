@@ -17,8 +17,16 @@ function NoteNavigator() {
         }}>
         <Stack.Screen name="Home" component={NoteHomeScreen} />
         <Stack.Screen name="ADD" component={AddScreen} />
-        <Stack.Screen name="EDIT" component={EditScreen} />
-        <Stack.Screen name="SETTING" component={SettingScreen} />
+        <Stack.Screen
+          name="EDIT"
+          component={EditScreen}
+          options={{animation: 'slide_from_bottom', orientation: 'portrait_up'}}
+        />
+        <Stack.Screen
+          name="SETTING"
+          component={SettingScreen}
+          screenOptions={{}}
+        />
       </Stack.Navigator>
     </NoteProvider>
   );

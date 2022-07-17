@@ -4,7 +4,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Icon} from '@rneui/base';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const HomesLayout = ({children, left, right, title, footer}) => {
+const HomesLayout = ({children, title, footer, rightProps, targetScreen}) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
@@ -15,7 +15,9 @@ const HomesLayout = ({children, left, right, title, footer}) => {
           <View style={styles.titleContainer}>
             <Text>{title}</Text>
           </View>
-          <TouchableOpacity style={styles.headerRight}>
+          <TouchableOpacity
+            style={styles.headerRight}
+            onPress={() => rightProps.navigation.navigate(targetScreen)}>
             <Icon name="cog" type="entypo" size={28} />
           </TouchableOpacity>
         </View>

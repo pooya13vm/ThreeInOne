@@ -2,6 +2,7 @@ import React from 'react';
 import {createContext, useState} from 'react';
 import uuid from 'react-native-uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {dateStringMaker} from '../utility/dateHandler';
 
 export const NoteContext = createContext({});
 
@@ -15,9 +16,9 @@ export const NoteProvider = ({navigation, children}) => {
   const [getCategory, setCategory] = useState('');
   const [filteredList, setFilteredList] = useState([]);
   const [categoryList, setCategoryList] = useState([
-    {label: 'All notes', value: 'all'},
-    {label: 'Poem', value: 'poem'},
-    {label: 'Article', value: 'article'},
+    {label: 'All notes', value: 'all', id: 1},
+    {label: 'Poem', value: 'poem', id: 2},
+    {label: 'Article', value: 'article', id: 3},
   ]);
 
   /// storage handler ///
@@ -46,11 +47,15 @@ export const NoteProvider = ({navigation, children}) => {
   // Add Note //
 
   const saveNote = async ({navigation}) => {
+    let date = new Date();
+    let now = dateStringMaker(date);
+
     const note = {
       _id: uuid.v4(),
       title: getTitle,
       content: getContent,
       category: getCategory,
+      date: now,
     };
 
     let noteList = [note, ...notes];
@@ -59,8 +64,8 @@ export const NoteProvider = ({navigation, children}) => {
     saveToStorage(noteList);
     setTitle('');
     setContent('');
+    setCategory('');
     navigation.navigate('Home');
-    console.log(notes);
   };
 
   //  Editing note  //
@@ -89,6 +94,8 @@ export const NoteProvider = ({navigation, children}) => {
     props.navigation.navigate('Home');
   };
 
+  /// deleting note
+
   const deleteHandler = id => {
     const filteredList = notes.filter(item => item._id != id);
     setNotes(filteredList);
@@ -106,6 +113,40 @@ export const NoteProvider = ({navigation, children}) => {
       const filteredList = notesCopy.filter(item => item.category == cat);
       setFilteredList(filteredList);
     }
+  };
+
+  // / / / / / / / / / / / / / /category setting part // / / / / / / / / / /
+  // / / / / / // / / // / / /  // / / / / / // / /  / / //  / // / / /  ///
+
+  const checkStorageCategory = async () => {
+    try {
+      const getST = await AsyncStorage.getItem('@noteCategory');
+      const parsST = JSON.parse(getST);
+      if (parsST.length !== 0) setCategoryList(parsST);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const saveToStorageCategory = async List => {
+    try {
+      const stringifiedCat = await JSON.stringify(List);
+      await AsyncStorage.setItem('@noteCategory', stringifiedCat);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const addToCategory = () => {
+    const newCategory = {label: getCategory, value: getCategory, id: uuid.v4()};
+    const newList = [...categoryList, newCategory];
+    setCategoryList(newList);
+    saveToStorageCategory(newList);
+    setCategory('');
+  };
+  const deleteCategory = id => {
+    console.log(id);
+    const filteredList = categoryList.filter(item => item.id != id);
+    setCategoryList(filteredList);
+    saveToStorageCategory(filteredList);
   };
 
   return (
@@ -133,6 +174,9 @@ export const NoteProvider = ({navigation, children}) => {
         setCategory,
         filteredCategory,
         filteredList,
+        checkStorageCategory,
+        addToCategory,
+        deleteCategory,
       }}>
       {children}
     </NoteContext.Provider>

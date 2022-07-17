@@ -15,16 +15,20 @@ const NoteHomeScreen = props => {
     categoryList,
     filteredCategory,
     filteredList,
+    checkStorageCategory,
   } = useContext(NoteContext);
 
   useEffect(() => {
     checkStorage();
+    checkStorageCategory();
   }, []);
 
   return (
     <HomesLayout
       title="MY NOTES"
-      footer={<AddBtn navigation={props.navigation} color="green" />}>
+      footer={<AddBtn navigation={props.navigation} color="green" />}
+      rightProps={props}
+      targetScreen="SETTING">
       <DropdownComponent
         placeholder="Select Category"
         categoryList={categoryList}
