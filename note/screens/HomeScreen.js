@@ -1,11 +1,12 @@
 import React, {useContext, useEffect} from 'react';
-import {FlatList, TouchableOpacity, View, StyleSheet} from 'react-native';
+import {FlatList, TouchableOpacity, View, StyleSheet, Text} from 'react-native';
 import {Icon} from '@rneui/base';
 import HomesLayout from '../../components/homesLayout';
 import NoteContent from '../../components/noteContent';
 import {NoteContext} from '../../contexts/noteContext';
 import AddBtn from '../../components/AddBtn';
 import DropdownComponent from '../../components/dropDown';
+import NoContent from '../../components/NoContent';
 
 const NoteHomeScreen = props => {
   const {
@@ -34,30 +35,34 @@ const NoteHomeScreen = props => {
         categoryList={categoryList}
         setDDvalue={filteredCategory}
       />
-      <FlatList
-        data={filteredList}
-        keyExtractor={note => note._id}
-        //in renderItem the note param return an object that the ".item" include the param
-        renderItem={note => (
-          <View style={styles.listItemContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                findEditNote(note.item._id);
-                props.navigation.navigate('EDIT', {id: note.item._id});
-              }}
-              style={styles.content}>
-              <NoteContent note={note} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.delete}
-              onPress={() => {
-                deleteHandler(note.item._id);
-              }}>
-              <Icon style={styles.delete} name="delete" type="antdesign" />
-            </TouchableOpacity>
-          </View>
-        )}
-      />
+      {filteredList.length == 0 ? (
+        <NoContent />
+      ) : (
+        <FlatList
+          data={filteredList}
+          keyExtractor={note => note._id}
+          //in renderItem the note param return an object that the ".item" include the param
+          renderItem={note => (
+            <View style={styles.listItemContainer}>
+              <TouchableOpacity
+                onPress={() => {
+                  findEditNote(note.item._id);
+                  props.navigation.navigate('EDIT', {id: note.item._id});
+                }}
+                style={styles.content}>
+                <NoteContent note={note} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.delete}
+                onPress={() => {
+                  deleteHandler(note.item._id);
+                }}>
+                <Icon style={styles.delete} name="delete" type="antdesign" />
+              </TouchableOpacity>
+            </View>
+          )}
+        />
+      )}
     </HomesLayout>
   );
 };

@@ -4,6 +4,7 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import ShoppingHomeScreen from './shopping/screens/HomeScreen';
 import TodoHomeScreen from './todo/screens/HomeScreen';
 import NoteNavigator from './note/noteNavigation';
+import TodoNavigator from './todo/TodoNavigation';
 import {Icon} from '@rneui/base';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
@@ -18,6 +19,14 @@ const App = () => {
           activeColor="#f0f0f0"
           barStyle={{backgroundColor: 'tomato'}}>
           <Tab.Screen
+            name="To do"
+            component={TodoNavigator}
+            options={{
+              tabBarColor: 'blue',
+              tabBarIcon: color => <Icon name="list" type="entypo" />,
+            }}
+          />
+          <Tab.Screen
             name="Note"
             component={NoteNavigator}
             options={{
@@ -25,14 +34,7 @@ const App = () => {
               tabBarIcon: color => <Icon name="text" type="entypo" />,
             }}
           />
-          <Tab.Screen
-            name="Todo"
-            component={TodoHomeScreen}
-            options={{
-              tabBarColor: 'blue',
-              tabBarIcon: color => <Icon name="list" type="entypo" />,
-            }}
-          />
+
           <Tab.Screen
             name="Shopping"
             component={ShoppingHomeScreen}

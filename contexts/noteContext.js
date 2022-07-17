@@ -6,7 +6,7 @@ import {dateStringMaker} from '../utility/dateHandler';
 
 export const NoteContext = createContext({});
 
-export const NoteProvider = ({navigation, children}) => {
+export const NoteProvider = ({children}) => {
   const [notes, setNotes] = useState([]);
   const [getTitle, setTitle] = useState('');
   const [getContent, setContent] = useState('');
@@ -20,6 +20,9 @@ export const NoteProvider = ({navigation, children}) => {
     {label: 'Poem', value: 'poem', id: 2},
     {label: 'Article', value: 'article', id: 3},
   ]);
+
+  let date = new Date();
+  let now = dateStringMaker(date);
 
   /// storage handler ///
 
@@ -47,9 +50,6 @@ export const NoteProvider = ({navigation, children}) => {
   // Add Note //
 
   const saveNote = async ({navigation}) => {
-    let date = new Date();
-    let now = dateStringMaker(date);
-
     const note = {
       _id: uuid.v4(),
       title: getTitle,
@@ -84,6 +84,7 @@ export const NoteProvider = ({navigation, children}) => {
       title: EditingTitleValue,
       content: EditingContentValue,
       category: EditingCategoryValue,
+      date: now,
     };
     const index = notes.findIndex(item => item._id == id);
     const noteList = [...notes];
@@ -143,7 +144,6 @@ export const NoteProvider = ({navigation, children}) => {
     setCategory('');
   };
   const deleteCategory = id => {
-    console.log(id);
     const filteredList = categoryList.filter(item => item.id != id);
     setCategoryList(filteredList);
     saveToStorageCategory(filteredList);

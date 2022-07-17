@@ -16,7 +16,7 @@ const ScreensLayout = ({children, left, right, title, props, onPressFun}) => {
             <Text>{title}</Text>
           </View>
           <View style={styles.headerRight}>
-            <Text>right</Text>
+            <Text>{right}</Text>
           </View>
         </View>
         <View style={styles.body}>
