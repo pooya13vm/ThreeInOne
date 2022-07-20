@@ -28,6 +28,11 @@ const TodoHomeScreen = props => {
         // categoryList={categoryList}
         // setDDvalue={filteredCategory}
       />
+      <DropdownComponent
+        placeholder="Time status colors guide"
+        // categoryList={categoryList}
+        // setDDvalue={filteredCategory}
+      />
       {getTodoList.length == 0 ? (
         <NoContent />
       ) : (
