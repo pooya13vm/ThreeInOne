@@ -6,7 +6,7 @@ import {Icon} from '@rneui/base';
 const DropdownComponent = ({placeholder, categoryList, setDDvalue}) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
-
+  console.debug(categoryList);
   const renderLabel = () => {
     if (value || isFocus) {
       return <Text style={[styles.label, isFocus && {color: 'blue'}]}></Text>;

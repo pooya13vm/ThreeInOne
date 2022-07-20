@@ -44,7 +44,7 @@ const ScreensLayout = ({children, left, right, title, props, onPressFun}) => {
                 width: '50%',
               }}
               titleStyle={{fontWeight: 'bold', fontSize: 32, color: 'white'}}>
-              <Text>Save Note</Text>
+              <Text>Save</Text>
             </Button>
           </View>
         </View>

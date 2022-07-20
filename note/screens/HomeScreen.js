@@ -57,7 +57,7 @@ const NoteHomeScreen = props => {
                 onPress={() => {
                   deleteHandler(note.item._id);
                 }}>
-                <Icon style={styles.delete} name="delete" type="antdesign" />
+                <Icon style={styles.delete} name="trash" type="entypo" />
               </TouchableOpacity>
             </View>
           )}

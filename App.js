@@ -2,10 +2,11 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import ShoppingHomeScreen from './shopping/screens/HomeScreen';
-import TodoHomeScreen from './todo/screens/HomeScreen';
 import NoteNavigator from './note/noteNavigation';
 import TodoNavigator from './todo/TodoNavigation';
-import {Icon} from '@rneui/base';
+// import Icon from 'react-native-vector-icons';
+// import Entypo from 'react-native-vector-icons/Entypo';
+import {Icon} from '@rneui/themed';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 const Tab = createMaterialBottomTabNavigator();
@@ -23,7 +24,7 @@ const App = () => {
             component={TodoNavigator}
             options={{
               tabBarColor: 'blue',
-              tabBarIcon: color => <Icon name="list" type="entypo" />,
+              tabBarIcon: color => <Icon name="list" type={'entypo'} />,
             }}
           />
           <Tab.Screen
@@ -31,7 +32,7 @@ const App = () => {
             component={NoteNavigator}
             options={{
               tabBarColor: 'green',
-              tabBarIcon: color => <Icon name="text" type="entypo" />,
+              tabBarIcon: color => <Icon name="text" type={'entypo'} />,
             }}
           />
 
@@ -40,7 +41,9 @@ const App = () => {
             component={ShoppingHomeScreen}
             options={{
               tabBarColor: 'red',
-              tabBarIcon: color => <Icon name="shopping-cart" type="entypo" />,
+              tabBarIcon: color => (
+                <Icon name="shopping-cart" type={'entypo'} />
+              ),
             }}
           />
         </Tab.Navigator>
