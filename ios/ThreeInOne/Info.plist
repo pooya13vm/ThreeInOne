@@ -11,6 +11,7 @@
 		<string>MaterialCommunityIcons.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>AntDesign.ttf</string>
+		<string>FontAwesome</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>

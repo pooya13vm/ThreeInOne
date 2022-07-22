@@ -4,6 +4,7 @@ import TodoHomeScreen from './screens/HomeScreen';
 import AddScreen from './screens/AddScreen';
 import EditScreen from './screens/EditScreen';
 import SettingScreen from './screens/SettingScreen';
+import InfoScreen from './screens/InfoScreen';
 import {TodoProvider} from '../contexts/todoContext';
 
 const Stack = createNativeStackNavigator();
@@ -19,6 +20,7 @@ function TodoNavigator() {
         <Stack.Screen name="ADD" component={AddScreen} />
         <Stack.Screen name="EDIT" component={EditScreen} />
         <Stack.Screen name="SETTING" component={SettingScreen} />
+        <Stack.Screen name="INFO" component={InfoScreen} />
       </Stack.Navigator>
     </TodoProvider>
   );

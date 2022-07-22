@@ -7,6 +7,7 @@ import {TodoContext} from '../../contexts/todoContext';
 import NoContent from '../../components/NoContent';
 import {Icon} from '@rneui/themed';
 import TodoContent from '../../components/TodoContent';
+import ColorsGuide from '../components/colorsGuide';
 
 const TodoHomeScreen = props => {
   const {checkStorage, getTodoList} = useContext(TodoContext);
@@ -28,11 +29,7 @@ const TodoHomeScreen = props => {
         // categoryList={categoryList}
         // setDDvalue={filteredCategory}
       />
-      <DropdownComponent
-        placeholder="Time status colors guide"
-        // categoryList={categoryList}
-        // setDDvalue={filteredCategory}
-      />
+      <ColorsGuide />
       {getTodoList.length == 0 ? (
         <NoContent />
       ) : (
@@ -41,7 +38,11 @@ const TodoHomeScreen = props => {
           keyExtractor={task => task._id}
           renderItem={task => (
             <View>
-              <TouchableOpacity style={styles.content}>
+              <TouchableOpacity
+                style={styles.content}
+                onPress={() => {
+                  props.navigation.navigate('INFO', {task});
+                }}>
                 <TodoContent task={task} />
               </TouchableOpacity>
             </View>

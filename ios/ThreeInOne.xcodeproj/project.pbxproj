@@ -15,6 +15,7 @@
 		7699B88040F8A987B510C191 /* libPods-ThreeInOne-ThreeInOneTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-ThreeInOne-ThreeInOneTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		FA4A5E142885B67600F5E1D5 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA4A5DF7288005C700F5E1D5 /* Entypo.ttf */; };
+		FA4A5E162889FFC300F5E1D5 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA4A5DFF288005C700F5E1D5 /* FontAwesome.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -315,6 +316,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA4A5E162889FFC300F5E1D5 /* FontAwesome.ttf in Resources */,
 				FA4A5E142885B67600F5E1D5 /* Entypo.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,

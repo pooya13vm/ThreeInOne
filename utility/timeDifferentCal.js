@@ -8,5 +8,16 @@ export const differentCal = num => {
   let day = Math.trunc(hour / 24);
   let dayRes = Math.trunc(day % 30);
   let month = Math.trunc(day / 30);
-  return {month, dayRes, hourRes, minRes};
+  if (month >= 1) {
+    return `${month} months & ${dayRes} days & ${hourRes} hours & ${minRes} minutes`;
+  }
+  if (month == 0 && dayRes >= 1) {
+    return `${dayRes} days & ${hourRes} hours & ${minRes} minutes`;
+  }
+  if (month == 0 && dayRes == 0 && hourRes >= 0) {
+    return `${hourRes} hours & ${minRes} minutes`;
+  }
+  if (month == 0 && dayRes == 0 && hourRes == 0 && minRes >= 0) {
+    return `${minRes} minutes`;
+  }
 };

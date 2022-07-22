@@ -11,6 +11,7 @@ export const TodoProvider = ({children}) => {
   const [getTask, setTask] = useState('');
   const [getImportance, setImportance] = useState('');
   const [getDeadline, setDeadline] = useState('');
+  const [getInfo, setInfo] = useState('');
 
   /// storage handler ///
 
@@ -44,6 +45,7 @@ export const TodoProvider = ({children}) => {
       importance: getImportance,
       saveTime: new Date(),
       deadline: selectedTime,
+      info: getInfo,
     };
     console.log(task);
     let todoList = [task, ...getTodoList];
@@ -63,6 +65,7 @@ export const TodoProvider = ({children}) => {
         setDeadline,
         getDeadline,
         saveTask,
+        setInfo,
       }}>
       {children}
     </TodoContext.Provider>
