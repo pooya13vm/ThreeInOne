@@ -54,7 +54,7 @@ const TodoHomeScreen = props => {
               <TouchableOpacity
                 style={styles.content}
                 onPress={() => {
-                  props.navigation.navigate('INFO', {task});
+                  props.navigation.navigate('INFO', {id: task.item._id});
                 }}>
                 <TodoContent task={task} />
               </TouchableOpacity>

@@ -13,7 +13,8 @@ const InfoScreen = ({navigation, route}) => {
   const [hasDone, setHasDone] = useState();
   const {getTodoList, setTodoList, setEditingTask} = useContext(TodoContext);
 
-  let task = route.params.task.item;
+  let id = route.params.id;
+  let task = getTodoList.filter(item => item._id == id)[0];
   let defTime = task.saveTimeStr;
   const itemIndex = getTodoList.findIndex(item => item._id == task._id);
 

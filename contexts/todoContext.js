@@ -29,7 +29,6 @@ export const TodoProvider = ({children}) => {
         setTodoList([]);
       } else {
         setTodoList(parsST);
-        console.log(parsST);
       }
     } catch (error) {
       console.log(error);
@@ -47,7 +46,6 @@ export const TodoProvider = ({children}) => {
 
   const saveTask = (selectedTime, props) => {
     let now = new Date();
-    console.log(selectedTime);
 
     let task = {
       _id: uuid.v4(),
@@ -60,7 +58,7 @@ export const TodoProvider = ({children}) => {
       info: getInfo,
       hasDoneStatus: false,
     };
-    console.log(task);
+
     let todoList = [task, ...getTodoList];
     setTodoList(todoList);
     saveToStorage(todoList);
