@@ -11,7 +11,7 @@ import ColorsGuide from '../components/colorsGuide';
 
 const TodoHomeScreen = props => {
   const {checkStorage, getTodoList} = useContext(TodoContext);
-  // useEffect(() => checkStorage(), []);
+  console.log('home screen refreshed');
 
   return (
     <HomesLayout

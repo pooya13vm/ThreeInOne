@@ -1,17 +1,35 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Title} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {dateStringMaker} from '../../utility/dateHandler';
 import {differentCal} from '../../utility/timeDifferentCal';
-import {CheckBox, Icon} from '@rneui/themed';
+import {CheckBox, Button, Icon} from '@rneui/themed';
+import {TodoContext} from '../../contexts/todoContext';
 
 const InfoScreen = ({navigation, route}) => {
   const [remTimeS, setRemTimeS] = useState('');
   const [deadlineString, setDeadlineString] = useState(null);
+  const [hasDone, setHasDone] = useState();
+  const {getTodoList, setTodoList, setEditingTask} = useContext(TodoContext);
 
   let task = route.params.task.item;
   let defTime = dateStringMaker(task.saveTime, true);
+  const itemIndex = getTodoList.findIndex(item => item._id == task._id);
+
+  const saveToState = () => {
+    let tick = hasDone === undefined ? true : !hasDone;
+    let newList = [...getTodoList];
+    newList[itemIndex].hasDoneStatus = tick;
+    setTodoList(newList);
+  };
+
+  const deleteItem = () => {
+    let copyList = [...getTodoList];
+    const newList = copyList.filter(item => item._id !== task._id);
+    setTodoList(newList);
+    navigation.navigate('Home');
+  };
 
   useEffect(() => {
     if (task.deadline) {
@@ -43,7 +61,29 @@ const InfoScreen = ({navigation, route}) => {
       ) : (
         <Text>no deadline has defined</Text>
       )}
-      {/* <CheckBox title="I have done it" /> */}
+      <CheckBox
+        title="I have done it"
+        checked={task.hasDoneStatus}
+        onPress={() => {
+          setHasDone(!hasDone);
+          saveToState();
+        }}
+        checkedColor="green"
+        iconRight
+      />
+      <Button type="solid" onPress={deleteItem}>
+        Delete the task
+        <Icon name="trash" color="white" type="entypo" />
+      </Button>
+      <Button
+        style={{margin: 10}}
+        onPress={() => {
+          setEditingTask(task);
+          navigation.navigate('EDIT', {task});
+        }}>
+        Edit the task
+        <Icon name="edit" color="white" type="entypo" />
+      </Button>
     </SafeAreaView>
   );
 };

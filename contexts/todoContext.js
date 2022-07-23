@@ -12,6 +12,11 @@ export const TodoProvider = ({children}) => {
   const [getImportance, setImportance] = useState('');
   const [getDeadline, setDeadline] = useState('');
   const [getInfo, setInfo] = useState('');
+  const [editingTaskTitle, setEditingTaskTitle] = useState('');
+  const [editingImportance, setEditingImportance] = useState('');
+  const [editingInfo, setEditingInfo] = useState('');
+  const [editingDeadline, setEditingDeadline] = useState('');
+  const [reloader, setReloader] = useState(false);
 
   /// storage handler ///
 
@@ -46,6 +51,7 @@ export const TodoProvider = ({children}) => {
       saveTime: new Date(),
       deadline: selectedTime,
       info: getInfo,
+      hasDoneStatus: false,
     };
     console.log(task);
     let todoList = [task, ...getTodoList];
@@ -54,6 +60,34 @@ export const TodoProvider = ({children}) => {
     setImportance('');
     props.navigation.navigate('Home');
   };
+
+  const setEditingTask = task => {
+    setEditingTaskTitle(task.content);
+    setEditingImportance(task.importance);
+    setEditingInfo(task.info);
+    setEditingDeadline(task.deadline);
+  };
+  const updateListAfterEdit = props => {
+    let id = props.route.params.task._id;
+    let doneStatus = props.route.params.task.hasDoneStatus;
+
+    const task = {
+      _id: id,
+      content: editingTaskTitle,
+      importance: editingImportance,
+      saveTime: new Date(),
+      deadline: editingDeadline,
+      info: editingInfo,
+      hasDoneStatus: doneStatus,
+    };
+    const index = getTodoList.findIndex(item => item._id == id);
+    const todoList = [...getTodoList];
+    todoList[index] = task;
+    setTodoList(todoList);
+    // saveToStorage(todoList);
+    props.navigation.navigate('Home');
+  };
+
   return (
     <TodoContext.Provider
       value={{
@@ -66,6 +100,19 @@ export const TodoProvider = ({children}) => {
         getDeadline,
         saveTask,
         setInfo,
+        setTodoList,
+        setEditingTask,
+        editingTaskTitle,
+        setEditingTaskTitle,
+        editingImportance,
+        setEditingImportance,
+        editingInfo,
+        setEditingInfo,
+        editingDeadline,
+        setEditingDeadline,
+        updateListAfterEdit,
+        reloader,
+        setReloader,
       }}>
       {children}
     </TodoContext.Provider>
