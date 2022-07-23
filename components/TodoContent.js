@@ -1,22 +1,22 @@
 import React, {useMemo, useContext} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {dateStringMaker} from '../utility/dateHandler';
 import {Icon} from '@rneui/themed';
 import {TodoContext} from '../contexts/todoContext';
 
 const TodoContent = ({task}) => {
   const {reloader, setReloader} = useContext(TodoContext);
   const now = new Date();
-  const deadline = task.item.deadline;
+  const deadlineStr = task.item.deadlineStr;
+  const deadlineSec = task.item.deadlineSec;
 
   const colorMaker = () => {
     if (task.item.hasDoneStatus) {
       return 'green';
     }
-    if (!deadline) {
+    if (!deadlineStr) {
       return 'gray';
     }
-    if (deadline.getTime() < now.getTime()) {
+    if (deadlineSec < now.getTime()) {
       return 'red';
     } else {
       return 'blue';
@@ -24,20 +24,19 @@ const TodoContent = ({task}) => {
   };
   useMemo(() => {
     if (
-      deadline &&
+      deadlineSec &&
       !task.item.hasDoneStatus &&
-      deadline.getTime() > now.getTime()
+      deadlineSec > now.getTime()
     ) {
       const myInterval = setInterval(() => {
         const nowInter = new Date();
-        let IMtime = deadline.getTime() - nowInter.getTime();
-        console.log(IMtime);
+        let IMtime = deadlineSec - nowInter.getTime();
         if (IMtime < 0) {
           setReloader(!reloader);
           clearInterval(myInterval);
           console.log('clear interval');
         }
-      }, 30000);
+      }, 60000);
     }
   }, [reloader]);
 

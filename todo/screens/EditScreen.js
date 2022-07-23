@@ -22,15 +22,12 @@ const EditScreen = props => {
     setEditingImportance,
     editingInfo,
     setEditingInfo,
-    editingDeadline,
     setEditingDeadline,
     updateListAfterEdit,
   } = useContext(TodoContext);
 
   const task = props.route.params.task;
-  const deadlineStr = editingDeadline
-    ? dateStringMaker(editingDeadline, true)
-    : null;
+  const deadlineStr = task.deadlineStr ? task.deadlineStr : null;
 
   const impressArray = [
     {label: 'Vital', value: 'vital', id: 1},

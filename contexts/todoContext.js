@@ -17,22 +17,24 @@ export const TodoProvider = ({children}) => {
   const [editingInfo, setEditingInfo] = useState('');
   const [editingDeadline, setEditingDeadline] = useState('');
   const [reloader, setReloader] = useState(false);
+  const [sortList, setSortList] = useState([]);
 
-  /// storage handler ///
+  // storage handler ///
 
-  // const checkStorage = async () => {
-  //   try {
-  //     const getST = await AsyncStorage.getItem('@myTodo');
-  //     const parsST = JSON.parse(getST);
-  //     if (parsST.length == 0) {
-  //       setTodoList([]);
-  //     } else {
-  //       setTodoList(parsST);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const checkStorage = async () => {
+    try {
+      const getST = await AsyncStorage.getItem('@myTodo');
+      const parsST = JSON.parse(getST);
+      if (parsST.length == 0) {
+        setTodoList([]);
+      } else {
+        setTodoList(parsST);
+        console.log(parsST);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const saveToStorage = async TodoList => {
     try {
@@ -44,18 +46,24 @@ export const TodoProvider = ({children}) => {
   };
 
   const saveTask = (selectedTime, props) => {
+    let now = new Date();
+    console.log(selectedTime);
+
     let task = {
       _id: uuid.v4(),
       content: getTask,
       importance: getImportance,
-      saveTime: new Date(),
-      deadline: selectedTime,
+      saveTimeStr: dateStringMaker(now, true),
+      saveTimeSec: now.getTime(),
+      deadlineStr: dateStringMaker(selectedTime, true),
+      deadlineSec: selectedTime.getTime(),
       info: getInfo,
       hasDoneStatus: false,
     };
     console.log(task);
     let todoList = [task, ...getTodoList];
     setTodoList(todoList);
+    saveToStorage(todoList);
     setTask('');
     setImportance('');
     props.navigation.navigate('Home');
@@ -68,15 +76,23 @@ export const TodoProvider = ({children}) => {
     setEditingDeadline(task.deadline);
   };
   const updateListAfterEdit = props => {
-    let id = props.route.params.task._id;
-    let doneStatus = props.route.params.task.hasDoneStatus;
-
+    let item = props.route.params.task;
+    let id = item._id;
+    let doneStatus = item.hasDoneStatus;
+    let STStr = item.saveTimeStr;
+    let STSec = item.saveTimeSec;
+    let DLStr = editingDeadline
+      ? dateStringMaker(editingDeadline, true)
+      : item.deadlineStr;
+    let DLSec = editingDeadline ? editingDeadline.getTime() : item.deadlineSec;
     const task = {
       _id: id,
       content: editingTaskTitle,
       importance: editingImportance,
-      saveTime: new Date(),
-      deadline: editingDeadline,
+      saveTimeStr: STStr,
+      saveTimeSec: STSec,
+      deadlineStr: DLStr,
+      deadlineSec: DLSec,
       info: editingInfo,
       hasDoneStatus: doneStatus,
     };
@@ -84,17 +100,28 @@ export const TodoProvider = ({children}) => {
     const todoList = [...getTodoList];
     todoList[index] = task;
     setTodoList(todoList);
-    // saveToStorage(todoList);
+    saveToStorage(todoList);
+    saveToStorage(todoList);
     props.navigation.navigate('Home');
   };
 
+  const sortManager = sort => {
+    switch (sort) {
+      case value:
+        break;
+
+      default:
+        break;
+    }
+    console.log(sort);
+  };
   return (
     <TodoContext.Provider
       value={{
         getTodoList,
         getTask,
         setTask,
-        // checkStorage,
+        checkStorage,
         setImportance,
         setDeadline,
         getDeadline,
@@ -113,6 +140,7 @@ export const TodoProvider = ({children}) => {
         updateListAfterEdit,
         reloader,
         setReloader,
+        sortManager,
       }}>
       {children}
     </TodoContext.Provider>

@@ -10,8 +10,21 @@ import TodoContent from '../../components/TodoContent';
 import ColorsGuide from '../components/colorsGuide';
 
 const TodoHomeScreen = props => {
-  const {checkStorage, getTodoList} = useContext(TodoContext);
-  console.log('home screen refreshed');
+  const {checkStorage, getTodoList, sortManager} = useContext(TodoContext);
+
+  useEffect(() => {
+    checkStorage();
+  }, []);
+
+  const sortItems = [
+    {label: 'Importance', value: 'importance', id: 1},
+    {label: 'Less time to deadline', value: 'less', id: 2},
+    {label: 'Most time to deadline', value: 'most', id: 3},
+    {label: 'No deadLine first', value: 'no', id: 4},
+    {label: 'Done tasks first', value: 'done', id: 5},
+    {label: 'Definition (earlier)', value: 'defEarlier', id: 6},
+    {label: 'Definition (later)', value: 'defLater', id: 7},
+  ];
 
   return (
     <HomesLayout
@@ -26,8 +39,8 @@ const TodoHomeScreen = props => {
       }}>
       <DropdownComponent
         placeholder="Sort by ..."
-        // categoryList={categoryList}
-        // setDDvalue={filteredCategory}
+        categoryList={sortItems}
+        setDDvalue={sortManager}
       />
       <ColorsGuide />
       {getTodoList.length == 0 ? (

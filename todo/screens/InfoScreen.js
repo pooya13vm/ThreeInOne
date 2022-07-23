@@ -14,7 +14,7 @@ const InfoScreen = ({navigation, route}) => {
   const {getTodoList, setTodoList, setEditingTask} = useContext(TodoContext);
 
   let task = route.params.task.item;
-  let defTime = dateStringMaker(task.saveTime, true);
+  let defTime = task.saveTimeStr;
   const itemIndex = getTodoList.findIndex(item => item._id == task._id);
 
   const saveToState = () => {
@@ -32,12 +32,12 @@ const InfoScreen = ({navigation, route}) => {
   };
 
   useEffect(() => {
-    if (task.deadline) {
-      const DLS = dateStringMaker(task.deadline, true);
+    if (task.deadlineStr) {
+      const DLS = task.deadlineStr;
       setDeadlineString(DLS);
       const now = new Date();
       const nowSec = now.getTime();
-      const deadlineSec = task.deadline.getTime();
+      const deadlineSec = task.deadlineSec;
       if (nowSec < deadlineSec) {
         let remainingTime = differentCal(deadlineSec - nowSec);
         setRemTimeS(remainingTime);
@@ -53,7 +53,7 @@ const InfoScreen = ({navigation, route}) => {
       <Text>task importance :{task.importance}</Text>
       <Text>task info :{task.info}</Text>
       <Text>definition time : {defTime}</Text>
-      {task.deadline ? (
+      {task.deadlineStr ? (
         <>
           <Text>deadline : {deadlineString}</Text>
           <Text>remaining time:{remTimeS}</Text>

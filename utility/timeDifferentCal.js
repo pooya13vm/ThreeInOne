@@ -1,5 +1,4 @@
 export const differentCal = num => {
-  console.log(num);
   let second = Math.trunc(num / 1000);
   let min = Math.trunc(second / 60);
   let minRes = Math.floor(min % 60);
