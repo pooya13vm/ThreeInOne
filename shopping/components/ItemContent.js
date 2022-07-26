@@ -1,18 +1,19 @@
-import React, {useState, useContext} from 'react';
+import React, {useContext} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {CheckBox, Icon} from '@rneui/themed';
 import {ShoppingContext} from '../../contexts/shoppingContext';
 
 const ItemContent = ({shopItem, parentIndex}) => {
-  const [check, setCheck] = useState(false);
-  const {setListOfLists, listOfLists} = useContext(ShoppingContext);
+  const {setListOfLists, listOfLists, saveToStorage} =
+    useContext(ShoppingContext);
   const list = listOfLists[parentIndex].listArray;
   const id = shopItem.id;
   const targetItem = list.filter(item => item.id == id);
   const indexOfTarget = list.findIndex(item => item.id == id);
 
   const tickEvent = () => {
-    if (!check) {
+    let check = !targetItem[0].itemBuy;
+    if (check) {
       targetItem[0].itemBuy = true;
       const copyList = [...list];
       const newList = copyList.filter(item => item.id !== id);
@@ -20,6 +21,7 @@ const ItemContent = ({shopItem, parentIndex}) => {
       const allListsCopy = [...listOfLists];
       allListsCopy[parentIndex].listArray = newList;
       setListOfLists(allListsCopy);
+      saveToStorage(allListsCopy);
       console.log(listOfLists);
     } else {
       targetItem[0].itemBuy = false;
@@ -28,6 +30,7 @@ const ItemContent = ({shopItem, parentIndex}) => {
       const allListsCopy = [...listOfLists];
       allListsCopy[parentIndex].listArray = copyList;
       setListOfLists(allListsCopy);
+      saveToStorage(allListsCopy);
       console.log(listOfLists);
     }
   };
@@ -38,6 +41,7 @@ const ItemContent = ({shopItem, parentIndex}) => {
     const allListsCopy = [...listOfLists];
     allListsCopy[parentIndex].listArray = newList;
     setListOfLists(allListsCopy);
+    saveToStorage(allListsCopy);
   };
 
   return (
@@ -60,9 +64,8 @@ const ItemContent = ({shopItem, parentIndex}) => {
         </TouchableOpacity>
 
         <CheckBox
-          checked={check}
+          checked={targetItem[0].itemBuy}
           onPress={() => {
-            setCheck(!check);
             tickEvent();
           }}
           containerStyle={{

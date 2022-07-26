@@ -27,14 +27,18 @@ export const NoteProvider = ({children}) => {
   /// storage handler ///
 
   const checkStorage = async () => {
-    const getST = await AsyncStorage.getItem('@myNote');
-    const parsST = JSON.parse(getST);
-    if (parsST.length == 0) {
-      setNotes([]);
-      setFilteredList([]);
-    } else {
-      setNotes(parsST);
-      setFilteredList(parsST);
+    try {
+      const getST = await AsyncStorage.getItem('@myNote');
+      const parsST = JSON.parse(getST);
+      if (parsST.length == 0) {
+        setNotes([]);
+        setFilteredList([]);
+      } else {
+        setNotes(parsST);
+        setFilteredList(parsST);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

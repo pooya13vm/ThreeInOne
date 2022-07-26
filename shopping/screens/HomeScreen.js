@@ -1,8 +1,7 @@
-import React, {useState, useContext} from 'react';
-import {View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import React, {useState, useContext, useEffect} from 'react';
+import {View, StyleSheet, FlatList} from 'react-native';
 import HomesLayout from '../../components/homesLayout';
-import {Button, Icon} from '@rneui/base';
-import {Input} from '@rneui/themed';
+import {Input, Button} from '@rneui/themed';
 import DropdownComponent from '../../components/dropDown';
 import {ShoppingContext} from '../../contexts/shoppingContext';
 import NoContent from '../../components/NoContent';
@@ -12,6 +11,13 @@ import AddBtn from '../components/AddBtn';
 
 const ShoppingHomeScreen = props => {
   const [visible, setVisible] = useState(false);
+  const {saveList, listOfLists, checkStorage, storeList, checkStoreStorage} =
+    useContext(ShoppingContext);
+
+  useEffect(() => {
+    checkStorage();
+    checkStoreStorage();
+  }, []);
 
   let name = '';
   const saveName = val => {
@@ -21,8 +27,6 @@ const ShoppingHomeScreen = props => {
   const savePlace = val => {
     place = val;
   };
-
-  const {saveList, listOfLists} = useContext(ShoppingContext);
 
   const MyModal = () => {
     return (
@@ -34,11 +38,7 @@ const ShoppingHomeScreen = props => {
         />
         <DropdownComponent
           placeholder="From ..."
-          categoryList={[
-            {label: 'Walmart', value: 'walmart', id: 7},
-            {label: 'Costco', value: 'costco', id: 7},
-            {label: 'Amazon', value: 'amazon', id: 7},
-          ]}
+          categoryList={storeList}
           setDDvalue={savePlace}
         />
         <View
@@ -70,8 +70,7 @@ const ShoppingHomeScreen = props => {
       title="MY SHOPPING LISTS"
       footer={<AddBtn setVisibility={setVisible} />}
       rightProps={props}
-      // targetScreen="SETTING"
-    >
+      targetScreen="SETTING">
       {listOfLists.length == 0 ? (
         <NoContent />
       ) : (
@@ -80,14 +79,7 @@ const ShoppingHomeScreen = props => {
           keyExtractor={list => list._id}
           //in renderItem the note param return an object that the ".item" include the param
           renderItem={list => {
-            return (
-              <TouchableOpacity
-                onPress={() =>
-                  props.navigation.navigate('SHOPPLIST', {id: list.item._id})
-                }>
-                <ShoppingContent list={list} />
-              </TouchableOpacity>
-            );
+            return <ShoppingContent list={list} props={props} />;
           }}
         />
       )}

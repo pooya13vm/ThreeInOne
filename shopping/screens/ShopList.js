@@ -10,7 +10,8 @@ import NoContent from '../../components/NoContent';
 import ItemContent from '../components/ItemContent';
 
 const ShopList = ({navigation, route}) => {
-  const {listOfLists, setListOfLists} = useContext(ShoppingContext);
+  const {listOfLists, setListOfLists, saveToStorage} =
+    useContext(ShoppingContext);
 
   const [visible, setVisible] = useState(false);
 
@@ -77,6 +78,7 @@ const ShopList = ({navigation, route}) => {
     let allLists = [...listOfLists];
     allLists[indexOfTarget].listArray.push(item);
     setListOfLists(allLists);
+    saveToStorage(allLists);
   };
 
   return (
