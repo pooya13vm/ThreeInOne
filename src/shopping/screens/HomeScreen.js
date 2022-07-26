@@ -1,11 +1,11 @@
 import React, {useState, useContext, useEffect} from 'react';
 import {View, StyleSheet, FlatList} from 'react-native';
-import HomesLayout from '../../components/homesLayout';
+import HomesLayout from '../../components/HomesLayout';
 import {Input, Button} from '@rneui/themed';
-import DropdownComponent from '../../components/dropDown';
-import {ShoppingContext} from '../../contexts/shoppingContext';
+import DropdownComponent from '../../components/DropDown';
+import ShoppingContent from '../components/ShoppingContent';
 import NoContent from '../../components/NoContent';
-import ShoppingContent from '../../components/ShoppingContent';
+import {ShoppingContext} from '../../contexts/shoppingContext';
 import Overlay from '../../components/Overlay';
 import AddBtn from '../components/AddBtn';
 

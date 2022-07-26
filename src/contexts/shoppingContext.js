@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {createContext, useState} from 'react';
 import uuid from 'react-native-uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -87,23 +87,25 @@ export const ShoppingProvider = ({children}) => {
     setStoreList(filteredList);
     saveStoresToStorage(filteredList);
   };
+
+  const ctx = useMemo(
+    () => ({
+      listOfLists,
+      saveList,
+      setListOfLists,
+      checkStorage,
+      saveToStorage,
+      deleteList,
+      storeName,
+      setStoreName,
+      storeList,
+      checkStoreStorage,
+      deleteFromList,
+      addToList,
+    }),
+    [listOfLists, storeName, storeList],
+  );
   return (
-    <ShoppingContext.Provider
-      value={{
-        listOfLists,
-        saveList,
-        setListOfLists,
-        checkStorage,
-        saveToStorage,
-        deleteList,
-        storeName,
-        setStoreName,
-        storeList,
-        checkStoreStorage,
-        deleteFromList,
-        addToList,
-      }}>
-      {children}
-    </ShoppingContext.Provider>
+    <ShoppingContext.Provider value={ctx}>{children}</ShoppingContext.Provider>
   );
 };

@@ -1,10 +1,10 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-import ShoppingHomeScreen from './shopping/screens/HomeScreen';
-import NoteNavigator from './note/noteNavigation';
-import TodoNavigator from './todo/TodoNavigation';
-import ShoppingNavigator from './shopping/shoppingNavigation';
+import ShoppingHomeScreen from './src/shopping/screens/HomeScreen';
+import NoteNavigator from './src/note/noteNavigation';
+import TodoNavigator from './src/todo/TodoNavigation';
+import ShoppingNavigator from './src/shopping/shoppingNavigation';
 // import Icon from 'react-native-vector-icons';
 // import Entypo from 'react-native-vector-icons/Entypo';
 import {Icon} from '@rneui/themed';

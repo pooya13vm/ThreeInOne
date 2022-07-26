@@ -2,9 +2,9 @@ import React from 'react';
 import {useContext} from 'react';
 import {Input} from '@rneui/base';
 import {View, Text, StyleSheet, TextInput} from 'react-native';
-import ScreensLayout from '../../components/screensLayout';
+import ScreensLayout from '../../components/ScreensLayout';
 import {NoteContext} from '../../contexts/noteContext';
-import DropdownComponent from '../../components/dropDown';
+import DropdownComponent from '../../components/DropDown';
 
 const AddScreen = props => {
   const {

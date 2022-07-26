@@ -1,7 +1,7 @@
 import React, {useEffect, useContext, useState} from 'react';
 import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import {ShoppingContext} from '../../contexts/shoppingContext';
-import ScreensLayout from '../../components/screensLayout';
+import ScreensLayout from '../../components/ScreensLayout';
 import AddBtn from '../components/AddBtn';
 import Overlay from '../../components/Overlay';
 import {Input, Button} from '@rneui/themed';

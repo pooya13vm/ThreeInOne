@@ -1,22 +1,33 @@
 import React, {useState, useContext, useMemo} from 'react';
 import {Input, Button} from '@rneui/base';
 import {View, StyleSheet, Text, TextInput} from 'react-native';
-import ScreensLayout from '../../components/screensLayout';
-import DropdownComponent from '../../components/dropDown';
+import ScreensLayout from '../../components/ScreensLayout';
+import DropdownComponent from '../../components/DropDown';
 import DatePicker from 'react-native-date-picker';
 import {TodoContext} from '../../contexts/todoContext';
 import {dateStringMaker} from '../../utility/dateHandler';
 import {differentCal} from '../../utility/timeDifferentCal';
 
-const AddScreen = props => {
+const EditScreen = props => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [selectedTime, setSelectedTime] = useState();
   const [stringifyDate, setStringifyDate] = useState('');
   const [remainingTime, setRemainingTime] = useState({});
 
-  const {setTask, getTask, setImportance, saveTask, setInfo} =
-    useContext(TodoContext);
+  const {
+    editingTaskTitle,
+    setEditingTaskTitle,
+    editingImportance,
+    setEditingImportance,
+    editingInfo,
+    setEditingInfo,
+    setEditingDeadline,
+    updateListAfterEdit,
+  } = useContext(TodoContext);
+
+  const task = props.route.params.task;
+  const deadlineStr = task.deadlineStr ? task.deadlineStr : null;
 
   const impressArray = [
     {label: 'Vital', value: 'vital', id: 1},
@@ -51,21 +62,21 @@ const AddScreen = props => {
 
   return (
     <ScreensLayout
-      title="Add a task"
+      title="Edit task"
       left="l"
       right="r"
       props={props}
-      onPressFun={() => saveTask(selectedTime, props)}>
+      onPressFun={updateListAfterEdit}>
       <View style={styles.formContainer}>
         <Input
           label="Task Content"
-          value={getTask}
-          onChangeText={val => setTask(val)}
+          value={editingTaskTitle}
+          onChangeText={val => setEditingTaskTitle(val)}
         />
         <DropdownComponent
-          placeholder="How Importance ..."
+          placeholder={editingImportance}
           categoryList={impressArray}
-          setDDvalue={setImportance}
+          setDDvalue={setEditingImportance}
         />
         <Button
           title="Choose Deadline"
@@ -97,13 +108,24 @@ const AddScreen = props => {
           </Text>
           <TextInput
             multiline
-            onChangeText={val => setInfo(val)}
+            value={editingInfo}
+            onChangeText={val => setEditingInfo(val)}
             style={{
               paddingBottom: 10,
               color: 'gray',
             }}
           />
         </View>
+
+        {deadlineStr ? (
+          <View>
+            <Text>{`Defined dead line: ${deadlineStr}`}</Text>
+          </View>
+        ) : (
+          <View>
+            <Text>No deadline has been defined </Text>
+          </View>
+        )}
 
         <DatePicker
           modal
@@ -112,6 +134,7 @@ const AddScreen = props => {
           date={date}
           onConfirm={date => {
             setOpen(false);
+            setEditingDeadline(date);
             setSelectedTime(date);
           }}
           onCancel={() => {
@@ -124,7 +147,7 @@ const AddScreen = props => {
   );
 };
 
-export default AddScreen;
+export default EditScreen;
 
 const styles = StyleSheet.create({
   formContainer: {

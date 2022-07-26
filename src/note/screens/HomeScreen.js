@@ -1,11 +1,11 @@
 import React, {useContext, useEffect} from 'react';
 import {FlatList, TouchableOpacity, View, StyleSheet, Text} from 'react-native';
 import {Icon} from '@rneui/base';
-import HomesLayout from '../../components/homesLayout';
-import NoteContent from '../../components/noteContent';
+import HomesLayout from '../../components/HomesLayout';
+import NoteContent from '../components/NoteContent';
 import {NoteContext} from '../../contexts/noteContext';
 import AddBtn from '../../components/AddBtn';
-import DropdownComponent from '../../components/dropDown';
+import DropdownComponent from '../../components/DropDown';
 import NoContent from '../../components/NoContent';
 
 const NoteHomeScreen = props => {

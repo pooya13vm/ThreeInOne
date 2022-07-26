@@ -1,7 +1,7 @@
 import React, {useMemo, useContext, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Icon} from '@rneui/themed';
-import {TodoContext} from '../contexts/todoContext';
+import {TodoContext} from '../../contexts/todoContext';
 
 const TodoContent = ({task}) => {
   const {reloader, setReloader} = useContext(TodoContext);

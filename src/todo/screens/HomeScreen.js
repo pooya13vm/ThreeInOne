@@ -1,11 +1,11 @@
 import React, {useEffect, useContext} from 'react';
 import {View, TouchableOpacity, StyleSheet, FlatList} from 'react-native';
-import HomesLayout from '../../components/homesLayout';
+import HomesLayout from '../../components/HomesLayout';
 import AddBtn from '../../components/AddBtn';
-import DropdownComponent from '../../components/dropDown';
+import DropdownComponent from '../../components/DropDown';
 import {TodoContext} from '../../contexts/todoContext';
 import NoContent from '../../components/NoContent';
-import TodoContent from '../../components/TodoContent';
+import TodoContent from '../components/TodoContent';
 import ColorsGuide from '../components/colorsGuide';
 
 const TodoHomeScreen = props => {

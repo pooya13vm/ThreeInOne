@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {Icon} from '@rneui/base';
-import {ShoppingContext} from '../contexts/shoppingContext';
+import {ShoppingContext} from '../../contexts/shoppingContext';
 
 const ShoppingContent = ({list, props}) => {
   const {deleteList} = useContext(ShoppingContext);
