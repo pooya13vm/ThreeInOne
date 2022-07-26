@@ -1,29 +1,29 @@
 import React, {useEffect, useContext} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, FlatList} from 'react-native';
+import {View, TouchableOpacity, StyleSheet, FlatList} from 'react-native';
 import HomesLayout from '../../components/homesLayout';
 import AddBtn from '../../components/AddBtn';
 import DropdownComponent from '../../components/dropDown';
 import {TodoContext} from '../../contexts/todoContext';
 import NoContent from '../../components/NoContent';
-import {Icon} from '@rneui/themed';
 import TodoContent from '../../components/TodoContent';
 import ColorsGuide from '../components/colorsGuide';
 
 const TodoHomeScreen = props => {
-  const {checkStorage, getTodoList, sortManager} = useContext(TodoContext);
+  const {checkStorage, getTodoList, sortManager, sortList} =
+    useContext(TodoContext);
 
   useEffect(() => {
     checkStorage();
   }, []);
 
   const sortItems = [
+    {label: 'Defined earlier (default)', value: 'defEarlier', id: 6},
+    {label: 'Defined later', value: 'defLater', id: 7},
     {label: 'Importance', value: 'importance', id: 1},
     {label: 'Less time to deadline', value: 'less', id: 2},
     {label: 'Most time to deadline', value: 'most', id: 3},
-    {label: 'No deadLine first', value: 'no', id: 4},
-    {label: 'Done tasks first', value: 'done', id: 5},
-    {label: 'Definition (earlier)', value: 'defEarlier', id: 6},
-    {label: 'Definition (later)', value: 'defLater', id: 7},
+    {label: 'No deadLine tasks', value: 'no', id: 4},
+    {label: 'Not Done tasks', value: 'notDone', id: 5},
   ];
 
   return (
@@ -38,7 +38,7 @@ const TodoHomeScreen = props => {
         alignItems: 'center',
       }}>
       <DropdownComponent
-        placeholder="Sort by ..."
+        placeholder="Sort and filter"
         categoryList={sortItems}
         setDDvalue={sortManager}
       />
@@ -47,7 +47,7 @@ const TodoHomeScreen = props => {
         <NoContent />
       ) : (
         <FlatList
-          data={getTodoList}
+          data={sortList}
           keyExtractor={task => task._id}
           renderItem={task => (
             <View>

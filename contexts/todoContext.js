@@ -29,6 +29,7 @@ export const TodoProvider = ({children}) => {
         setTodoList([]);
       } else {
         setTodoList(parsST);
+        setSortList(parsST);
       }
     } catch (error) {
       console.log(error);
@@ -44,6 +45,8 @@ export const TodoProvider = ({children}) => {
     }
   };
 
+  /// add new item to list ///
+
   const saveTask = (selectedTime, props) => {
     let now = new Date();
 
@@ -53,19 +56,22 @@ export const TodoProvider = ({children}) => {
       importance: getImportance,
       saveTimeStr: dateStringMaker(now, true),
       saveTimeSec: now.getTime(),
-      deadlineStr: dateStringMaker(selectedTime, true),
-      deadlineSec: selectedTime.getTime(),
+      deadlineStr: selectedTime ? dateStringMaker(selectedTime, true) : null,
+      deadlineSec: selectedTime ? selectedTime.getTime() : null,
       info: getInfo,
       hasDoneStatus: false,
     };
 
     let todoList = [task, ...getTodoList];
     setTodoList(todoList);
+    setSortList(todoList);
     saveToStorage(todoList);
     setTask('');
     setImportance('');
     props.navigation.navigate('Home');
   };
+
+  /// edit Item ///
 
   const setEditingTask = task => {
     setEditingTaskTitle(task.content);
@@ -98,20 +104,85 @@ export const TodoProvider = ({children}) => {
     const todoList = [...getTodoList];
     todoList[index] = task;
     setTodoList(todoList);
-    saveToStorage(todoList);
+    setSortList(todoList);
     saveToStorage(todoList);
     props.navigation.navigate('Home');
   };
 
+  /// sort Handler ///
+
+  const sortImportance = () => {
+    const copy = [...getTodoList];
+    const sortArray = ['vital', 'obligatory', 'medium', 'inessential', ''];
+    const newList = [];
+    for (let i = 0; i < copy.length; i++) {
+      copy.map(item => {
+        if (item.importance == sortArray[i]) {
+          newList.push(item);
+        }
+      });
+    }
+    setSortList(newList);
+  };
+  const sortLess = () => {
+    const copy = [...getTodoList];
+    const filtered = copy.filter(item => item.deadlineSec != null);
+    const newList = filtered.sort(function (x, y) {
+      return x.deadlineSec - y.deadlineSec;
+    });
+    setSortList(newList);
+  };
+  const sortMost = () => {
+    const copy = [...getTodoList];
+    const filtered = copy.filter(item => item.deadlineSec != null);
+    const newList = filtered.sort(function (x, y) {
+      return x.deadlineSec + y.deadlineSec;
+    });
+    setSortList(newList);
+  };
+  const sortNoDeadline = () => {
+    const copy = [...getTodoList];
+    const newList = copy.filter(item => item.deadlineSec == null);
+    setSortList(newList);
+  };
+  const sortNotDone = () => {
+    const copy = [...getTodoList];
+    const newList = copy.filter(item => item.hasDoneStatus != true);
+    setSortList(newList);
+  };
+  const sortDefLater = () => {
+    const copy = [...getTodoList];
+    const newList = copy.reverse();
+    setSortList(newList);
+  };
+
   const sortManager = sort => {
     switch (sort) {
-      case value:
+      case 'importance':
+        sortImportance();
         break;
-
+      case 'less':
+        sortLess();
+        break;
+      case 'most':
+        sortMost();
+        break;
+      case 'no':
+        sortNoDeadline();
+        break;
+      case 'notDone':
+        sortNotDone();
+        break;
+      case 'defEarlier':
+        setSortList(getTodoList);
+        break;
+      case 'defLater':
+        sortDefLater();
+        break;
       default:
+        setSortList(getTodoList);
         break;
     }
-    console.log(sort);
   };
   return (
     <TodoContext.Provider
@@ -139,6 +210,9 @@ export const TodoProvider = ({children}) => {
         reloader,
         setReloader,
         sortManager,
+        sortList,
+        saveToStorage,
+        setSortList,
       }}>
       {children}
     </TodoContext.Provider>

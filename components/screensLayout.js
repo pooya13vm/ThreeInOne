@@ -4,7 +4,15 @@ import {Button} from '@rneui/base';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Icon} from '@rneui/base';
 
-const ScreensLayout = ({children, left, right, title, props, onPressFun}) => {
+const ScreensLayout = ({
+  children,
+  left,
+  right,
+  title,
+  props,
+  onPressFun,
+  shopping = false,
+}) => {
   return (
     <View>
       <View style={styles.container}>
@@ -22,32 +30,34 @@ const ScreensLayout = ({children, left, right, title, props, onPressFun}) => {
         <View style={styles.body}>
           <View style={{height: '100%'}}>{children}</View>
         </View>
-        <View style={styles.footer}>
-          <View style={styles.Buttons}>
-            <Button
-              onPress={() => props.navigation.navigate('Home')}
-              buttonStyle={{
-                height: '100%',
-                backgroundColor: 'rgba(214, 61, 57, 1)',
-              }}
-              containerStyle={{width: '50%'}}>
-              <Text>Cancel</Text>
-            </Button>
-            <Button
-              onPress={() => onPressFun(props)}
-              title="Save note"
-              buttonStyle={{
-                height: '100%',
-                backgroundColor: 'rgba(127, 220, 103, 1)',
-              }}
-              containerStyle={{
-                width: '50%',
-              }}
-              titleStyle={{fontWeight: 'bold', fontSize: 32, color: 'white'}}>
-              <Text>Save</Text>
-            </Button>
+        {!shopping && (
+          <View style={styles.footer}>
+            <View style={styles.Buttons}>
+              <Button
+                onPress={() => props.navigation.navigate('Home')}
+                buttonStyle={{
+                  height: '100%',
+                  backgroundColor: 'rgba(214, 61, 57, 1)',
+                }}
+                containerStyle={{width: '50%'}}>
+                <Text>Cancel</Text>
+              </Button>
+              <Button
+                onPress={() => onPressFun(props)}
+                title="Save note"
+                buttonStyle={{
+                  height: '100%',
+                  backgroundColor: 'rgba(127, 220, 103, 1)',
+                }}
+                containerStyle={{
+                  width: '50%',
+                }}
+                titleStyle={{fontWeight: 'bold', fontSize: 32, color: 'white'}}>
+                <Text>Save</Text>
+              </Button>
+            </View>
           </View>
-        </View>
+        )}
       </View>
     </View>
   );

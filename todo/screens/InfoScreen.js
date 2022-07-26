@@ -1,8 +1,7 @@
 import React, {useEffect, useState, useContext} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {Text, StyleSheet} from 'react-native';
 import {Title} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {dateStringMaker} from '../../utility/dateHandler';
 import {differentCal} from '../../utility/timeDifferentCal';
 import {CheckBox, Button, Icon} from '@rneui/themed';
 import {TodoContext} from '../../contexts/todoContext';
@@ -11,7 +10,8 @@ const InfoScreen = ({navigation, route}) => {
   const [remTimeS, setRemTimeS] = useState('');
   const [deadlineString, setDeadlineString] = useState(null);
   const [hasDone, setHasDone] = useState();
-  const {getTodoList, setTodoList, setEditingTask} = useContext(TodoContext);
+  const {getTodoList, setTodoList, setEditingTask, setSortList, saveToStorage} =
+    useContext(TodoContext);
 
   let id = route.params.id;
   let task = getTodoList.filter(item => item._id == id)[0];
@@ -23,12 +23,16 @@ const InfoScreen = ({navigation, route}) => {
     let newList = [...getTodoList];
     newList[itemIndex].hasDoneStatus = tick;
     setTodoList(newList);
+    setSortList(newList);
+    saveToStorage(newList);
   };
 
   const deleteItem = () => {
     let copyList = [...getTodoList];
     const newList = copyList.filter(item => item._id !== task._id);
     setTodoList(newList);
+    setSortList(newList);
+    saveToStorage(newList);
     navigation.navigate('Home');
   };
 
@@ -84,6 +88,10 @@ const InfoScreen = ({navigation, route}) => {
         }}>
         Edit the task
         <Icon name="edit" color="white" type="entypo" />
+      </Button>
+      <Button style={{margin: 10}} onPress={navigation.goBack}>
+        Back to list
+        <Icon name="arrow-long-left" color="white" type="entypo" />
       </Button>
     </SafeAreaView>
   );

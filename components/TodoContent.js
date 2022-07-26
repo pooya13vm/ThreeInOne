@@ -1,11 +1,10 @@
-import React, {useMemo, useContext} from 'react';
+import React, {useMemo, useContext, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Icon} from '@rneui/themed';
 import {TodoContext} from '../contexts/todoContext';
 
 const TodoContent = ({task}) => {
   const {reloader, setReloader} = useContext(TodoContext);
-  const now = new Date();
   const deadlineStr = task.item.deadlineStr;
   const deadlineSec = task.item.deadlineSec;
 
@@ -16,13 +15,16 @@ const TodoContent = ({task}) => {
     if (!deadlineStr) {
       return 'gray';
     }
+    const now = new Date();
+
     if (deadlineSec < now.getTime()) {
       return 'red';
     } else {
       return 'blue';
     }
   };
-  useMemo(() => {
+  useEffect(() => {
+    const now = new Date();
     if (
       deadlineSec &&
       !task.item.hasDoneStatus &&
