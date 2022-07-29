@@ -3,30 +3,37 @@ import {Text, StyleSheet, FlatList, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Title, TextInput, Button} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {ShoppingContext} from '../../contexts/shoppingContext';
+import {NoteContext} from '../contexts/noteContext';
 
-const SettingScreen = () => {
-  const {storeName, setStoreName, storeList, addToList, deleteFromList} =
-    useContext(ShoppingContext);
+const NoteSettingScreen = () => {
+  const {
+    categoryList,
+    getCategory,
+    setCategory,
+    addToCategory,
+    deleteCategory,
+  } = useContext(NoteContext);
+  let category = [...categoryList];
+  category.shift();
 
   return (
     <SafeAreaView style={styles.container}>
       <Title style={{fontWeight: 'bold'}}>Category Setting</Title>
       <Text style={styles.definition}>
-        Here you can define and manage the store places
+        Here you can define and manage the notes category
       </Text>
       <TextInput
         style={{height: 50, width: '90%'}}
         mode="flat"
-        label="New Store"
+        label="New Category"
         selectionColor="gray"
         activeOutlineColor="gray"
         underlineColor="gary"
-        onChangeText={val => setStoreName(val)}
-        value={storeName}
+        onChangeText={val => setCategory(val)}
+        value={getCategory}
       />
-      <Button mode="contained" onPress={addToList} style={{marginTop: 20}}>
-        Add to store list
+      <Button mode="contained" onPress={addToCategory} style={{marginTop: 20}}>
+        Add to category list
       </Button>
       <View style={styles.listContainer}>
         <View
@@ -35,11 +42,11 @@ const SettingScreen = () => {
             borderBottomWidth: 1,
             width: '100%',
           }}>
-          <Text style={{fontSize: 16}}>Store List</Text>
+          <Text style={{fontSize: 16}}>Category List</Text>
         </View>
 
         <FlatList
-          data={storeList}
+          data={category}
           keyExtractor={item => item.id}
           renderItem={cat => (
             <View style={styles.item}>
@@ -47,7 +54,7 @@ const SettingScreen = () => {
                 {cat.item.label}
               </Text>
               <TouchableOpacity
-                onPress={() => deleteFromList(cat.item.id)}
+                onPress={() => deleteCategory(cat.item.id)}
                 style={{
                   backgroundColor: 'gray',
                   padding: 8,
@@ -63,7 +70,7 @@ const SettingScreen = () => {
   );
 };
 
-export default SettingScreen;
+export default NoteSettingScreen;
 
 const styles = StyleSheet.create({
   container: {

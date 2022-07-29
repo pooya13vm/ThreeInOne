@@ -1,8 +1,6 @@
 import React from 'react';
 import {Text, View, StyleSheet, StatusBar, Platform} from 'react-native';
 import {Button} from '@rneui/base';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Icon} from '@rneui/base';
 
 const ScreensLayout = ({
   children,
@@ -20,8 +18,10 @@ const ScreensLayout = ({
           <View style={styles.headerLeft}>
             <Text>{left}</Text>
           </View>
-          <View>
-            <Text>{title}</Text>
+          <View style={styles.titleContainer}>
+            <Text style={{fontSize: 20, fontWeight: 'bold', color: '#ffffff'}}>
+              {title}
+            </Text>
           </View>
           <View style={styles.headerRight}>
             <Text>{right}</Text>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: Platform.OS == 'android' ? StatusBar.currentHeight : 40,
     justifyContent: 'space-between',
-    // flexDirection: 'column',
+    backgroundColor: '#ffffff',
     alignItems: 'center',
     height: '95%',
   },
@@ -76,8 +76,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'blue',
     width: '100%',
+    borderTopWidth: 5,
+    borderTopColor: '#4e97ce',
+  },
+  titleContainer: {
+    backgroundColor: '#4e97ce',
+    height: '100%',
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+    borderBottomEndRadius: 8,
+    borderBottomStartRadius: 8,
   },
   headerLeft: {
     marginLeft: '10%',

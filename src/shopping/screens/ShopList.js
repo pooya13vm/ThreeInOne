@@ -1,15 +1,15 @@
-import React, {useEffect, useContext, useState} from 'react';
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {View, FlatList} from 'react-native';
+import {Input, Button} from '@rneui/themed';
+import uuid from 'react-native-uuid';
 import {ShoppingContext} from '../../contexts/shoppingContext';
 import ScreensLayout from '../../components/ScreensLayout';
 import AddBtn from '../components/AddBtn';
 import Overlay from '../../components/Overlay';
-import {Input, Button} from '@rneui/themed';
-import uuid from 'react-native-uuid';
 import NoContent from '../../components/NoContent';
 import ItemContent from '../components/ItemContent';
 
-const ShopList = ({navigation, route}) => {
+const ShopList = ({route}) => {
   const {listOfLists, setListOfLists, saveToStorage} =
     useContext(ShoppingContext);
 
@@ -94,7 +94,6 @@ const ShopList = ({navigation, route}) => {
           <FlatList
             data={targetItem[0].listArray}
             keyExtractor={list => list.id}
-            //in renderItem the note param return an object that the ".item" include the param
             renderItem={item => {
               return (
                 <>
@@ -103,10 +102,6 @@ const ShopList = ({navigation, route}) => {
                     parentIndex={indexOfTarget}
                   />
                 </>
-
-                // <View style={{flex: 1}}>
-                //   <Text>{item.item.itemName}</Text>
-                // </View>
               );
             }}
           />

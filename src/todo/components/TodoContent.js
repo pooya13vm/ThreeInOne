@@ -1,4 +1,4 @@
-import React, {useMemo, useContext, useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Icon} from '@rneui/themed';
 import {TodoContext} from '../../contexts/todoContext';
@@ -7,7 +7,7 @@ const TodoContent = ({task}) => {
   const {reloader, setReloader} = useContext(TodoContext);
   const deadlineStr = task.item.deadlineStr;
   const deadlineSec = task.item.deadlineSec;
-
+  const now = new Date();
   const colorMaker = () => {
     if (task.item.hasDoneStatus) {
       return 'green';
@@ -15,8 +15,6 @@ const TodoContent = ({task}) => {
     if (!deadlineStr) {
       return 'gray';
     }
-    const now = new Date();
-
     if (deadlineSec < now.getTime()) {
       return 'red';
     } else {
@@ -24,24 +22,24 @@ const TodoContent = ({task}) => {
     }
   };
   useEffect(() => {
-    const now = new Date();
     if (
       deadlineSec &&
       !task.item.hasDoneStatus &&
-      deadlineSec > now.getTime()
+      deadlineSec < now.getTime()
     ) {
       const myInterval = setInterval(() => {
         const nowInter = new Date();
         let IMtime = deadlineSec - nowInter.getTime();
+        console.log(IMtime);
         if (IMtime < 0) {
           setReloader(!reloader);
           clearInterval(myInterval);
           console.log('clear interval');
         }
-      }, 60000);
+      }, 1000);
     }
-  }, [reloader]);
-
+  }, []);
+  console.log('all component refreshed');
   return (
     <View style={styles.container}>
       <Text style={styles.taskTitle}>{task.item.content}</Text>

@@ -1,25 +1,22 @@
 import React from 'react';
-import {Text, View, StyleSheet, StatusBar} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Icon} from '@rneui/base';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import SettingIcon from '../setting/SettingIcon';
 
-const HomesLayout = ({children, title, footer, rightProps, targetScreen}) => {
+const HomesLayout = ({children, title, footer, rightProps}) => {
+  console.log(rightProps);
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity style={styles.headerLeft}>
-            <Icon name="moon" type="entypo" size={28} />
-          </TouchableOpacity>
           <View style={styles.titleContainer}>
-            <Text>{title}</Text>
+            <Text style={{fontSize: 20, fontWeight: 'bold', color: '#ffffff'}}>
+              {title}
+            </Text>
           </View>
-          <TouchableOpacity
-            style={styles.headerRight}
-            onPress={() => rightProps.navigation.navigate(targetScreen)}>
-            <Icon name="cog" type="entypo" size={28} />
-          </TouchableOpacity>
+          <SettingIcon props={rightProps} />
         </View>
         <View style={styles.body}>
           <View style={{height: '100%'}}>{children}</View>
@@ -32,16 +29,19 @@ const HomesLayout = ({children, title, footer, rightProps, targetScreen}) => {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'space-between',
+    backgroundColor: '#2F5B7D',
+    // backgroundColor: '#1A212D',
   },
   header: {
     height: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    borderTopWidth: 5,
+    borderTopColor: '#4e97ce',
   },
   headerLeft: {
     marginLeft: '10%',
-    // marginRight: '10%',
   },
   headerRight: {
     marginRight: '20%',
@@ -49,6 +49,12 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     marginLeft: '10%',
+    backgroundColor: '#4e97ce',
+    height: '100%',
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+    borderBottomEndRadius: 8,
+    borderBottomStartRadius: 8,
   },
   body: {
     flexShrink: 2,

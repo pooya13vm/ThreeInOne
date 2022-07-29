@@ -28,8 +28,7 @@ const NoteHomeScreen = props => {
     <HomesLayout
       title="MY NOTES"
       footer={<AddBtn navigation={props.navigation} color="green" />}
-      rightProps={props}
-      targetScreen="SETTING">
+      rightProps={props}>
       <DropdownComponent
         placeholder="Select Category"
         categoryList={categoryList}

@@ -61,7 +61,6 @@ export const TodoProvider = ({children}) => {
       info: getInfo,
       hasDoneStatus: false,
     };
-
     let todoList = [task, ...getTodoList];
     setTodoList(todoList);
     setSortList(todoList);
@@ -184,37 +183,47 @@ export const TodoProvider = ({children}) => {
         break;
     }
   };
-  return (
-    <TodoContext.Provider
-      value={{
-        getTodoList,
-        getTask,
-        setTask,
-        checkStorage,
-        setImportance,
-        setDeadline,
-        getDeadline,
-        saveTask,
-        setInfo,
-        setTodoList,
-        setEditingTask,
-        editingTaskTitle,
-        setEditingTaskTitle,
-        editingImportance,
-        setEditingImportance,
-        editingInfo,
-        setEditingInfo,
-        editingDeadline,
-        setEditingDeadline,
-        updateListAfterEdit,
-        reloader,
-        setReloader,
-        sortManager,
-        sortList,
-        saveToStorage,
-        setSortList,
-      }}>
-      {children}
-    </TodoContext.Provider>
+
+  const ctx = React.useMemo(
+    () => ({
+      getTodoList,
+      getTask,
+      setTask,
+      checkStorage,
+      setImportance,
+      setDeadline,
+      getDeadline,
+      saveTask,
+      setInfo,
+      setTodoList,
+      setEditingTask,
+      editingTaskTitle,
+      setEditingTaskTitle,
+      editingImportance,
+      setEditingImportance,
+      editingInfo,
+      setEditingInfo,
+      editingDeadline,
+      setEditingDeadline,
+      updateListAfterEdit,
+      reloader,
+      setReloader,
+      sortManager,
+      sortList,
+      saveToStorage,
+      setSortList,
+    }),
+    [
+      getTodoList,
+      getTask,
+      getDeadline,
+      editingTaskTitle,
+      editingImportance,
+      editingInfo,
+      editingDeadline,
+      reloader,
+      sortList,
+    ],
   );
+  return <TodoContext.Provider value={ctx}>{children}</TodoContext.Provider>;
 };

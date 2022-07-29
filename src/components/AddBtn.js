@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Icon} from '@rneui/base';
+import {Button} from '@rneui/base';
 
 const AddBtn = ({navigation, color}) => {
   return (

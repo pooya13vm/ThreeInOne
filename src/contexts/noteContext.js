@@ -1,5 +1,4 @@
-import React from 'react';
-import {createContext, useState} from 'react';
+import React, {createContext, useState} from 'react';
 import uuid from 'react-native-uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {dateStringMaker} from '../utility/dateHandler';
@@ -20,9 +19,6 @@ export const NoteProvider = ({children}) => {
     {label: 'Poem', value: 'poem', id: 2},
     {label: 'Article', value: 'article', id: 3},
   ]);
-
-  let date = new Date();
-  let now = dateStringMaker(date);
 
   /// storage handler ///
 
@@ -54,6 +50,8 @@ export const NoteProvider = ({children}) => {
   // Add Note //
 
   const saveNote = async ({navigation}) => {
+    let date = new Date();
+    let now = dateStringMaker(date);
     const note = {
       _id: uuid.v4(),
       title: getTitle,
@@ -69,7 +67,7 @@ export const NoteProvider = ({children}) => {
     setTitle('');
     setContent('');
     setCategory('');
-    navigation.navigate('Home');
+    navigation.navigate('NoteHome');
   };
 
   //  Editing note  //
@@ -82,6 +80,8 @@ export const NoteProvider = ({children}) => {
   };
 
   const updateListAfterEdit = props => {
+    let date = new Date();
+    let now = dateStringMaker(date);
     let id = props.route.params.id;
     const note = {
       _id: id,
@@ -96,7 +96,7 @@ export const NoteProvider = ({children}) => {
     setNotes(noteList);
     setFilteredList(noteList);
     saveToStorage(noteList);
-    props.navigation.navigate('Home');
+    props.navigation.navigate('NoteHome');
   };
 
   /// deleting note
@@ -153,36 +153,43 @@ export const NoteProvider = ({children}) => {
     saveToStorageCategory(filteredList);
   };
 
-  return (
-    <NoteContext.Provider
-      value={{
-        notes,
-        setNotes,
-        getTitle,
-        setTitle,
-        getContent,
-        setContent,
-        saveNote,
-        checkStorage,
-        findEditNote,
-        updateListAfterEdit,
-        EditingTitleValue,
-        setEditingTitleValue,
-        EditingContentValue,
-        setEditingContentValue,
-        EditingCategoryValue,
-        setEditingCategoryValue,
-        deleteHandler,
-        categoryList,
-        getCategory,
-        setCategory,
-        filteredCategory,
-        filteredList,
-        checkStorageCategory,
-        addToCategory,
-        deleteCategory,
-      }}>
-      {children}
-    </NoteContext.Provider>
+  const ctx = React.useMemo(
+    () => ({
+      getTitle,
+      setTitle,
+      getContent,
+      setContent,
+      saveNote,
+      checkStorage,
+      findEditNote,
+      updateListAfterEdit,
+      EditingTitleValue,
+      setEditingTitleValue,
+      EditingContentValue,
+      setEditingContentValue,
+      EditingCategoryValue,
+      setEditingCategoryValue,
+      deleteHandler,
+      categoryList,
+      getCategory,
+      setCategory,
+      filteredCategory,
+      filteredList,
+      checkStorageCategory,
+      addToCategory,
+      deleteCategory,
+    }),
+    [
+      getTitle,
+      getContent,
+      EditingTitleValue,
+      EditingContentValue,
+      EditingCategoryValue,
+      categoryList,
+      getCategory,
+      filteredList,
+    ],
   );
+
+  return <NoteContext.Provider value={ctx}>{children}</NoteContext.Provider>;
 };

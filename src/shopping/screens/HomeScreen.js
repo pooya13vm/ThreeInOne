@@ -77,7 +77,6 @@ const ShoppingHomeScreen = props => {
         <FlatList
           data={listOfLists}
           keyExtractor={list => list._id}
-          //in renderItem the note param return an object that the ".item" include the param
           renderItem={list => {
             return <ShoppingContent list={list} props={props} />;
           }}

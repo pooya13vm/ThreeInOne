@@ -46,7 +46,6 @@ const ColorsGuide = () => {
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
-          // marginBottom: 10,
         }}>
         <View style={{flexDirection: 'row'}}>
           <View

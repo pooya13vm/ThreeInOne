@@ -13,25 +13,21 @@ const ItemContent = ({shopItem, parentIndex}) => {
 
   const tickEvent = () => {
     let check = !targetItem[0].itemBuy;
+    const copyList = [...list];
+    const allListsCopy = [...listOfLists];
     if (check) {
       targetItem[0].itemBuy = true;
-      const copyList = [...list];
       const newList = copyList.filter(item => item.id !== id);
       newList.push(targetItem[0]);
-      const allListsCopy = [...listOfLists];
       allListsCopy[parentIndex].listArray = newList;
       setListOfLists(allListsCopy);
       saveToStorage(allListsCopy);
-      console.log(listOfLists);
     } else {
       targetItem[0].itemBuy = false;
-      const copyList = [...list];
       copyList[indexOfTarget] = targetItem[0];
-      const allListsCopy = [...listOfLists];
       allListsCopy[parentIndex].listArray = copyList;
       setListOfLists(allListsCopy);
       saveToStorage(allListsCopy);
-      console.log(listOfLists);
     }
   };
 
@@ -44,13 +40,16 @@ const ItemContent = ({shopItem, parentIndex}) => {
     saveToStorage(allListsCopy);
   };
 
+  //#75e1a4
+  //#ff84d6
   return (
     <View
       style={{
         margin: 10,
         padding: 10,
         borderRadius: 5,
-        borderWidth: 1,
+        // borderWidth: 1,
+        borderBottomWidth: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
       }}>
