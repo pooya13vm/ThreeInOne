@@ -1,6 +1,68 @@
 import React from 'react';
-import {Text, View, StyleSheet, StatusBar, Platform} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {Text, StyleSheet} from 'react-native';
 import {Button} from '@rneui/base';
+import styled from 'styled-components';
+
+const Container = styled.View`
+  background-color: #ffffff;
+  position: relative;
+  height: 100%;
+`;
+const Header = styled.View`
+  border-top-color: ${props => props.color};
+  height: 50px;
+  flex-direction: row;
+  justify-content: center;
+  border-top-width: 5px;
+  padding: 0;
+  position: relative;
+`;
+const TitleContainer = styled.View`
+  background-color: ${props => props.color};
+  height: 100%;
+  padding-horizontal: 20px;
+  margin: 0;
+  justify-content: center;
+  border-bottom-end-radius: 8px;
+  border-bottom-start-radius: 8px;
+`;
+const Title = styled.Text`
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+`;
+const Body = styled.View`
+  padding-horizontal: 15px;
+  flex-shrink: 1;
+  height: 80%;
+`;
+const ButtonsContainer = styled.View`
+  height: 50px;
+  position: absolute;
+  bottom: 0;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  align-content: center;
+`;
+
+const ButtonText = styled.Text`
+  font-size: 16px;
+  font-weight: bold;
+  color: ${props => props.color};
+`;
+const RightBtnContainer = styled.View`
+  position: absolute;
+  right: 20px;
+  top: 10px;
+`;
+const LeftBtnContainer = styled.View`
+  position: absolute;
+  left: 14px;
+  top: 10px;
+`;
 
 const ScreensLayout = ({
   children,
@@ -9,107 +71,57 @@ const ScreensLayout = ({
   title,
   props,
   onPressFun,
+  colors,
   shopping = false,
 }) => {
   return (
-    <View>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.headerLeft}>
+    <SafeAreaView style={{backgroundColor: '#ffffff'}}>
+      <Container style={styles.container}>
+        <Header color={colors.main}>
+          <LeftBtnContainer>
             <Text>{left}</Text>
-          </View>
-          <View style={styles.titleContainer}>
-            <Text style={{fontSize: 20, fontWeight: 'bold', color: '#ffffff'}}>
-              {title}
-            </Text>
-          </View>
-          <View style={styles.headerRight}>
-            <Text>{right}</Text>
-          </View>
-        </View>
-        <View style={styles.body}>
-          <View style={{height: '100%'}}>{children}</View>
-        </View>
+          </LeftBtnContainer>
+          <TitleContainer color={colors.main}>
+            <Title>{title}</Title>
+          </TitleContainer>
+          <RightBtnContainer>{right}</RightBtnContainer>
+        </Header>
+        <Body>{children}</Body>
         {!shopping && (
-          <View style={styles.footer}>
-            <View style={styles.Buttons}>
-              <Button
-                onPress={() => props.navigation.navigate('Home')}
-                buttonStyle={{
-                  height: '100%',
-                  backgroundColor: 'rgba(214, 61, 57, 1)',
-                }}
-                containerStyle={{width: '50%'}}>
-                <Text>Cancel</Text>
-              </Button>
-              <Button
-                onPress={() => onPressFun(props)}
-                title="Save note"
-                buttonStyle={{
-                  height: '100%',
-                  backgroundColor: 'rgba(127, 220, 103, 1)',
-                }}
-                containerStyle={{
-                  width: '50%',
-                }}
-                titleStyle={{fontWeight: 'bold', fontSize: 32, color: 'white'}}>
-                <Text>Save</Text>
-              </Button>
-            </View>
-          </View>
+          <ButtonsContainer>
+            <Button
+              onPress={() => props.navigation.goBack()}
+              buttonStyle={{
+                height: '100%',
+                width: '77%',
+                alignSelf: 'center',
+                backgroundColor: 'transparent',
+                borderWidth: 1,
+                borderRadius: 5,
+              }}>
+              <ButtonText color={colors.textColor}>Cancel</ButtonText>
+            </Button>
+            <Button
+              onPress={() => onPressFun(props)}
+              buttonStyle={{
+                height: '100%',
+                alignSelf: 'center',
+                width: '80%',
+                backgroundColor: 'transparent',
+                borderWidth: 1,
+                borderRadius: 5,
+              }}>
+              <ButtonText color={colors.textColor}>Save</ButtonText>
+            </Button>
+          </ButtonsContainer>
         )}
-      </View>
-    </View>
+      </Container>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
-  container: {
-    marginTop: Platform.OS == 'android' ? StatusBar.currentHeight : 40,
-    justifyContent: 'space-between',
-    backgroundColor: '#ffffff',
-    alignItems: 'center',
-    height: '95%',
-  },
-  header: {
-    flex: 1,
-    maxHeight: 50,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    borderTopWidth: 5,
-    borderTopColor: '#4e97ce',
-  },
-  titleContainer: {
-    backgroundColor: '#4e97ce',
-    height: '100%',
-    paddingHorizontal: 10,
-    justifyContent: 'center',
-    borderBottomEndRadius: 8,
-    borderBottomStartRadius: 8,
-  },
   headerLeft: {
     marginLeft: '10%',
-  },
-  headerRight: {
-    marginRight: '10%',
-    alignItems: 'flex-end',
-  },
-  body: {
-    flex: 1,
-    paddingHorizontal: 15,
-    width: '100%',
-  },
-  footer: {
-    flex: 1,
-    maxHeight: 50,
-    width: '100%',
-  },
-  Buttons: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '100%',
-    height: '100%',
   },
 });
 export default ScreensLayout;

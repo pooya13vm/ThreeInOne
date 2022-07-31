@@ -17,12 +17,12 @@ function NoteNavigator(props) {
           headerShown: false,
         }}>
         <Stack.Screen name="NoteHome" component={NoteHomeScreen} />
-        <Stack.Screen name="ADD" component={AddScreen} />
         <Stack.Screen
-          name="EDIT"
-          component={EditScreen}
+          name="ADD"
+          component={AddScreen}
           options={{animation: 'slide_from_bottom', orientation: 'portrait_up'}}
         />
+        <Stack.Screen name="EDIT" component={EditScreen} />
         <Stack.Screen
           name="NoteSettingScreen"
           component={NoteSettingScreen}

@@ -1,27 +1,33 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
+import styled from 'styled-components';
 
-const DropdownComponent = ({placeholder, categoryList, setDDvalue}) => {
+const Container = styled.View`
+  padding-vertical: 20px;
+  padding-horizontal: 30px;
+`;
+
+const DropdownComponent = ({placeholder, categoryList, setDDvalue, colors}) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
+  const [color, setColor] = useState('red');
 
-  const renderLabel = () => {
-    if (value || isFocus) {
-      return <Text style={[styles.label, isFocus && {color: 'blue'}]}></Text>;
-    }
-    return null;
-  };
+  useEffect(() => {
+    setColor(colors);
+  }, []);
+
   return (
-    <View style={styles.container}>
-      {renderLabel()}
+    <Container>
       <Dropdown
-        style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+        style={styles.dropdown}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
-        inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
+        showsVerticalScrollIndicator={true}
+        containerStyle={{borderRadius: 8}}
         data={categoryList}
+        activeColor={color.main}
         maxHeight={300}
         labelField="label"
         valueField="value"
@@ -35,41 +41,27 @@ const DropdownComponent = ({placeholder, categoryList, setDDvalue}) => {
           setIsFocus(false);
         }}
       />
-    </View>
+    </Container>
   );
 };
 
 export default DropdownComponent;
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-  },
   dropdown: {
     height: 50,
     borderBottomWidth: 1,
-    borderBottomColor: '#4e97ce',
-    borderRadius: 8,
     paddingHorizontal: 8,
     backgroundColor: 'transparent',
-  },
-  icon: {
-    marginRight: 5,
-  },
-  label: {
-    position: 'absolute',
-    borderRadius: 12,
-    left: 22,
-    top: 8,
-    zIndex: 999,
-    paddingHorizontal: 8,
-    fontSize: 14,
+    borderBottomColor: 'gray',
   },
   placeholderStyle: {
     fontSize: 16,
+    color: 'gray',
   },
   selectedTextStyle: {
     fontSize: 16,
+    color: 'gray',
   },
   iconStyle: {
     width: 20,

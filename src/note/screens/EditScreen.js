@@ -1,13 +1,44 @@
-import React from 'react';
-import {useContext} from 'react';
-import {Input} from '@rneui/base';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import React, {useContext} from 'react';
+import {Icon, Input} from '@rneui/base';
 import ScreensLayout from '../../components/ScreensLayout';
 import {NoteContext} from '../../contexts/noteContext';
 import DropdownComponent from '../../components/DropDown';
+import styled from 'styled-components';
+import {TouchableOpacity} from 'react-native';
+
+const InputContainer = styled.View`
+  margin-horizontal: 20px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  height: 45px;
+`;
+const DropDownContainer = styled.View`
+  height: 60px;
+  margin-bottom: 20px;
+  justify-content: center;
+`;
+const InputTitle = styled.Text`
+  font-size: 18px;
+  font-weight: bold;
+  color: #2f5b7d;
+  margin-left: 20px;
+`;
+const TextInput = styled.TextInput`
+  height: 70%;
+  text-align-vertical: top;
+  padding: 20px;
+  font-size: 18px;
+  margin-top: 5px;
+  border-radius: 3px;
+  margin-horizontal: 20px;
+  padding-top: 15px;
+  border-width: 1px;
+  border-color: #4e97ce;
+`;
 
 const EditScreen = props => {
   const {
+    deleteHandler,
     categoryList,
     updateListAfterEdit,
     EditingContentValue,
@@ -20,50 +51,57 @@ const EditScreen = props => {
 
   const category = [...categoryList];
   category.shift();
+  const colors = {main: '#4E97CE', textColor: '#2F5B7D', background: '#ffffff'};
+
+  const DeleteIcon = () => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          deleteHandler(props.route.params.id);
+          props.navigation.navigate('NoteHome');
+        }}>
+        <Icon name="trash" type="entypo" color={colors.textColor} />
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <ScreensLayout
       title="EDIT NOTE"
       props={props}
       onPressFun={updateListAfterEdit}
-      left="l"
-      right="r">
-      <View>
+      right={<DeleteIcon />}
+      colors={colors}>
+      <InputContainer>
+        <Input
+          label="Title"
+          value={EditingTitleValue}
+          onChangeText={val => setEditingTitleValue(val)}
+          inputContainerStyle={{borderBottomWidth: 0}}
+          containerStyle={{height: 40}}
+          style={{
+            fontWeight: 'bold',
+            height: 40,
+            borderWidth: 1,
+            paddingHorizontal: 10,
+            borderRadius: 5,
+            borderColor: '#4E97CE',
+          }}></Input>
+      </InputContainer>
+      <DropDownContainer>
         <DropdownComponent
           categoryList={category}
           placeholder={EditingCategoryValue}
           setDDvalue={setEditingCategoryValue}
+          colors={colors}
         />
-        <View>
-          <Input
-            label="Title"
-            value={EditingTitleValue}
-            onChangeText={val => setEditingTitleValue(val)}
-            style={{fontWeight: 'bold'}}></Input>
-        </View>
-        <View>
-          <Text style={{fontSize: 22, fontWeight: 'bold'}}>Note : </Text>
-          <TextInput
-            multiline
-            style={{
-              backgroundColor: '#FCFAED',
-              height: '85%',
-              textAlignVertical: 'top',
-              padding: 20,
-              fontSize: 18,
-              marginTop: 5,
-              borderRadius: 3,
-            }}
-            value={EditingContentValue}
-            onChangeText={val => setEditingContentValue(val)}></TextInput>
-        </View>
-      </View>
+      </DropDownContainer>
+      <InputTitle placeholder="Write here">Note : </InputTitle>
+      <TextInput
+        multiline
+        value={EditingContentValue}
+        onChangeText={val => setEditingContentValue(val)}></TextInput>
     </ScreensLayout>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 export default EditScreen;

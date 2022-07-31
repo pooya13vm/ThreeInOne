@@ -1,13 +1,21 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import styled from 'styled-components';
+
+const Container = styled.View`
+  flex: 1;
+  align-items: center;
+  margin-top: 50px;
+`;
+const Text = styled.Text`
+  color: gray;
+  font-weight: bold;
+`;
 
 const NoContent = () => {
   return (
-    <View style={{flex: 1, alignItems: 'center', marginTop: 50}}>
-      <Text style={{color: 'gray', fontWeight: 'bold'}}>
-        There is no item in the list.
-      </Text>
-    </View>
+    <Container>
+      <Text>There is no item in the list.</Text>
+    </Container>
   );
 };
 
