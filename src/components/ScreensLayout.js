@@ -98,6 +98,7 @@ const ScreensLayout = ({
                 backgroundColor: 'transparent',
                 borderWidth: 1,
                 borderRadius: 5,
+                borderColor: colors.main,
               }}>
               <ButtonText color={colors.textColor}>Cancel</ButtonText>
             </Button>
@@ -110,6 +111,7 @@ const ScreensLayout = ({
                 backgroundColor: 'transparent',
                 borderWidth: 1,
                 borderRadius: 5,
+                borderColor: colors.main,
               }}>
               <ButtonText color={colors.textColor}>Save</ButtonText>
             </Button>

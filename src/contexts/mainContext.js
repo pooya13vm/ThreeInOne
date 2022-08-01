@@ -4,7 +4,7 @@ export const MainContext = createContext({});
 
 export const MainProvider = ({children}) => {
   const [lightMode, setLightMode] = useState(true);
-  const [tabType, setTabType] = useState('NTS');
+  const [tabType, setTabType] = useState('TSN');
 
   return (
     <MainContext.Provider

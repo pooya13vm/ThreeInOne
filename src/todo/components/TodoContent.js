@@ -8,17 +8,18 @@ const TodoContent = ({task}) => {
   const deadlineStr = task.item.deadlineStr;
   const deadlineSec = task.item.deadlineSec;
   const now = new Date();
-  const colorMaker = () => {
+  const colors = {main: '#75e1a4', textColor: '#5C7065', background: '#ffffff'};
+  const statusText = () => {
     if (task.item.hasDoneStatus) {
-      return 'green';
+      return 'Has done';
     }
     if (!deadlineStr) {
-      return 'gray';
+      return 'No deadline';
     }
     if (deadlineSec < now.getTime()) {
-      return 'red';
+      return 'Deadline passed';
     } else {
-      return 'blue';
+      return 'Have time';
     }
   };
   useEffect(() => {
@@ -39,21 +40,16 @@ const TodoContent = ({task}) => {
       }, 1000);
     }
   }, []);
-  console.log('all component refreshed');
+
   return (
     <View style={styles.container}>
       <Text style={styles.taskTitle}>{task.item.content}</Text>
       <Text style={styles.importanceTxt}>{task.item.importance}</Text>
+      <Text style={{width: '30%', fontSize: 12, color: '#62BD89'}}>
+        {statusText()}
+      </Text>
       <View style={{flexDirection: 'row'}}>
-        <View
-          style={{
-            width: 20,
-            height: 20,
-            backgroundColor: colorMaker(),
-            borderRadius: 15,
-            alignSelf: 'center',
-          }}></View>
-        <Icon name="chevron-small-right" type="entypo" color="gray" />
+        <Icon name="chevron-small-right" type="entypo" color="#5C7065" />
       </View>
     </View>
   );
@@ -64,20 +60,25 @@ export default TodoContent;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderBottomColor: '#75e1a4',
     margin: 10,
     padding: 10,
     borderRadius: 5,
-    borderWidth: 1,
     borderColor: 'tomato',
-    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   taskTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
+    width: '30%',
+    color: '#62BD89',
   },
   importanceTxt: {
     color: 'gray',
     margin: 5,
+    width: '30%',
+    color: '#62BD89',
+    fontSize: 12,
   },
 });

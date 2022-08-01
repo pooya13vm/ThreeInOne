@@ -4,7 +4,7 @@ import SettingIcon from '../setting/SettingIcon';
 import styled from 'styled-components';
 
 const Container = styled.View`
-  background-color: ${props => props.background};
+  background-color: ${props => props.color};
 `;
 const Header = styled.View`
   border-top-color: ${props => props.color};

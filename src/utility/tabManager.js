@@ -20,7 +20,7 @@ export const tabManager = type => {
         {
           name: 'To do',
           component: TodoNavigator,
-          color: 'blue',
+          color: '#75e1a4',
           iconName: 'list',
         },
       ];
@@ -36,7 +36,7 @@ export const tabManager = type => {
         {
           name: 'To do',
           component: TodoNavigator,
-          color: 'blue',
+          color: '#75e1a4',
           iconName: 'list',
         },
         {
@@ -52,7 +52,7 @@ export const tabManager = type => {
         {
           name: 'To do',
           component: TodoNavigator,
-          color: 'blue',
+          color: '#75e1a4',
           iconName: 'list',
         },
         {
@@ -74,7 +74,7 @@ export const tabManager = type => {
         {
           name: 'To do',
           component: TodoNavigator,
-          color: 'blue',
+          color: '#75e1a4',
           iconName: 'list',
         },
         {
@@ -108,7 +108,7 @@ export const tabManager = type => {
         {
           name: 'To do',
           component: TodoNavigator,
-          color: 'blue',
+          color: '#75e1a4',
           iconName: 'list',
         },
       ];
@@ -124,7 +124,7 @@ export const tabManager = type => {
         {
           name: 'To do',
           component: TodoNavigator,
-          color: 'blue',
+          color: '#75e1a4',
           iconName: 'list',
         },
         {

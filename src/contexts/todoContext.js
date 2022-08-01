@@ -49,7 +49,6 @@ export const TodoProvider = ({children}) => {
 
   const saveTask = (selectedTime, props) => {
     let now = new Date();
-
     let task = {
       _id: uuid.v4(),
       content: getTask,
@@ -217,6 +216,8 @@ export const TodoProvider = ({children}) => {
       getTodoList,
       getTask,
       getDeadline,
+      getInfo,
+      getImportance,
       editingTaskTitle,
       editingImportance,
       editingInfo,

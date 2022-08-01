@@ -77,7 +77,6 @@ const AddScreen = props => {
           placeholder="Select Category"
           categoryList={category}
           setDDvalue={setCategory}
-          colors={colors}
         />
       </DropDownContainer>
 

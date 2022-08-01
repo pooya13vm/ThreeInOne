@@ -8,14 +8,9 @@ const Container = styled.View`
   padding-horizontal: 30px;
 `;
 
-const DropdownComponent = ({placeholder, categoryList, setDDvalue, colors}) => {
+const DropdownComponent = ({placeholder, categoryList, setDDvalue}) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
-  const [color, setColor] = useState('red');
-
-  useEffect(() => {
-    setColor(colors);
-  }, []);
 
   return (
     <Container>
@@ -27,7 +22,6 @@ const DropdownComponent = ({placeholder, categoryList, setDDvalue, colors}) => {
         showsVerticalScrollIndicator={true}
         containerStyle={{borderRadius: 8}}
         data={categoryList}
-        activeColor={color.main}
         maxHeight={300}
         labelField="label"
         valueField="value"

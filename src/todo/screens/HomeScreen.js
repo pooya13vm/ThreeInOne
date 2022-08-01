@@ -1,12 +1,39 @@
 import React, {useEffect, useContext} from 'react';
-import {View, TouchableOpacity, StyleSheet, FlatList} from 'react-native';
+import {View, TouchableOpacity, FlatList} from 'react-native';
 import HomesLayout from '../../components/HomesLayout';
 import AddBtn from '../../components/AddBtn';
 import DropdownComponent from '../../components/DropDown';
 import {TodoContext} from '../../contexts/todoContext';
 import NoContent from '../../components/NoContent';
 import TodoContent from '../components/TodoContent';
-import ColorsGuide from '../components/colorsGuide';
+import styled from 'styled-components';
+
+const TitleContainer = styled.View`
+  flex-direction: row;
+  margin-horizontal: 14px;
+  margin-top: 10px;
+  padding-left: 5px;
+  border-bottom-width: 2px;
+  border-bottom-color: ${props => props.color};
+  padding-vertical: 5px;
+`;
+const TitleText1 = styled.Text`
+  margin-right: 60px;
+  color: ${props => props.color};
+  font-size: 16px;
+  font-weight: bold;
+`;
+const TitleText2 = styled.Text`
+  margin-right: 50px;
+  color: ${props => props.color};
+  font-size: 16px;
+  font-weight: bold;
+`;
+const TitleText3 = styled.Text`
+  color: ${props => props.color};
+  font-size: 16px;
+  font-weight: bold;
+`;
 
 const TodoHomeScreen = props => {
   const {checkStorage, getTodoList, sortManager, sortList} =
@@ -26,23 +53,25 @@ const TodoHomeScreen = props => {
     {label: 'Not Done tasks', value: 'notDone', id: 5},
   ];
 
+  // #766AC8
+  const colors = {main: '#75e1a4', textColor: '#5C7065', background: '#ffffff'};
+
   return (
     <HomesLayout
       title="MY TO DO LIST"
       footer={<AddBtn navigation={props.navigation} color="blue" />}
       rightProps={props}
-      targetScreen="SETTING"
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+      color={colors}>
       <DropdownComponent
         placeholder="Sort and filter"
         categoryList={sortItems}
         setDDvalue={sortManager}
       />
-      <ColorsGuide />
+      <TitleContainer color={colors.main}>
+        <TitleText1 color={colors.textColor}>Title</TitleText1>
+        <TitleText2 color={colors.textColor}>Importance</TitleText2>
+        <TitleText3 color={colors.textColor}>Status</TitleText3>
+      </TitleContainer>
       {getTodoList.length == 0 ? (
         <NoContent />
       ) : (
@@ -52,7 +81,6 @@ const TodoHomeScreen = props => {
           renderItem={task => (
             <View>
               <TouchableOpacity
-                style={styles.content}
                 onPress={() => {
                   props.navigation.navigate('INFO', {id: task.item._id});
                 }}>
@@ -67,19 +95,3 @@ const TodoHomeScreen = props => {
 };
 
 export default TodoHomeScreen;
-
-const styles = StyleSheet.create({
-  content: {
-    flex: 2,
-  },
-  delete: {
-    justifyContent: 'center',
-    padding: 4,
-    backgroundColor: 'red',
-    borderRadius: 50,
-    height: 80,
-    marginTop: 10,
-  },
-});
-{
-}
