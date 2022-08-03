@@ -1,6 +1,7 @@
 import React, {useContext, useState} from 'react';
-import {View, FlatList} from 'react-native';
+import {FlatList, TouchableOpacity, View, Text} from 'react-native';
 import {Input, Button} from '@rneui/themed';
+import {Icon} from '@rneui/themed';
 import uuid from 'react-native-uuid';
 import {ShoppingContext} from '../../contexts/shoppingContext';
 import ScreensLayout from '../../components/ScreensLayout';
@@ -8,12 +9,30 @@ import AddBtn from '../components/AddBtn';
 import Overlay from '../../components/Overlay';
 import NoContent from '../../components/NoContent';
 import ItemContent from '../components/ItemContent';
+import styled from 'styled-components';
 
-const ShopList = ({route}) => {
-  const {listOfLists, setListOfLists, saveToStorage} =
+const ButtonContainer = styled.View`
+  width: 45px;
+  position: absolute;
+  align-self: flex-end;
+  bottom: 0;
+  right: 25px;
+  z-index: 100;
+`;
+const ModalBtnContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 30px;
+  margin-horizontal: 15px;
+`;
+
+const ShopList = ({route, navigation}) => {
+  const {listOfLists, setListOfLists, saveToStorage, deleteList} =
     useContext(ShoppingContext);
 
   const [visible, setVisible] = useState(false);
+
+  const colors = {main: '#FF84D6', textColor: '#705C69', background: '#ffffff'};
 
   const id = route.params.id;
   const targetItem = listOfLists.filter(item => item._id == id);
@@ -31,40 +50,68 @@ const ShopList = ({route}) => {
   const MyModal = () => {
     return (
       <Overlay visibility={visible} setVisibility={setVisible}>
-        <View>
-          <Input
-            label="Item:"
-            placeholder="Example :Egg "
-            onChangeText={val => saveName(val)}
+        <Input
+          label="Item:"
+          placeholder="Example :Egg "
+          onChangeText={val => saveName(val)}
+        />
+        <Input
+          label="More info:"
+          placeholder="Example :Brand of item"
+          onChangeText={val => saveInfo(val)}
+        />
+        <ModalBtnContainer>
+          <Button
+            type="outline"
+            buttonStyle={{
+              width: '80%',
+              backgroundColor: 'transparent',
+              borderColor: '#FF84D6',
+              borderWidth: 1,
+            }}
+            title="Cancel"
+            titleStyle={{
+              color: '#705C69',
+              fontSize: 18,
+              fontWeight: 'bold',
+            }}
+            onPress={() => setVisible(false)}
           />
-          <Input
-            label="More info:"
-            placeholder="Example :Brand of item"
-            onChangeText={val => saveInfo(val)}
+          <Button
+            type="outline"
+            buttonStyle={{
+              width: '80%',
+              backgroundColor: 'transparent',
+              borderColor: '#FF84D6',
+              borderWidth: 1,
+            }}
+            title="Save"
+            titleStyle={{color: '#705C69', fontSize: 18, fontWeight: 'bold'}}
+            onPress={() => {
+              saveItemToList();
+              setVisible(false);
+            }}
           />
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: 30,
-              marginHorizontal: 30,
-            }}>
-            <Button
-              buttonStyle={{backgroundColor: 'red', width: '80%'}}
-              onPress={() => setVisible(false)}>
-              Cancel
-            </Button>
-            <Button
-              buttonStyle={{backgroundColor: 'green', width: '80%'}}
-              onPress={() => {
-                saveItemToList();
-                setVisible(false);
-              }}>
-              Save
-            </Button>
-          </View>
-        </View>
+        </ModalBtnContainer>
       </Overlay>
+    );
+  };
+  const DeleteIcon = () => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          deleteList(targetItem[0]._id);
+          navigation.goBack();
+        }}>
+        <Icon name="trash" type="entypo" color={colors.textColor} />
+      </TouchableOpacity>
+    );
+  };
+  const BackIcon = () => {
+    return (
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Icon name="arrow-left" type="entypo" color={colors.textColor} />
+      </TouchableOpacity>
     );
   };
 
@@ -84,41 +131,30 @@ const ShopList = ({route}) => {
   return (
     <ScreensLayout
       title={targetItem[0].name}
-      left="l"
-      right="r"
-      shopping={true}>
-      <View style={{position: 'relative', flex: 1}}>
-        {targetItem.listArray == 0 ? (
-          <NoContent />
-        ) : (
-          <FlatList
-            data={targetItem[0].listArray}
-            keyExtractor={list => list.id}
-            renderItem={item => {
-              return (
-                <>
-                  <ItemContent
-                    shopItem={item.item}
-                    parentIndex={indexOfTarget}
-                  />
-                </>
-              );
-            }}
-          />
-        )}
+      colors={colors}
+      shopping={true}
+      right={<DeleteIcon />}
+      left={<BackIcon />}>
+      {targetItem[0].listArray.length == 0 ? (
+        <NoContent />
+      ) : (
+        <FlatList
+          style={{marginTop: 10}}
+          data={targetItem[0].listArray}
+          keyExtractor={list => list.id}
+          renderItem={item => {
+            return (
+              <>
+                <ItemContent shopItem={item.item} parentIndex={indexOfTarget} />
+              </>
+            );
+          }}
+        />
+      )}
 
-        <View
-          style={{
-            width: 45,
-            position: 'absolute',
-            alignSelf: 'flex-end',
-            bottom: 30,
-            right: 10,
-            zIndex: 100,
-          }}>
-          <AddBtn setVisibility={setVisible} />
-        </View>
-      </View>
+      <ButtonContainer>
+        <AddBtn setVisibility={setVisible} />
+      </ButtonContainer>
       <MyModal />
     </ScreensLayout>
   );

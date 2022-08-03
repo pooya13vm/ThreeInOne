@@ -14,7 +14,7 @@ export const tabManager = type => {
         {
           name: 'Shopping',
           component: ShoppingNavigator,
-          color: 'red',
+          color: '#FF84D6',
           iconName: 'shopping-cart',
         },
         {
@@ -42,7 +42,7 @@ export const tabManager = type => {
         {
           name: 'Shopping',
           component: ShoppingNavigator,
-          color: 'red',
+          color: '#FF84D6',
           iconName: 'shopping-cart',
         },
       ];
@@ -58,7 +58,7 @@ export const tabManager = type => {
         {
           name: 'Shopping',
           component: ShoppingNavigator,
-          color: 'red',
+          color: '#FF84D6',
           iconName: 'shopping-cart',
         },
         {
@@ -86,7 +86,7 @@ export const tabManager = type => {
         {
           name: 'Shopping',
           component: ShoppingNavigator,
-          color: 'red',
+          color: '#FF84D6',
           iconName: 'shopping-cart',
         },
       ];
@@ -96,7 +96,7 @@ export const tabManager = type => {
         {
           name: 'Shopping',
           component: ShoppingNavigator,
-          color: 'red',
+          color: '#FF84D6',
           iconName: 'shopping-cart',
         },
         {
@@ -118,7 +118,7 @@ export const tabManager = type => {
         {
           name: 'Shopping',
           component: ShoppingNavigator,
-          color: 'red',
+          color: '#FF84D6',
           iconName: 'shopping-cart',
         },
         {

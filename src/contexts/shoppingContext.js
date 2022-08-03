@@ -38,7 +38,6 @@ export const ShoppingProvider = ({children}) => {
       console.log(error);
     }
   };
-
   const saveList = (name, place) => {
     let list = {
       _id: uuid.v4(),

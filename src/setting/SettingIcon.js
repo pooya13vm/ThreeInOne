@@ -2,15 +2,55 @@ import React, {useState} from 'react';
 import {Icon} from '@rneui/themed';
 import {
   TouchableOpacity,
-  View,
   Text,
-  StyleSheet,
   Modal,
   TouchableWithoutFeedback,
-  ScrollView,
   Switch,
 } from 'react-native';
-import ColorsGuide from '../todo/components/colorsGuide';
+import styled from 'styled-components';
+
+const ModalCenter = styled.TouchableOpacity`
+  flex: 1;
+  align-items: flex-end;
+  width: 100%;
+`;
+
+const ModalContainer = styled.ScrollView`
+  width: 60%;
+`;
+const ModalView = styled.View`
+  width: 90%;
+  right: 10px;
+  left: 10px;
+  margin-top: 40%;
+  background-color: white;
+  border-radius: 5px;
+  padding: 15px;
+  background-color: #e6e6e6;
+  shadow-color: #000;
+  box-shadow: 5px 5px 2px;
+  shadow-opacity: 0.5;
+  shadow-radius: 4px;
+`;
+const MenuItem = styled.TouchableOpacity`
+  padding-right: 20px;
+  padding-vertical: 15px;
+  margin-vertical: 2px;
+  border-radius: 10px;
+  width: 100%;
+  color: #454545;
+  background-color: #ffffff;
+  padding-horizontal: 10px;
+`;
+const ThemeContainer = styled.View`
+  padding-vertical: 15px;
+`;
+const SwitchPartContainer = styled.View`
+  flex-direction: row;
+  margin-top: 12px;
+  justify-content: space-around;
+  align-items: center;
+`;
 
 const Setting = ({props}) => {
   const [visibility, setVisibility] = useState(false);
@@ -27,15 +67,11 @@ const Setting = ({props}) => {
           Alert.alert('Modal has been closed.');
           setVisibility(!visibility);
         }}>
-        <TouchableOpacity
-          style={styles.centeredView}
-          onPressOut={() => setVisibility(false)}
-          activeOpacity={1}>
-          <ScrollView directionalLockEnabled={true} style={styles.modal}>
+        <ModalCenter onPressOut={() => setVisibility(false)} activeOpacity={1}>
+          <ModalContainer directionalLockEnabled={true}>
             <TouchableWithoutFeedback>
-              <View style={styles.modalView}>
-                <TouchableOpacity
-                  style={styles.items}
+              <ModalView>
+                <MenuItem
                   onPress={() => {
                     setVisibility(false);
                     if (props.route.name == 'NoteHome') {
@@ -46,9 +82,8 @@ const Setting = ({props}) => {
                     }
                   }}>
                   <Text>General Setting</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.items}
+                </MenuItem>
+                <MenuItem
                   onPress={() => {
                     setVisibility(false);
                     if (props.route.name == 'NoteHome') {
@@ -59,9 +94,8 @@ const Setting = ({props}) => {
                     }
                   }}>
                   <Text>Note List Setting</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.items}
+                </MenuItem>
+                <MenuItem
                   onPress={() => {
                     setVisibility(false);
                     if (props.route.name == 'ShoppingHome') {
@@ -74,16 +108,10 @@ const Setting = ({props}) => {
                     }
                   }}>
                   <Text>Shopping List Setting</Text>
-                </TouchableOpacity>
-                <View style={styles.theme}>
+                </MenuItem>
+                <ThemeContainer>
                   <Text>Theme:</Text>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      marginTop: 12,
-                      justifyContent: 'space-around',
-                      alignItems: 'center',
-                    }}>
+                  <SwitchPartContainer>
                     <Text>Dark</Text>
                     <Switch
                       trackColor={{false: '#767577', true: '#81b0ff'}}
@@ -93,12 +121,12 @@ const Setting = ({props}) => {
                       value={isLightMode}
                     />
                     <Text>Light</Text>
-                  </View>
-                </View>
-              </View>
+                  </SwitchPartContainer>
+                </ThemeContainer>
+              </ModalView>
             </TouchableWithoutFeedback>
-          </ScrollView>
-        </TouchableOpacity>
+          </ModalContainer>
+        </ModalCenter>
       </Modal>
     );
   };
@@ -114,39 +142,3 @@ const Setting = ({props}) => {
 };
 
 export default Setting;
-
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    alignItems: 'flex-end',
-    width: '100%',
-  },
-  modal: {width: '60%'},
-  modalView: {
-    width: '90%',
-    right: 10,
-    left: 10,
-    marginTop: '40%',
-    backgroundColor: 'white',
-    borderRadius: 5,
-    padding: 15,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-  },
-  items: {
-    paddingRight: 20,
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    width: '100%',
-    borderBottomColor: 'gray',
-  },
-  theme: {
-    paddingVertical: 15,
-    width: '100%',
-  },
-});

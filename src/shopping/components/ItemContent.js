@@ -2,6 +2,33 @@ import React, {useContext} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {CheckBox, Icon} from '@rneui/themed';
 import {ShoppingContext} from '../../contexts/shoppingContext';
+import styled from 'styled-components';
+
+const Container = styled.View`
+  margin: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  flex-direction: row;
+  align-items: center;
+  border-left-width: 5px;
+  border-left-color: ${props => props.color};
+`;
+const DeleteIcon = styled.View`
+  width: 30%;
+  align-items: flex-start;
+`;
+const TextContainer = styled.View`
+  width: 62%;
+`;
+const Title = styled.Text`
+  font-size: 16px;
+  font-weight: bold;
+  color: #705c69;
+`;
+const Info = styled.Text`
+  color: #ff84d6;
+  font-size: 14px;
+`;
 
 const ItemContent = ({shopItem, parentIndex}) => {
   const {setListOfLists, listOfLists, saveToStorage} =
@@ -10,6 +37,7 @@ const ItemContent = ({shopItem, parentIndex}) => {
   const id = shopItem.id;
   const targetItem = list.filter(item => item.id == id);
   const indexOfTarget = list.findIndex(item => item.id == id);
+  const colors = {main: '#FF84D6', textColor: '#705C69', background: '#ffffff'};
 
   const tickEvent = () => {
     let check = !targetItem[0].itemBuy;
@@ -40,43 +68,32 @@ const ItemContent = ({shopItem, parentIndex}) => {
     saveToStorage(allListsCopy);
   };
 
-  //#75e1a4
-  //#ff84d6
   return (
-    <View
-      style={{
-        margin: 10,
-        padding: 10,
-        borderRadius: 5,
-        // borderWidth: 1,
-        borderBottomWidth: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-      }}>
-      <View>
-        <Text>{shopItem.itemName}</Text>
-        <Text>{shopItem.itemInfo}</Text>
-      </View>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+    <Container color={colors.main}>
+      <DeleteIcon>
         <TouchableOpacity onPress={() => deleteItem()}>
-          <Icon name="trash" type="entypo" color="red" />
+          <Icon name="trash" type="entypo" color={colors.textColor} size={22} />
         </TouchableOpacity>
+      </DeleteIcon>
 
-        <CheckBox
-          checked={targetItem[0].itemBuy}
-          onPress={() => {
-            tickEvent();
-          }}
-          containerStyle={{
-            backgroundColor: 'transparent',
-            margin: 0,
-            marginTop: 5,
-            marginLeft: 40,
-            padding: 0,
-          }}
-        />
-      </View>
-    </View>
+      <TextContainer>
+        <Title>{shopItem.itemName}</Title>
+        <Info>{shopItem.itemInfo}</Info>
+      </TextContainer>
+      {/* <View style={{flexDirection: 'row', justifyContent: 'space-between'}}> */}
+      <CheckBox
+        checked={targetItem[0].itemBuy}
+        checkedColor="#FF84D6"
+        uncheckedColor="#FF84D6"
+        onPress={() => {
+          tickEvent();
+        }}
+        containerStyle={{
+          padding: 0,
+        }}
+      />
+      {/* </View> */}
+    </Container>
   );
 };
 

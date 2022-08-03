@@ -1,11 +1,10 @@
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Text, StyleSheet} from 'react-native';
 import {Button} from '@rneui/base';
 import styled from 'styled-components';
 
 const Container = styled.View`
-  background-color: #ffffff;
+  background-color: ${props => props.color};
   position: relative;
   height: 100%;
 `;
@@ -35,7 +34,7 @@ const Title = styled.Text`
 const Body = styled.View`
   padding-horizontal: 15px;
   flex-shrink: 1;
-  height: 80%;
+  height: ${props => props.height};
 `;
 const ButtonsContainer = styled.View`
   height: 50px;
@@ -60,7 +59,7 @@ const RightBtnContainer = styled.View`
 `;
 const LeftBtnContainer = styled.View`
   position: absolute;
-  left: 14px;
+  left: 20px;
   top: 10px;
 `;
 
@@ -76,17 +75,15 @@ const ScreensLayout = ({
 }) => {
   return (
     <SafeAreaView style={{backgroundColor: '#ffffff'}}>
-      <Container style={styles.container}>
+      <Container color={colors.backgroundColor}>
         <Header color={colors.main}>
-          <LeftBtnContainer>
-            <Text>{left}</Text>
-          </LeftBtnContainer>
+          <LeftBtnContainer>{left}</LeftBtnContainer>
           <TitleContainer color={colors.main}>
             <Title>{title}</Title>
           </TitleContainer>
           <RightBtnContainer>{right}</RightBtnContainer>
         </Header>
-        <Body>{children}</Body>
+        <Body height={shopping ? '100%' : '80%'}>{children}</Body>
         {!shopping && (
           <ButtonsContainer>
             <Button
@@ -121,9 +118,4 @@ const ScreensLayout = ({
     </SafeAreaView>
   );
 };
-const styles = StyleSheet.create({
-  headerLeft: {
-    marginLeft: '10%',
-  },
-});
 export default ScreensLayout;

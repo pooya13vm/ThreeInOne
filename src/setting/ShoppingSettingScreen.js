@@ -1,96 +1,143 @@
 import React, {useContext} from 'react';
-import {Text, StyleSheet, FlatList, View} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Title, TextInput, Button} from 'react-native-paper';
+import {FlatList, TouchableOpacity} from 'react-native';
+import {Icon, Button} from '@rneui/themed';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ShoppingContext} from '../contexts/shoppingContext';
+import styled from 'styled-components';
 
-const ShoppingSettingScreen = () => {
+const Container = styled.View`
+  justify-content: flex-start;
+  align-items: center;
+  margin: 15px;
+  padding: 20px;
+`;
+const Title = styled.Text`
+  font-weight: bold;
+  font-size: 22px;
+  color: ${props => props.color};
+  margin-top: 20px;
+`;
+const Definition = styled.Text`
+  margin-horizontal: 30px;
+  margin-vertical: 40px;
+  text-align: center;
+  color: ${props => props.color};
+`;
+const TextInput = styled.TextInput`
+  height: 50px;
+  width: 80%;
+  border-width: 1px;
+  border-radius: 5px;
+  padding-horizontal: 10px;
+  border-color: ${props => props.color};
+`;
+const ListContainer = styled.View`
+  margin-top: 30px;
+  width: 80%;
+  border-width: 1px;
+  border-color: ${props => props.color};
+  padding: 20px;
+  border-radius: 3px;
+  min-height: 40%;
+`;
+const TitleContainer = styled.View`
+  border-bottom-color: gray;
+  border-bottom-width: 1px;
+  width: 100%;
+`;
+const ListTitleText = styled.Text`
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: ${props => props.color};
+`;
+const ListItemContainer = styled.View`
+  margin-top: 8px;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+const ListItemText = styled.Text`
+  font-size: 16px;
+  color: ${props => props.color};
+`;
+const ListIconContainer = styled.TouchableOpacity`
+  background-color: ${props => props.color};
+  padding-horizontal: 8px;
+  padding-vertical: 5px;
+  border-radius: 25px;
+`;
+const ListIcon = styled.Text`
+  color: ${props => props.color};
+`;
+const BackBtnContainer = styled.View`
+  border-width: 1px;
+  margin-top: 20px;
+  border-radius: 30px;
+  padding: 10px;
+  border-color: ${props => props.color};
+`;
+
+const ShoppingSettingScreen = ({navigation}) => {
   const {storeName, setStoreName, storeList, addToList, deleteFromList} =
     useContext(ShoppingContext);
+  const colors = {main: '#FF84D6', textColor: '#705C69', background: '#ffffff'};
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Title style={{fontWeight: 'bold'}}>Category Setting</Title>
-      <Text style={styles.definition}>
-        Here you can define and manage the store places
-      </Text>
-      <TextInput
-        style={{height: 50, width: '90%'}}
-        mode="flat"
-        label="New Store"
-        selectionColor="gray"
-        activeOutlineColor="gray"
-        underlineColor="gary"
-        onChangeText={val => setStoreName(val)}
-        value={storeName}
-      />
-      <Button mode="contained" onPress={addToList} style={{marginTop: 20}}>
-        Add to store list
-      </Button>
-      <View style={styles.listContainer}>
-        <View
-          style={{
-            borderBottomColor: 'gray',
-            borderBottomWidth: 1,
-            width: '100%',
-          }}>
-          <Text style={{fontSize: 16}}>Store List</Text>
-        </View>
-
-        <FlatList
-          data={storeList}
-          keyExtractor={item => item.id}
-          renderItem={cat => (
-            <View style={styles.item}>
-              <Text style={{fontSize: 16, color: 'gray'}}>
-                {cat.item.label}
-              </Text>
-              <TouchableOpacity
-                onPress={() => deleteFromList(cat.item.id)}
-                style={{
-                  backgroundColor: 'gray',
-                  padding: 8,
-                  borderRadius: 25,
-                }}>
-                <Text>X</Text>
-              </TouchableOpacity>
-            </View>
-          )}
+    <SafeAreaView style={{flex: 1}}>
+      <Container>
+        <Title color={colors.textColor}>Category Setting</Title>
+        <Definition color={colors.main}>
+          Here you can define and manage the store places
+        </Definition>
+        <TextInput
+          color={colors.textColor}
+          placeholder="New Store"
+          selectionColor="gray"
+          activeOutlineColor="gray"
+          onChangeText={val => setStoreName(val)}
+          value={storeName}
         />
-      </View>
+        <Button
+          type="outline"
+          onPress={addToList}
+          style={{marginTop: 20}}
+          titleStyle={{fontSize: 18, fontWeight: 'bold', color: colors.main}}
+          buttonStyle={{borderWidth: 1, borderColor: colors.main}}>
+          Add to store list
+        </Button>
+        <ListContainer color={colors.main}>
+          <TitleContainer>
+            <ListTitleText color={colors.textColor}>Store List</ListTitleText>
+          </TitleContainer>
+          <FlatList
+            data={storeList}
+            keyExtractor={item => item.id}
+            renderItem={cat => (
+              <ListItemContainer>
+                <ListItemText color={colors.textColor}>
+                  {cat.item.label}
+                </ListItemText>
+                <ListIconContainer
+                  onPress={() => deleteFromList(cat.item.id)}
+                  color={colors.textColor}>
+                  <ListIcon color={colors.background}>X</ListIcon>
+                </ListIconContainer>
+              </ListItemContainer>
+            )}
+          />
+        </ListContainer>
+        <BackBtnContainer color={colors.textColor}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon
+              name="arrow-left"
+              type="entypo"
+              size={26}
+              color={colors.textColor}
+            />
+          </TouchableOpacity>
+        </BackBtnContainer>
+      </Container>
     </SafeAreaView>
   );
 };
 
 export default ShoppingSettingScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    margin: 15,
-    padding: 20,
-  },
-  definition: {
-    marginHorizontal: 30,
-    marginVertical: 40,
-    textAlign: 'center',
-    color: 'gray',
-  },
-  listContainer: {
-    marginTop: 30,
-    width: '80%',
-    borderWidth: 1,
-    borderColor: 'gray',
-    padding: 20,
-    borderRadius: 3,
-    minHeight: '40%',
-  },
-  item: {
-    marginTop: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-});

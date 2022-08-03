@@ -17,8 +17,9 @@ const Header = styled.View`
 const TitleContainer = styled.View`
   background-color: ${props => props.color};
   height: 100%;
-  padding-horizontal: 20px;
+  ${'' /* padding-horizontal: 20px; */}
   justify-content: center;
+  width: 60%;
   border-bottom-end-radius: 8px;
   border-bottom-start-radius: 8px;
   position: relative;
@@ -27,6 +28,7 @@ const Title = styled.Text`
   font-size: 20px;
   font-weight: bold;
   color: #ffffff;
+  align-self: center;
 `;
 const Body = styled.View`
   padding-horizontal: 15px;
