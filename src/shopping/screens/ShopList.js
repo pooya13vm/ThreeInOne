@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {FlatList, TouchableOpacity, View, Text} from 'react-native';
+import {FlatList, TouchableOpacity} from 'react-native';
 import {Input, Button} from '@rneui/themed';
 import {Icon} from '@rneui/themed';
 import uuid from 'react-native-uuid';
@@ -9,6 +9,7 @@ import AddBtn from '../components/AddBtn';
 import Overlay from '../../components/Overlay';
 import NoContent from '../../components/NoContent';
 import ItemContent from '../components/ItemContent';
+import DeleteModal from '../../components/DeleteModal';
 import styled from 'styled-components';
 
 const ButtonContainer = styled.View`
@@ -26,15 +27,16 @@ const ModalBtnContainer = styled.View`
   margin-horizontal: 15px;
 `;
 
-const ShopList = ({route, navigation}) => {
+const ShopList = props => {
   const {listOfLists, setListOfLists, saveToStorage, deleteList} =
     useContext(ShoppingContext);
 
   const [visible, setVisible] = useState(false);
+  const [warningVisibility, setWarningVisibility] = useState(false);
 
   const colors = {main: '#FF84D6', textColor: '#705C69', background: '#ffffff'};
 
-  const id = route.params.id;
+  const id = props.route.params.id;
   const targetItem = listOfLists.filter(item => item._id == id);
   const indexOfTarget = listOfLists.findIndex(item => item._id === id);
 
@@ -100,8 +102,9 @@ const ShopList = ({route, navigation}) => {
     return (
       <TouchableOpacity
         onPress={() => {
-          deleteList(targetItem[0]._id);
-          navigation.goBack();
+          setWarningVisibility(true);
+          // deleteList(targetItem[0]._id);
+          // navigation.goBack();
         }}>
         <Icon name="trash" type="entypo" color={colors.textColor} />
       </TouchableOpacity>
@@ -109,7 +112,7 @@ const ShopList = ({route, navigation}) => {
   };
   const BackIcon = () => {
     return (
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+      <TouchableOpacity onPress={() => props.navigation.goBack()}>
         <Icon name="arrow-left" type="entypo" color={colors.textColor} />
       </TouchableOpacity>
     );
@@ -130,7 +133,7 @@ const ShopList = ({route, navigation}) => {
 
   return (
     <ScreensLayout
-      title={targetItem[0].name}
+      title={targetItem[0] ? targetItem[0].name : 'Deleted'}
       colors={colors}
       shopping={true}
       right={<DeleteIcon />}
@@ -156,6 +159,15 @@ const ShopList = ({route, navigation}) => {
         <AddBtn setVisibility={setVisible} />
       </ButtonContainer>
       <MyModal />
+      <DeleteModal
+        colors={colors}
+        props={props}
+        visibility={warningVisibility}
+        setVisibility={setWarningVisibility}
+        item={`${targetItem[0].name} list`}
+        deleteHandler={deleteList}
+        listId={targetItem[0]._id}
+      />
     </ScreensLayout>
   );
 };

@@ -74,7 +74,7 @@ const ScreensLayout = ({
   shopping = false,
 }) => {
   return (
-    <SafeAreaView style={{backgroundColor: '#ffffff'}}>
+    <SafeAreaView style={{backgroundColor: colors.background}}>
       <Container color={colors.backgroundColor}>
         <Header color={colors.main}>
           <LeftBtnContainer>{left}</LeftBtnContainer>

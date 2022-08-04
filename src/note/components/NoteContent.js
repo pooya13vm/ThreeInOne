@@ -4,31 +4,31 @@ import styled from 'styled-components';
 const Container = styled.View`
   border-width: 1px;
   width: 100%;
-  border-color: #4e97ce;
+  border-color: ${props => props.color};
   border-radius: 8px;
   padding: 12px;
 `;
 const Title = styled.Text`
   font-size: 18px;
-  color: #2f5b7d;
+  color: ${props => props.color};
   font-weight: bold;
   margin-bottom: 12px;
 `;
 const CategoryText = styled.Text`
   font-size: 15px;
-  color: #4e97ce;
+  color: ${props => props.color};
   margin-bottom: 12px;
 `;
 const DateText = styled.Text`
   font-size: 12px;
-  color: #4e97ce;
+  color: ${props => props.color};
 `;
-const NoteContent = ({note}) => {
+const NoteContent = ({note, colors}) => {
   return (
-    <Container>
-      <Title>{note.item.title}</Title>
-      <CategoryText>{note.item.category}</CategoryText>
-      <DateText style={{}}>{note.item.date}</DateText>
+    <Container color={colors.main}>
+      <Title color={colors.textColor}>{note.item.title}</Title>
+      <CategoryText color={colors.main}>{note.item.category}</CategoryText>
+      <DateText color={colors.main}>{note.item.date}</DateText>
     </Container>
   );
 };

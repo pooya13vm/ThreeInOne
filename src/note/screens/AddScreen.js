@@ -4,6 +4,7 @@ import ScreensLayout from '../../components/ScreensLayout';
 import {NoteContext} from '../../contexts/noteContext';
 import DropdownComponent from '../../components/DropDown';
 import styled from 'styled-components';
+import {MainContext} from '../../contexts/mainContext';
 
 const InputContainer = styled.View`
   margin-horizontal: 20px;
@@ -44,10 +45,13 @@ const AddScreen = props => {
     categoryList,
     setCategory,
   } = useContext(NoteContext);
+  const {AllColors} = useContext(MainContext);
+  let colors = AllColors.note;
+  console.log(colors);
 
   const category = [...categoryList];
   category.shift();
-  const colors = {main: '#4E97CE', textColor: '#2F5B7D', background: '#ffffff'};
+  // const colors = {main: '#4E97CE', textColor: '#2F5B7D', background: '#ffffff'};
 
   return (
     <ScreensLayout

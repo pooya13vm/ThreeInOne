@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
+import {MainContext} from '../contexts/mainContext';
 import {Icon} from '@rneui/themed';
 import {
   TouchableOpacity,
@@ -54,9 +55,11 @@ const SwitchPartContainer = styled.View`
 
 const Setting = ({props}) => {
   const [visibility, setVisibility] = useState(false);
-  const [isLightMode, setLightMode] = useState(true);
+  // const [isLightMode, setLightMode] = useState(true);
 
-  const toggleSwitch = () => setLightMode(previousState => !previousState);
+  const {setLightMode, lightMode} = useContext(MainContext);
+
+  const toggleSwitch = () => setLightMode(!lightMode);
 
   const Overlay = () => {
     return (
@@ -115,10 +118,10 @@ const Setting = ({props}) => {
                     <Text>Dark</Text>
                     <Switch
                       trackColor={{false: '#767577', true: '#81b0ff'}}
-                      thumbColor={isLightMode ? '#f5dd4b' : '#f4f3f4'}
+                      thumbColor={lightMode ? '#f5dd4b' : '#f4f3f4'}
                       ios_backgroundColor="#3e3e3e"
                       onValueChange={toggleSwitch}
-                      value={isLightMode}
+                      value={lightMode}
                     />
                     <Text>Light</Text>
                   </SwitchPartContainer>

@@ -6,6 +6,7 @@ import {NoteContext} from '../../contexts/noteContext';
 import AddBtn from '../../components/AddBtn';
 import DropdownComponent from '../../components/DropDown';
 import NoContent from '../../components/NoContent';
+import {MainContext} from '../../contexts/mainContext';
 import styled from 'styled-components';
 
 const NoteHomeScreen = props => {
@@ -17,12 +18,13 @@ const NoteHomeScreen = props => {
     filteredList,
     checkStorageCategory,
   } = useContext(NoteContext);
+  const {AllColors} = useContext(MainContext);
+  let colors = AllColors.note;
 
   useEffect(() => {
     checkStorage();
     checkStorageCategory();
   }, []);
-  const colors = {main: '#4E97CE', textColor: '#2F5B7D', background: '#ffffff'};
 
   const ItemContainer = styled.View`
     flex: 1;
@@ -58,7 +60,7 @@ const NoteHomeScreen = props => {
                   findEditNote(note.item._id);
                   props.navigation.navigate('EDIT', {id: note.item._id});
                 }}>
-                <NoteContent note={note} />
+                <NoteContent note={note} colors={colors} />
               </TouchableOpacity>
             </ItemContainer>
           )}

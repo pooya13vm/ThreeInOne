@@ -5,7 +5,7 @@ const AddBtn = ({navigation, color}) => {
   return (
     <Button
       onPress={() => navigation.navigate('ADD')}
-      icon={{name: 'plus', type: 'entypo', size: 30}}
+      icon={{name: 'plus', type: 'entypo', size: 30, color: '#ffffff'}}
       iconContainerStyle={{
         margin: 0,
         padding: 0,

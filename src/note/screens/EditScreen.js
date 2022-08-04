@@ -1,10 +1,11 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {Icon, Input} from '@rneui/base';
 import ScreensLayout from '../../components/ScreensLayout';
 import {NoteContext} from '../../contexts/noteContext';
 import DropdownComponent from '../../components/DropDown';
 import styled from 'styled-components';
 import {TouchableOpacity} from 'react-native';
+import DeleteModal from '../../components/DeleteModal';
 
 const InputContainer = styled.View`
   margin-horizontal: 20px;
@@ -49,6 +50,8 @@ const EditScreen = props => {
     setEditingCategoryValue,
   } = useContext(NoteContext);
 
+  const [visibility, setVisibility] = useState(false);
+
   const category = [...categoryList];
   category.shift();
   const colors = {main: '#4E97CE', textColor: '#2F5B7D', background: '#ffffff'};
@@ -57,8 +60,7 @@ const EditScreen = props => {
     return (
       <TouchableOpacity
         onPress={() => {
-          deleteHandler(props.route.params.id);
-          props.navigation.navigate('NoteHome');
+          setVisibility(true);
         }}>
         <Icon name="trash" type="entypo" color={colors.textColor} />
       </TouchableOpacity>
@@ -101,6 +103,14 @@ const EditScreen = props => {
         multiline
         value={EditingContentValue}
         onChangeText={val => setEditingContentValue(val)}></TextInput>
+      <DeleteModal
+        colors={colors}
+        visibility={visibility}
+        setVisibility={setVisibility}
+        item={EditingTitleValue}
+        props={props}
+        deleteHandler={deleteHandler}
+      />
     </ScreensLayout>
   );
 };

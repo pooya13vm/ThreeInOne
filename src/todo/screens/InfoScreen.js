@@ -5,6 +5,7 @@ import {differentCal} from '../../utility/timeDifferentCal';
 import {CheckBox, Button, Icon} from '@rneui/themed';
 import {TodoContext} from '../../contexts/todoContext';
 import styled from 'styled-components';
+import DeleteModal from '../../components/DeleteModal';
 
 const Container = styled.View`
   height: 100%;
@@ -63,7 +64,8 @@ const ButtonContainer = styled.View`
   justify-content: space-evenly;
 `;
 
-const InfoScreen = ({navigation, route}) => {
+const InfoScreen = props => {
+  const [visibility, setVisibility] = useState(false);
   const [remTimeS, setRemTimeS] = useState('');
   const [deadlineString, setDeadlineString] = useState(null);
   const [hasDone, setHasDone] = useState();
@@ -72,7 +74,7 @@ const InfoScreen = ({navigation, route}) => {
 
   const colors = {main: '#75e1a4', textColor: '#5C7065', background: '#ffffff'};
 
-  let id = route.params.id;
+  let id = props.route.params.id;
   let task = getTodoList.filter(item => item._id == id)[0];
   let defTime = task.saveTimeStr;
   const itemIndex = getTodoList.findIndex(item => item._id == task._id);
@@ -92,7 +94,7 @@ const InfoScreen = ({navigation, route}) => {
     setTodoList(newList);
     setSortList(newList);
     saveToStorage(newList);
-    navigation.navigate('Home');
+    props.navigation.navigate('Home');
   };
 
   useEffect(() => {
@@ -174,7 +176,7 @@ const InfoScreen = ({navigation, route}) => {
               borderWidth: 1,
             }}
             icon={<Icon name="arrow-left" color="#5c7065" type="entypo" />}
-            onPress={navigation.goBack}></Button>
+            onPress={props.navigation.goBack}></Button>
           <Button
             type="outline"
             buttonStyle={{
@@ -184,7 +186,7 @@ const InfoScreen = ({navigation, route}) => {
               borderWidth: 1,
             }}
             icon={<Icon name="trash" color="#5c7065" type="entypo" />}
-            onPress={deleteItem}></Button>
+            onPress={() => setVisibility(true)}></Button>
           <Button
             type="outline"
             buttonStyle={{
@@ -196,10 +198,18 @@ const InfoScreen = ({navigation, route}) => {
             icon={<Icon name="edit" color="#5c7065" type="entypo" />}
             onPress={() => {
               setEditingTask(task);
-              navigation.navigate('EDIT', {task});
+              props.navigation.navigate('EDIT', {task});
             }}></Button>
         </ButtonContainer>
       </Container>
+      <DeleteModal
+        colors={colors}
+        visibility={visibility}
+        setVisibility={setVisibility}
+        item={task.content}
+        props={props}
+        deleteHandler={deleteItem}
+      />
     </SafeAreaView>
   );
 };
