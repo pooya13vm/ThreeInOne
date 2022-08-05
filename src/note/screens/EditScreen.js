@@ -6,6 +6,7 @@ import DropdownComponent from '../../components/DropDown';
 import styled from 'styled-components';
 import {TouchableOpacity} from 'react-native';
 import DeleteModal from '../../components/DeleteModal';
+import {MainContext} from '../../contexts/mainContext';
 
 const InputContainer = styled.View`
   margin-horizontal: 20px;
@@ -49,12 +50,14 @@ const EditScreen = props => {
     EditingCategoryValue,
     setEditingCategoryValue,
   } = useContext(NoteContext);
+  const {AllColors} = useContext(MainContext);
+  let colors = AllColors.note;
 
   const [visibility, setVisibility] = useState(false);
 
   const category = [...categoryList];
   category.shift();
-  const colors = {main: '#4E97CE', textColor: '#2F5B7D', background: '#ffffff'};
+  // const colors = {main: '#4E97CE', textColor: '#2F5B7D', background: '#ffffff'};
 
   const DeleteIcon = () => {
     return (

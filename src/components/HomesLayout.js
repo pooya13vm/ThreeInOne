@@ -5,6 +5,8 @@ import styled from 'styled-components';
 
 const Container = styled.View`
   background-color: ${props => props.color};
+  position: relative;
+  height: 100%;
 `;
 const Header = styled.View`
   border-top-color: ${props => props.color};
@@ -37,8 +39,8 @@ const Body = styled.View`
 `;
 const AddButton = styled.View`
   position: absolute;
-  right: 20px;
-  bottom: 30px;
+  right: 30px;
+  bottom: 0px;
   width: 50px;
   z-index: 100;
   opacity: 0.9;
@@ -52,9 +54,10 @@ const SettingBtnContainer = styled.View`
   right: 14px;
   top: 10px;
 `;
+
 const HomesLayout = ({children, title, footer, rightProps, color}) => {
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{backgroundColor: color.background}}>
       <Container color={color.background}>
         <Header color={color.main}>
           <TitleContainer color={color.main}>

@@ -3,12 +3,11 @@ import {View, Text, StyleSheet} from 'react-native';
 import {Icon} from '@rneui/themed';
 import {TodoContext} from '../../contexts/todoContext';
 
-const TodoContent = ({task}) => {
+const TodoContent = ({task, colors}) => {
   const {reloader, setReloader} = useContext(TodoContext);
   const deadlineStr = task.item.deadlineStr;
   const deadlineSec = task.item.deadlineSec;
   const now = new Date();
-  const colors = {main: '#75e1a4', textColor: '#5C7065', background: '#ffffff'};
   const statusText = () => {
     if (task.item.hasDoneStatus) {
       return 'Has done';
@@ -49,7 +48,11 @@ const TodoContent = ({task}) => {
         {statusText()}
       </Text>
       <View style={{flexDirection: 'row'}}>
-        <Icon name="chevron-small-right" type="entypo" color="#5C7065" />
+        <Icon
+          name="chevron-small-right"
+          type="entypo"
+          color={colors.textColor}
+        />
       </View>
     </View>
   );

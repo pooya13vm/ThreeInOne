@@ -7,6 +7,7 @@ import {TodoContext} from '../../contexts/todoContext';
 import NoContent from '../../components/NoContent';
 import TodoContent from '../components/TodoContent';
 import styled from 'styled-components';
+import {MainContext} from '../../contexts/mainContext';
 
 const TitleContainer = styled.View`
   flex-direction: row;
@@ -38,6 +39,8 @@ const TitleText3 = styled.Text`
 const TodoHomeScreen = props => {
   const {checkStorage, getTodoList, sortManager, sortList} =
     useContext(TodoContext);
+  const {AllColors} = useContext(MainContext);
+  let colors = AllColors.todo;
 
   useEffect(() => {
     checkStorage();
@@ -52,9 +55,6 @@ const TodoHomeScreen = props => {
     {label: 'No deadLine tasks', value: 'no', id: 4},
     {label: 'Not Done tasks', value: 'notDone', id: 5},
   ];
-
-  // #766AC8
-  const colors = {main: '#75e1a4', textColor: '#5C7065', background: '#ffffff'};
 
   return (
     <HomesLayout
@@ -82,9 +82,12 @@ const TodoHomeScreen = props => {
             <View>
               <TouchableOpacity
                 onPress={() => {
-                  props.navigation.navigate('INFO', {id: task.item._id});
+                  props.navigation.navigate('INFO', {
+                    id: task.item._id,
+                    colors,
+                  });
                 }}>
-                <TodoContent task={task} />
+                <TodoContent task={task} colors={colors} />
               </TouchableOpacity>
             </View>
           )}

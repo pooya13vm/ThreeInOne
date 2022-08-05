@@ -11,9 +11,9 @@ const Container = styled.View`
   height: 100%;
   justify-content: space-between;
   padding: 20px;
-  background-color: #ffffff;
+  background-color: ${props => props.BGColor};
   border-top-width: 5px;
-  border-top-color: #75e1a4;
+  border-top-color: ${props => props.color};
 `;
 const TitleContainer = styled.Text`
   font-size: 14px;
@@ -21,7 +21,7 @@ const TitleContainer = styled.Text`
   margin-vertical: 20px;
 `;
 const Title = styled.Text`
-  color: #5c7065;
+  color: ${props => props.color};
   font-weight: bold;
   font-size: 18px;
 `;
@@ -36,11 +36,11 @@ const Topic = styled.Text`
   width: 32%;
 `;
 const Value = styled.Text`
-  color: #5c7065;
+  color: ${props => props.color};
   font-size: 16px;
 `;
 const NoValue = styled.Text`
-  color: #5c7065;
+  color: ${props => props.color};
   font-size: 16px;
   margin-top: 20px;
   align-self: center;
@@ -72,9 +72,10 @@ const InfoScreen = props => {
   const {getTodoList, setTodoList, setEditingTask, setSortList, saveToStorage} =
     useContext(TodoContext);
 
-  const colors = {main: '#75e1a4', textColor: '#5C7065', background: '#ffffff'};
+  // const colors = {main: '#75e1a4', textColor: '#5C7065', background: '#ffffff'};
 
   let id = props.route.params.id;
+  let colors = props.route.params.colors;
   let task = getTodoList.filter(item => item._id == id)[0];
   let defTime = task.saveTimeStr;
   const itemIndex = getTodoList.findIndex(item => item._id == task._id);
@@ -114,41 +115,41 @@ const InfoScreen = props => {
   }, []);
 
   return (
-    <SafeAreaView style={{backgroundColor: '#ffffff'}}>
-      <Container>
+    <SafeAreaView style={{backgroundColor: colors.background}}>
+      <Container color={colors.main} BGColor={colors.background}>
         <View>
           <TitleContainer>
             Content: {'  '}
-            <Title>{task.content}</Title>
+            <Title color={colors.textColor}>{task.content}</Title>
           </TitleContainer>
           <TextContainer>
             <Topic>Importance: </Topic>
-            <Value>{task.importance}</Value>
+            <Value color={colors.textColor}>{task.importance}</Value>
           </TextContainer>
           {task.info ? (
             <TextContainer>
               <Topic>Info: </Topic>
-              <Value>{task.info}</Value>
+              <Value color={colors.textColor}>{task.info}</Value>
             </TextContainer>
           ) : null}
           <TextContainer>
             <Topic>definition time: </Topic>
-            <Value>{defTime}</Value>
+            <Value color={colors.textColor}>{defTime}</Value>
           </TextContainer>
 
           {task.deadlineStr ? (
             <>
               <TextContainer>
                 <Topic>deadline: </Topic>
-                <Value>{deadlineString}</Value>
+                <Value color={colors.textColor}>{deadlineString}</Value>
               </TextContainer>
               <TextContainer>
                 <Topic>remaining time: </Topic>
-                <Value>{remTimeS}</Value>
+                <Value color={colors.textColor}>{remTimeS}</Value>
               </TextContainer>
             </>
           ) : (
-            <NoValue>No deadline is defined</NoValue>
+            <NoValue color={colors.textColor}>No deadline is defined</NoValue>
           )}
         </View>
 
@@ -163,6 +164,7 @@ const InfoScreen = props => {
             checkedColor="#75e1a4"
             size={32}
             uncheckedColor="#75e1a4"
+            containerStyle={{backgroundColor: 'transparent'}}
           />
         </CheckBoxContainer>
 
@@ -172,33 +174,35 @@ const InfoScreen = props => {
             buttonStyle={{
               borderRadius: 50,
               padding: 10,
-              borderColor: '#5c7065',
+              borderColor: colors.textColor,
               borderWidth: 1,
             }}
-            icon={<Icon name="arrow-left" color="#5c7065" type="entypo" />}
+            icon={
+              <Icon name="arrow-left" color={colors.textColor} type="entypo" />
+            }
             onPress={props.navigation.goBack}></Button>
           <Button
             type="outline"
             buttonStyle={{
               borderRadius: 50,
               padding: 10,
-              borderColor: '#5c7065',
+              borderColor: colors.textColor,
               borderWidth: 1,
             }}
-            icon={<Icon name="trash" color="#5c7065" type="entypo" />}
+            icon={<Icon name="trash" color={colors.textColor} type="entypo" />}
             onPress={() => setVisibility(true)}></Button>
           <Button
             type="outline"
             buttonStyle={{
               borderRadius: 50,
               padding: 10,
-              borderColor: '#5c7065',
+              borderColor: colors.textColor,
               borderWidth: 1,
             }}
-            icon={<Icon name="edit" color="#5c7065" type="entypo" />}
+            icon={<Icon name="edit" color={colors.textColor} type="entypo" />}
             onPress={() => {
               setEditingTask(task);
-              props.navigation.navigate('EDIT', {task});
+              props.navigation.navigate('EDIT', {task, colors});
             }}></Button>
         </ButtonContainer>
       </Container>

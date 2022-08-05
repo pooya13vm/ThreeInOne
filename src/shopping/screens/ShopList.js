@@ -11,6 +11,7 @@ import NoContent from '../../components/NoContent';
 import ItemContent from '../components/ItemContent';
 import DeleteModal from '../../components/DeleteModal';
 import styled from 'styled-components';
+import {MainContext} from '../../contexts/mainContext';
 
 const ButtonContainer = styled.View`
   width: 45px;
@@ -30,12 +31,11 @@ const ModalBtnContainer = styled.View`
 const ShopList = props => {
   const {listOfLists, setListOfLists, saveToStorage, deleteList} =
     useContext(ShoppingContext);
+  const {AllColors} = useContext(MainContext);
+  let colors = AllColors.shopping;
 
   const [visible, setVisible] = useState(false);
   const [warningVisibility, setWarningVisibility] = useState(false);
-
-  const colors = {main: '#FF84D6', textColor: '#705C69', background: '#ffffff'};
-
   const id = props.route.params.id;
   const targetItem = listOfLists.filter(item => item._id == id);
   const indexOfTarget = listOfLists.findIndex(item => item._id === id);
@@ -50,6 +50,7 @@ const ShopList = props => {
   };
 
   const MyModal = () => {
+    console.log(colors);
     return (
       <Overlay visibility={visible} setVisibility={setVisible}>
         <Input
@@ -103,8 +104,6 @@ const ShopList = props => {
       <TouchableOpacity
         onPress={() => {
           setWarningVisibility(true);
-          // deleteList(targetItem[0]._id);
-          // navigation.goBack();
         }}>
         <Icon name="trash" type="entypo" color={colors.textColor} />
       </TouchableOpacity>
@@ -148,7 +147,11 @@ const ShopList = props => {
           renderItem={item => {
             return (
               <>
-                <ItemContent shopItem={item.item} parentIndex={indexOfTarget} />
+                <ItemContent
+                  shopItem={item.item}
+                  parentIndex={indexOfTarget}
+                  colors={colors}
+                />
               </>
             );
           }}

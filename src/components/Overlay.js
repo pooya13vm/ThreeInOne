@@ -19,12 +19,7 @@ const ModalView = styled.View`
   box-shadow: 0px 0px 4px;
 `;
 
-const Overlay = ({
-  children,
-  visibility,
-  setVisibility,
-  BGColor = '#ffffff',
-}) => {
+const Overlay = ({children, visibility, setVisibility, colors}) => {
   return (
     <Modal
       animationType="slide"
@@ -35,7 +30,7 @@ const Overlay = ({
         setVisibility(!visibility);
       }}>
       <CenterView>
-        <ModalView color={BGColor}>{children}</ModalView>
+        <ModalView color={'#ffffff'}>{children}</ModalView>
       </CenterView>
     </Modal>
   );

@@ -8,6 +8,7 @@ import NoContent from '../../components/NoContent';
 import {ShoppingContext} from '../../contexts/shoppingContext';
 import Overlay from '../../components/Overlay';
 import AddBtn from '../components/AddBtn';
+import {MainContext} from '../../contexts/mainContext';
 import styled from 'styled-components';
 
 const ButtonContainer = styled.View`
@@ -24,8 +25,8 @@ const ShoppingHomeScreen = props => {
   const [visible, setVisible] = useState(false);
   const {saveList, listOfLists, checkStorage, storeList, checkStoreStorage} =
     useContext(ShoppingContext);
-
-  const colors = {main: '#FF84D6', textColor: '#705C69', background: '#ffffff'};
+  const {AllColors} = useContext(MainContext);
+  let colors = AllColors.shopping;
 
   useEffect(() => {
     checkStorage();
@@ -43,11 +44,15 @@ const ShoppingHomeScreen = props => {
 
   const MyModal = () => {
     return (
-      <Overlay visibility={visible} setVisibility={setVisible}>
+      <Overlay visibility={visible} setVisibility={setVisible} colors={colors}>
         <InputContainer>
           <Input
+            labelStyle={{color: colors.main}}
             label="List name:"
             placeholder="Example :For Office "
+            placeholderTextColor={colors.main}
+            inputStyle={{color: colors.main}}
+            containerStyle={{}}
             onChangeText={val => saveName(val)}
           />
         </InputContainer>
@@ -67,7 +72,7 @@ const ShoppingHomeScreen = props => {
               borderWidth: 1,
             }}
             title="Cancel"
-            titleStyle={{color: '#705C69'}}
+            titleStyle={{color: colors.textColor}}
             onPress={() => setVisible(false)}></Button>
           <Button
             type="outline"
@@ -78,7 +83,7 @@ const ShoppingHomeScreen = props => {
               borderWidth: 1,
             }}
             title="Save"
-            titleStyle={{color: '#705C69'}}
+            titleStyle={{color: colors.textColor}}
             onPress={() => {
               saveList(name, place);
               setVisible(false);
@@ -102,7 +107,9 @@ const ShoppingHomeScreen = props => {
             data={listOfLists}
             keyExtractor={list => list._id}
             renderItem={list => {
-              return <ShoppingContent list={list} props={props} />;
+              return (
+                <ShoppingContent list={list} props={props} colors={colors} />
+              );
             }}
           />
         )}

@@ -19,10 +19,10 @@ const TimeShowContainer = styled.View`
   margin-vertical: 10px;
   padding: 12px;
   border-width: 1px;
-  border-color: #75e1a4;
+  border-color: ${props => props.color};
 `;
 const TimeContent = styled.Text`
-  color: #5c7065;
+  color: ${props => props.color};
 `;
 const TextInputContainer = styled.View`
   margin: 22px;
@@ -34,12 +34,12 @@ const TextInputContainer = styled.View`
   border-color: ${props => props.color};
 `;
 const TextInputLable = styled.Text`
-  color: #5c7065;
+  color: ${props => props.color};
   font-size: 16px;
 `;
 const TextInput = styled.TextInput`
   padding-bottom: 10px;
-  color: #5c7065;
+  color: ${props => props.color};
 `;
 const NoDeadlineContainer = styled.View`
   justify-content: center;
@@ -48,7 +48,7 @@ const NoDeadlineContainer = styled.View`
 `;
 const NoDeadlineText = styled.Text`
   font-size: 16px;
-  color: #5c7065;
+  color: ${props => props.color};
 `;
 
 const EditScreen = props => {
@@ -58,7 +58,7 @@ const EditScreen = props => {
   const [stringifyDate, setStringifyDate] = useState('');
   const [remainingTime, setRemainingTime] = useState();
 
-  const colors = {main: '#75e1a4', textColor: '#5C7065', background: '#ffffff'};
+  // const colors = {main: '#75e1a4', textColor: '#5C7065', background: '#ffffff'};
 
   const {
     editingTaskTitle,
@@ -72,6 +72,7 @@ const EditScreen = props => {
   } = useContext(TodoContext);
 
   const task = props.route.params.task;
+  const colors = props.route.params.colors;
   const deadlineStr = task.deadlineStr ? task.deadlineStr : null;
 
   const impressArray = [
@@ -98,8 +99,9 @@ const EditScreen = props => {
 
   const TimeShow = () => {
     return (
-      <TimeShowContainer>
-        <TimeContent>{`Deadline : ${stringifyDate}`}</TimeContent>
+      <TimeShowContainer color={colors.main}>
+        <TimeContent
+          color={colors.textColor}>{`Deadline : ${stringifyDate}`}</TimeContent>
         <TimeContent>{`Remaining time : ${remainingTime}`}</TimeContent>
       </TimeShowContainer>
     );
@@ -122,9 +124,9 @@ const EditScreen = props => {
           containerStyle={{
             height: 50,
           }}
-          style={{fontSize: 16, color: '#5C7065'}}
-          placeholderTextColor="#5C7065"
-          inputStyle={{color: '#5C7065'}}
+          style={{fontSize: 16, color: colors.textColor}}
+          placeholderTextColor={colors.textColor}
+          inputStyle={{color: colors.textColor}}
         />
       </InputContainer>
 
@@ -135,8 +137,9 @@ const EditScreen = props => {
       />
 
       <TextInputContainer color={colors.main}>
-        <TextInputLable>More info:</TextInputLable>
+        <TextInputLable color={colors.textColor}>More info:</TextInputLable>
         <TextInput
+          color={colors.textColor}
           multiline
           value={editingInfo}
           onChangeText={val => setEditingInfo(val)}
@@ -147,9 +150,9 @@ const EditScreen = props => {
         buttonStyle={{
           backgroundColor: 'transparent',
           borderWidth: 1,
-          borderColor: '#75e1a4',
+          borderColor: colors.main,
         }}
-        titleStyle={{color: '#5C7065', marginVertical: 5}}
+        titleStyle={{color: colors.textColor, marginVertical: 5}}
         style={{
           marginTop: 30,
           width: '60%',
@@ -161,7 +164,7 @@ const EditScreen = props => {
       {selectedTime ? (
         <TimeShow />
       ) : (
-        <NoDeadlineContainer>
+        <NoDeadlineContainer color={colors.textColor}>
           <NoDeadlineText>No deadline has been defined </NoDeadlineText>
         </NoDeadlineContainer>
       )}

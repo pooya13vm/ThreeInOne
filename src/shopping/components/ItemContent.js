@@ -23,21 +23,21 @@ const TextContainer = styled.View`
 const Title = styled.Text`
   font-size: 16px;
   font-weight: bold;
-  color: #705c69;
+  color: ${props => props.color};
 `;
 const Info = styled.Text`
   color: #ff84d6;
   font-size: 14px;
 `;
 
-const ItemContent = ({shopItem, parentIndex}) => {
+const ItemContent = ({shopItem, parentIndex, colors}) => {
   const {setListOfLists, listOfLists, saveToStorage} =
     useContext(ShoppingContext);
   const list = listOfLists[parentIndex].listArray;
   const id = shopItem.id;
   const targetItem = list.filter(item => item.id == id);
   const indexOfTarget = list.findIndex(item => item.id == id);
-  const colors = {main: '#FF84D6', textColor: '#705C69', background: '#ffffff'};
+  // const colors = {main: '#FF84D6', textColor: '#705C69', background: '#ffffff'};
 
   const tickEvent = () => {
     let check = !targetItem[0].itemBuy;
@@ -77,7 +77,7 @@ const ItemContent = ({shopItem, parentIndex}) => {
       </DeleteIcon>
 
       <TextContainer>
-        <Title>{shopItem.itemName}</Title>
+        <Title color={colors.textColor}>{shopItem.itemName}</Title>
         <Info>{shopItem.itemInfo}</Info>
       </TextContainer>
       {/* <View style={{flexDirection: 'row', justifyContent: 'space-between'}}> */}
@@ -90,6 +90,7 @@ const ItemContent = ({shopItem, parentIndex}) => {
         }}
         containerStyle={{
           padding: 0,
+          backgroundColor: 'transparent',
         }}
       />
       {/* </View> */}
