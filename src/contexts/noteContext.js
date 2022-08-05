@@ -51,15 +51,15 @@ export const NoteProvider = ({children}) => {
 
   const saveNote = async ({navigation}) => {
     let date = new Date();
+    let title = getTitle ? getTitle : 'No Title';
     let now = dateStringMaker(date);
     const note = {
       _id: uuid.v4(),
-      title: getTitle,
+      title: title,
       content: getContent,
       category: getCategory,
       date: now,
     };
-
     let noteList = [note, ...notes];
     setNotes(noteList);
     setFilteredList(noteList);

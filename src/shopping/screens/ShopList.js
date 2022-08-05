@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {FlatList, TouchableOpacity} from 'react-native';
+import {FlatList, TouchableOpacity, View} from 'react-native';
 import {Input, Button} from '@rneui/themed';
 import {Icon} from '@rneui/themed';
 import uuid from 'react-native-uuid';
@@ -12,6 +12,7 @@ import ItemContent from '../components/ItemContent';
 import DeleteModal from '../../components/DeleteModal';
 import styled from 'styled-components';
 import {MainContext} from '../../contexts/mainContext';
+import MySnackbar from '../../components/Snackbar';
 
 const ButtonContainer = styled.View`
   width: 45px;
@@ -36,6 +37,7 @@ const ShopList = props => {
 
   const [visible, setVisible] = useState(false);
   const [warningVisibility, setWarningVisibility] = useState(false);
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
   const id = props.route.params.id;
   const targetItem = listOfLists.filter(item => item._id == id);
   const indexOfTarget = listOfLists.findIndex(item => item._id === id);
@@ -53,52 +55,70 @@ const ShopList = props => {
     console.log(colors);
     return (
       <Overlay visibility={visible} setVisibility={setVisible}>
-        <Input
-          label="Item:"
-          placeholder="Example :Egg "
-          onChangeText={val => saveName(val)}
-        />
-        <Input
-          label="More info:"
-          placeholder="Example :Brand of item"
-          onChangeText={val => saveInfo(val)}
-        />
-        <ModalBtnContainer>
-          <Button
-            type="outline"
-            buttonStyle={{
-              width: '80%',
-              backgroundColor: 'transparent',
-              borderColor: '#FF84D6',
-              borderWidth: 1,
-            }}
-            title="Cancel"
-            titleStyle={{
-              color: '#705C69',
-              fontSize: 18,
-              fontWeight: 'bold',
-            }}
-            onPress={() => setVisible(false)}
+        <View style={{padding: 20}}>
+          <Input
+            label="Item:  *"
+            labelStyle={{color: colors.textColor}}
+            placeholderTextColor={colors.main}
+            style={{color: colors.textColor}}
+            placeholder="Example :Egg "
+            onChangeText={val => saveName(val)}
+            autoFocus
           />
-          <Button
-            type="outline"
-            buttonStyle={{
-              width: '80%',
-              backgroundColor: 'transparent',
-              borderColor: '#FF84D6',
-              borderWidth: 1,
-            }}
-            title="Save"
-            titleStyle={{color: '#705C69', fontSize: 18, fontWeight: 'bold'}}
-            onPress={() => {
-              saveItemToList();
-              setVisible(false);
-            }}
+          <Input
+            label="More info:"
+            labelStyle={{color: colors.textColor}}
+            placeholder="Example :Brand of item"
+            placeholderTextColor={colors.main}
+            style={{color: colors.textColor}}
+            onChangeText={val => saveInfo(val)}
           />
-        </ModalBtnContainer>
+          <ModalBtnContainer>
+            <Button
+              type="outline"
+              buttonStyle={{
+                width: '80%',
+                backgroundColor: 'transparent',
+                borderColor: '#FF84D6',
+                borderWidth: 1,
+              }}
+              title="Cancel"
+              titleStyle={{
+                color: '#705C69',
+                fontSize: 18,
+                fontWeight: 'bold',
+              }}
+              onPress={() => {
+                setSnackbarVisible(false);
+                setVisible(false);
+              }}
+            />
+            <Button
+              type="outline"
+              buttonStyle={{
+                width: '80%',
+                backgroundColor: 'transparent',
+                borderColor: '#FF84D6',
+                borderWidth: 1,
+              }}
+              title="Save"
+              titleStyle={{color: '#705C69', fontSize: 18, fontWeight: 'bold'}}
+              onPress={() => {
+                if (name === '') {
+                  setSnackbarVisible(true);
+                } else {
+                  saveItemToList();
+                  setVisible(false);
+                  setSnackbarVisible(false);
+                }
+              }}
+            />
+          </ModalBtnContainer>
+        </View>
       </Overlay>
     );
   };
+
   const DeleteIcon = () => {
     return (
       <TouchableOpacity
@@ -170,6 +190,12 @@ const ShopList = props => {
         item={`${targetItem[0].name} list`}
         deleteHandler={deleteList}
         listId={targetItem[0]._id}
+      />
+      <MySnackbar
+        snackbarVisible={snackbarVisible}
+        setSnackbarVisible={setSnackbarVisible}
+        colors={colors}
+        text="Item input can not leave null"
       />
     </ScreensLayout>
   );

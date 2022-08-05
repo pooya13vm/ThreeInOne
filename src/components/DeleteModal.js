@@ -5,9 +5,11 @@ import {Button} from 'react-native-paper';
 import styled from 'styled-components';
 
 const Container = styled.View`
-  padding: 20px;
+  padding: 40px;
+  border-radius: 10px;
   justify-content: center;
   align-items: center;
+  background-color: ${props => props.color};
 `;
 const Title = styled.Text`
   font-size: 20px;
@@ -42,7 +44,7 @@ const DeleteModal = ({
   let id = listId ? listId : props.route.params.id;
   return (
     <Overlay visibility={visibility} setVisibility={setVisibility}>
-      <Container>
+      <Container color={colors.background}>
         <Icon type="entypo" name="warning" size={36} color={colors.textColor} />
         <Title color={colors.textColor}>Are you sure to delete</Title>
         <ItemText color={colors.main}>{item}</ItemText>

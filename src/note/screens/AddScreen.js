@@ -19,7 +19,7 @@ const DropDownContainer = styled.View`
 const InputTitle = styled.Text`
   font-size: 18px;
   font-weight: bold;
-  color: #2f5b7d;
+  color: ${props => props.color};
   margin-left: 20px;
 `;
 const TextInput = styled.TextInput`
@@ -33,6 +33,7 @@ const TextInput = styled.TextInput`
   padding-top: 15px;
   border-width: 1px;
   border-color: #4e97ce;
+  color: ${props => props.color};
 `;
 
 const AddScreen = props => {
@@ -51,7 +52,6 @@ const AddScreen = props => {
 
   const category = [...categoryList];
   category.shift();
-  // const colors = {main: '#4E97CE', textColor: '#2F5B7D', background: '#ffffff'};
 
   return (
     <ScreensLayout
@@ -67,6 +67,7 @@ const AddScreen = props => {
           inputContainerStyle={{borderBottomWidth: 0}}
           containerStyle={{height: 40}}
           style={{
+            color: colors.textColor,
             fontWeight: 'bold',
             height: 40,
             borderWidth: 1,
@@ -81,15 +82,18 @@ const AddScreen = props => {
           placeholder="Select Category"
           categoryList={category}
           setDDvalue={setCategory}
+          colors={colors}
         />
       </DropDownContainer>
 
-      <InputTitle>Note : </InputTitle>
+      <InputTitle color={colors.textColor}>Note : </InputTitle>
       <TextInput
         multiline
         value={getContent}
         placeholder="Write here"
         onChangeText={val => setContent(val)}
+        color={colors.textColor}
+        placeholderTextColor="gray"
       />
     </ScreensLayout>
   );

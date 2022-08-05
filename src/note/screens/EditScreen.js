@@ -22,7 +22,7 @@ const DropDownContainer = styled.View`
 const InputTitle = styled.Text`
   font-size: 18px;
   font-weight: bold;
-  color: #2f5b7d;
+  color: ${props => props.color};
   margin-left: 20px;
 `;
 const TextInput = styled.TextInput`
@@ -36,6 +36,7 @@ const TextInput = styled.TextInput`
   padding-top: 15px;
   border-width: 1px;
   border-color: #4e97ce;
+  color: ${props => props.color};
 `;
 
 const EditScreen = props => {
@@ -57,7 +58,6 @@ const EditScreen = props => {
 
   const category = [...categoryList];
   category.shift();
-  // const colors = {main: '#4E97CE', textColor: '#2F5B7D', background: '#ffffff'};
 
   const DeleteIcon = () => {
     return (
@@ -91,6 +91,7 @@ const EditScreen = props => {
             paddingHorizontal: 10,
             borderRadius: 5,
             borderColor: '#4E97CE',
+            color: colors.textColor,
           }}></Input>
       </InputContainer>
       <DropDownContainer>
@@ -101,10 +102,11 @@ const EditScreen = props => {
           colors={colors}
         />
       </DropDownContainer>
-      <InputTitle placeholder="Write here">Note : </InputTitle>
+      <InputTitle color={colors.textColor}>Note : </InputTitle>
       <TextInput
         multiline
         value={EditingContentValue}
+        color={colors.textColor}
         onChangeText={val => setEditingContentValue(val)}></TextInput>
       <DeleteModal
         colors={colors}

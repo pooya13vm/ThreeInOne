@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {CheckBox, Icon} from '@rneui/themed';
 import {ShoppingContext} from '../../contexts/shoppingContext';
 import styled from 'styled-components';
@@ -37,7 +37,6 @@ const ItemContent = ({shopItem, parentIndex, colors}) => {
   const id = shopItem.id;
   const targetItem = list.filter(item => item.id == id);
   const indexOfTarget = list.findIndex(item => item.id == id);
-  // const colors = {main: '#FF84D6', textColor: '#705C69', background: '#ffffff'};
 
   const tickEvent = () => {
     let check = !targetItem[0].itemBuy;
@@ -67,6 +66,10 @@ const ItemContent = ({shopItem, parentIndex, colors}) => {
     setListOfLists(allListsCopy);
     saveToStorage(allListsCopy);
   };
+  let title = shopItem.itemName;
+  if (title.length > 17) {
+    title = `${title.slice(0, 17)}...`;
+  }
 
   return (
     <Container color={colors.main}>
@@ -77,10 +80,9 @@ const ItemContent = ({shopItem, parentIndex, colors}) => {
       </DeleteIcon>
 
       <TextContainer>
-        <Title color={colors.textColor}>{shopItem.itemName}</Title>
+        <Title color={colors.textColor}>{title}</Title>
         <Info>{shopItem.itemInfo}</Info>
       </TextContainer>
-      {/* <View style={{flexDirection: 'row', justifyContent: 'space-between'}}> */}
       <CheckBox
         checked={targetItem[0].itemBuy}
         checkedColor="#FF84D6"
@@ -93,7 +95,6 @@ const ItemContent = ({shopItem, parentIndex, colors}) => {
           backgroundColor: 'transparent',
         }}
       />
-      {/* </View> */}
     </Container>
   );
 };

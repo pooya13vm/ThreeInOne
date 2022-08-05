@@ -24,9 +24,13 @@ const DateText = styled.Text`
   color: ${props => props.color};
 `;
 const NoteContent = ({note, colors}) => {
+  let title = note.item.title;
+  if (title.length > 12) {
+    title = `${title.slice(0, 11)}...`;
+  }
   return (
     <Container color={colors.main}>
-      <Title color={colors.textColor}>{note.item.title}</Title>
+      <Title color={colors.textColor}>{title}</Title>
       <CategoryText color={colors.main}>{note.item.category}</CategoryText>
       <DateText color={colors.main}>{note.item.date}</DateText>
     </Container>

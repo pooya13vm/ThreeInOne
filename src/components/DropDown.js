@@ -1,28 +1,51 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useState} from 'react';
 import {Dropdown} from 'react-native-element-dropdown';
 import styled from 'styled-components';
+import {View, Text} from 'react-native';
 
 const Container = styled.View`
   padding-vertical: 20px;
   padding-horizontal: 30px;
 `;
-
-const DropdownComponent = ({placeholder, categoryList, setDDvalue}) => {
+const DropdownComponent = ({placeholder, categoryList, setDDvalue, colors}) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
+  console.log(colors);
+
+  const renderItem = item => {
+    return (
+      <View style={{marginVertical: 10}}>
+        <Text style={{color: colors.textColor, fontSize: 18}}>
+          {item.label}
+        </Text>
+      </View>
+    );
+  };
 
   return (
     <Container>
       <Dropdown
-        style={styles.dropdown}
-        placeholderStyle={styles.placeholderStyle}
-        selectedTextStyle={styles.selectedTextStyle}
-        iconStyle={styles.iconStyle}
+        style={{
+          height: 50,
+          borderBottomWidth: 2,
+          paddingHorizontal: 8,
+          backgroundColor: 'transparent',
+          borderBottomColor: colors.textColor,
+        }}
+        placeholderStyle={{fontSize: 16, color: colors.textColor}}
+        selectedTextStyle={{fontSize: 18, color: colors.textColor}}
+        iconStyle={{width: 20, height: 20}}
+        iconColor={colors.textColor}
         showsVerticalScrollIndicator={true}
-        containerStyle={{borderRadius: 8}}
+        containerStyle={{
+          borderRadius: 8,
+          backgroundColor: colors.background,
+          padding: 20,
+        }}
+        activeColor={colors.background}
         data={categoryList}
         maxHeight={300}
+        renderItem={renderItem}
         labelField="label"
         valueField="value"
         placeholder={!isFocus ? placeholder : '...'}
@@ -40,25 +63,3 @@ const DropdownComponent = ({placeholder, categoryList, setDDvalue}) => {
 };
 
 export default DropdownComponent;
-
-const styles = StyleSheet.create({
-  dropdown: {
-    height: 50,
-    borderBottomWidth: 1,
-    paddingHorizontal: 8,
-    backgroundColor: 'transparent',
-    borderBottomColor: 'gray',
-  },
-  placeholderStyle: {
-    fontSize: 16,
-    color: 'gray',
-  },
-  selectedTextStyle: {
-    fontSize: 16,
-    color: 'gray',
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
-});

@@ -10,6 +10,7 @@ import Overlay from '../../components/Overlay';
 import AddBtn from '../components/AddBtn';
 import {MainContext} from '../../contexts/mainContext';
 import styled from 'styled-components';
+import MySnackbar from '../../components/Snackbar';
 
 const ButtonContainer = styled.View`
   flex-direction: row;
@@ -23,6 +24,7 @@ const InputContainer = styled.View`
 
 const ShoppingHomeScreen = props => {
   const [visible, setVisible] = useState(false);
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
   const {saveList, listOfLists, checkStorage, storeList, checkStoreStorage} =
     useContext(ShoppingContext);
   const {AllColors} = useContext(MainContext);
@@ -45,50 +47,61 @@ const ShoppingHomeScreen = props => {
   const MyModal = () => {
     return (
       <Overlay visibility={visible} setVisibility={setVisible} colors={colors}>
-        <InputContainer>
-          <Input
-            labelStyle={{color: colors.main}}
-            label="List name:"
-            placeholder="Example :For Office "
-            placeholderTextColor={colors.main}
-            inputStyle={{color: colors.main}}
-            containerStyle={{}}
-            onChangeText={val => saveName(val)}
-          />
-        </InputContainer>
+        <View style={{padding: 20}}>
+          <InputContainer>
+            <Input
+              labelStyle={{color: colors.textColor}}
+              style={{color: colors.textColor}}
+              label="List name:  *"
+              placeholder="Example :For Office "
+              placeholderTextColor={colors.main}
+              inputStyle={{color: colors.main}}
+              onChangeText={val => saveName(val)}
+            />
+          </InputContainer>
 
-        <DropdownComponent
-          placeholder="From ..."
-          categoryList={storeList}
-          setDDvalue={savePlace}
-        />
-        <ButtonContainer>
-          <Button
-            type="outline"
-            buttonStyle={{
-              width: '80%',
-              backgroundColor: 'transparent',
-              borderColor: '#FF84D6',
-              borderWidth: 1,
-            }}
-            title="Cancel"
-            titleStyle={{color: colors.textColor}}
-            onPress={() => setVisible(false)}></Button>
-          <Button
-            type="outline"
-            buttonStyle={{
-              width: '80%',
-              backgroundColor: 'transparent',
-              borderColor: '#FF84D6',
-              borderWidth: 1,
-            }}
-            title="Save"
-            titleStyle={{color: colors.textColor}}
-            onPress={() => {
-              saveList(name, place);
-              setVisible(false);
-            }}></Button>
-        </ButtonContainer>
+          <DropdownComponent
+            placeholder="From ..."
+            categoryList={storeList}
+            setDDvalue={savePlace}
+            colors={colors}
+          />
+          <ButtonContainer>
+            <Button
+              type="outline"
+              buttonStyle={{
+                width: '80%',
+                backgroundColor: 'transparent',
+                borderColor: '#FF84D6',
+                borderWidth: 1,
+              }}
+              title="Cancel"
+              titleStyle={{color: colors.textColor}}
+              onPress={() => {
+                setVisible(false);
+                setSnackbarVisible(false);
+              }}></Button>
+            <Button
+              type="outline"
+              buttonStyle={{
+                width: '80%',
+                backgroundColor: 'transparent',
+                borderColor: '#FF84D6',
+                borderWidth: 1,
+              }}
+              title="Save"
+              titleStyle={{color: colors.textColor}}
+              onPress={() => {
+                if (name === '') {
+                  setSnackbarVisible(true);
+                } else {
+                  saveList(name, place);
+                  setVisible(false);
+                  setSnackbarVisible(false);
+                }
+              }}></Button>
+          </ButtonContainer>
+        </View>
       </Overlay>
     );
   };
@@ -116,6 +129,12 @@ const ShoppingHomeScreen = props => {
       </View>
 
       <MyModal />
+      <MySnackbar
+        snackbarVisible={snackbarVisible}
+        setSnackbarVisible={setSnackbarVisible}
+        colors={colors}
+        text="List name can not leave null"
+      />
     </HomesLayout>
   );
 };

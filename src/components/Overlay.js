@@ -12,7 +12,6 @@ const ModalView = styled.View`
   height: 35%;
   background-color: ${props => props.color};
   border-radius: 10px;
-  padding: 15px;
   shadow-color: #000;
   shadow-opacity: 0.5;
   shadow-radius: 4px;
