@@ -1,9 +1,11 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {FlatList, TouchableOpacity} from 'react-native';
 import {Icon, Button} from '@rneui/themed';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ShoppingContext} from '../contexts/shoppingContext';
 import styled from 'styled-components';
+import MySnackbar from '../components/Snackbar';
+import {MainContext} from '../contexts/mainContext';
 
 const Container = styled.View`
   justify-content: flex-start;
@@ -79,26 +81,38 @@ const BackBtnContainer = styled.View`
 const ShoppingSettingScreen = ({navigation}) => {
   const {storeName, setStoreName, storeList, addToList, deleteFromList} =
     useContext(ShoppingContext);
-  const colors = {main: '#FF84D6', textColor: '#705C69', background: '#ffffff'};
-
+  const {AllColors} = useContext(MainContext);
+  const colors = AllColors.shopping;
+  const [snackbarVisibility, setSnackbarVisibility] = useState(false);
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: colors.background}}>
       <Container>
         <Title color={colors.textColor}>Category Setting</Title>
         <Definition color={colors.main}>
-          Here you can define and manage the store places
+          Here you can define and manage the stores name
         </Definition>
         <TextInput
           color={colors.textColor}
           placeholder="New Store"
-          selectionColor="gray"
-          activeOutlineColor="gray"
-          onChangeText={val => setStoreName(val)}
+          selectionColor={colors.textColor}
+          placeholderTextColor={colors.textColor}
+          onChangeText={val => {
+            setSnackbarVisibility(false);
+            setStoreName(val);
+          }}
           value={storeName}
+          autoFocus
         />
         <Button
           type="outline"
-          onPress={addToList}
+          onPress={() => {
+            if (storeName === '') {
+              setSnackbarVisibility(true);
+            } else {
+              addToList();
+              setSnackbarVisibility(false);
+            }
+          }}
           style={{marginTop: 20}}
           titleStyle={{fontSize: 18, fontWeight: 'bold', color: colors.main}}
           buttonStyle={{borderWidth: 1, borderColor: colors.main}}>
@@ -136,6 +150,12 @@ const ShoppingSettingScreen = ({navigation}) => {
           </TouchableOpacity>
         </BackBtnContainer>
       </Container>
+      <MySnackbar
+        setSnackbarVisible={setSnackbarVisibility}
+        snackbarVisible={snackbarVisibility}
+        colors={colors}
+        text="Please Write a name for store"
+      />
     </SafeAreaView>
   );
 };

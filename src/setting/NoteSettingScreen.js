@@ -1,11 +1,13 @@
-import React, {useContext} from 'react';
-import {Text, FlatList, View} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {FlatList} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Button} from '@rneui/themed';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {NoteContext} from '../contexts/noteContext';
 import {Icon} from '@rneui/base';
 import styled from 'styled-components';
+import {MainContext} from '../contexts/mainContext';
+import MySnackbar from '../components/Snackbar';
 
 const Container = styled.View`
   justify-content: flex-start;
@@ -88,11 +90,12 @@ const NoteSettingScreen = ({navigation}) => {
   } = useContext(NoteContext);
   let category = [...categoryList];
   category.shift();
-
-  const colors = {main: '#4E97CE', textColor: '#2F5B7D', background: '#ffffff'};
+  const {AllColors} = useContext(MainContext);
+  const colors = AllColors.note;
+  const [snackbarVisibility, setSnackbarVisibility] = useState(false);
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: colors.background}}>
       <Container>
         <Title color={colors.textColor}>Category Setting</Title>
         <Definition color={colors.main}>
@@ -101,14 +104,25 @@ const NoteSettingScreen = ({navigation}) => {
         <TextInput
           color={colors.textColor}
           placeholder="New Category"
-          selectionColor="gray"
-          activeOutlineColor="gray"
-          onChangeText={val => setCategory(val)}
+          selectionColor={colors.textColor}
+          placeholderTextColor={colors.textColor}
+          onChangeText={val => {
+            setSnackbarVisibility(false);
+            setCategory(val);
+          }}
           value={getCategory}
+          autoFocus
         />
         <Button
           type="outline"
-          onPress={addToCategory}
+          onPress={() => {
+            if (getCategory === '') {
+              setSnackbarVisibility(true);
+            } else {
+              addToCategory();
+              setSnackbarVisibility(false);
+            }
+          }}
           style={{marginTop: 20}}
           titleStyle={{fontSize: 18, fontWeight: 'bold', color: colors.main}}
           buttonStyle={{borderWidth: 1, borderColor: colors.main}}>
@@ -139,7 +153,11 @@ const NoteSettingScreen = ({navigation}) => {
           />
         </ListContainer>
         <BackBtnContainer color={colors.textColor}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+            onPress={() => {
+              setSnackbarVisibility(false);
+              navigation.goBack();
+            }}>
             <Icon
               name="arrow-left"
               type="entypo"
@@ -149,6 +167,12 @@ const NoteSettingScreen = ({navigation}) => {
           </TouchableOpacity>
         </BackBtnContainer>
       </Container>
+      <MySnackbar
+        snackbarVisible={snackbarVisibility}
+        setSnackbarVisible={setSnackbarVisibility}
+        colors={colors}
+        text="The name input can not be null"
+      />
     </SafeAreaView>
   );
 };

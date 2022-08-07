@@ -66,6 +66,7 @@ const TodoHomeScreen = props => {
         placeholder="Sort and filter"
         categoryList={sortItems}
         setDDvalue={sortManager}
+        colors={colors}
       />
       <TitleContainer color={colors.main}>
         <TitleText1 color={colors.textColor}>Title</TitleText1>

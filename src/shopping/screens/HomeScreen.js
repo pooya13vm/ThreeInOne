@@ -113,7 +113,7 @@ const ShoppingHomeScreen = props => {
       rightProps={props}
       color={colors}>
       <View style={{marginTop: 20}}>
-        {listOfLists.length == 0 ? (
+        {listOfLists.length === 0 ? (
           <NoContent />
         ) : (
           <FlatList

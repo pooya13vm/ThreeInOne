@@ -23,11 +23,7 @@ function NoteNavigator(props) {
           options={{animation: 'slide_from_bottom', orientation: 'portrait_up'}}
         />
         <Stack.Screen name="EDIT" component={EditScreen} />
-        <Stack.Screen
-          name="NoteSettingScreen"
-          component={NoteSettingScreen}
-          initialParams={props}
-        />
+        <Stack.Screen name="NoteSettingScreen" component={NoteSettingScreen} />
         <Stack.Screen
           name="GeneralSettingScreen"
           component={GeneralSettingScreen}

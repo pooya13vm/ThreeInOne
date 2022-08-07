@@ -7,6 +7,8 @@ import {TodoContext} from '../../contexts/todoContext';
 import {dateStringMaker} from '../../utility/dateHandler';
 import {differentCal} from '../../utility/timeDifferentCal';
 import styled from 'styled-components';
+import {MainContext} from '../../contexts/mainContext';
+import MySnackbar from '../../components/Snackbar';
 
 const InputContainer = styled.View`
   margin-horizontal: 20px;
@@ -22,12 +24,12 @@ const TextInputContainer = styled.View`
   border-color: ${props => props.color};
 `;
 const TextInputLable = styled.Text`
-  color: #5c7065;
+  color: ${props => props.color};
   font-size: 16px;
 `;
 const TextInput = styled.TextInput`
   padding-bottom: 10px;
-  color: #5c7065;
+  color: ${props => props.color};
 `;
 const TimeShowContainer = styled.View`
   justify-content: center;
@@ -36,10 +38,10 @@ const TimeShowContainer = styled.View`
   margin-vertical: 10px;
   padding: 12px;
   border-width: 1px;
-  border-color: #75e1a4;
+  border-color: ${props => props.color};
 `;
 const TimeContent = styled.Text`
-  color: #5c7065;
+  color: ${props => props.color};
 `;
 
 const AddScreen = props => {
@@ -49,10 +51,17 @@ const AddScreen = props => {
   const [stringifyDate, setStringifyDate] = useState('');
   const [remainingTime, setRemainingTime] = useState();
 
-  const {setTask, getTask, setImportance, saveTask, setInfo} =
-    useContext(TodoContext);
-
-  const colors = {main: '#75e1a4', textColor: '#5C7065', background: '#ffffff'};
+  const {
+    setTask,
+    getTask,
+    setImportance,
+    saveTask,
+    setInfo,
+    showSnackbar,
+    setShowSnackbar,
+  } = useContext(TodoContext);
+  const {AllColors} = useContext(MainContext);
+  const colors = AllColors.todo;
 
   const impressArray = [
     {label: 'Vital', value: 'vital', id: 1},
@@ -78,9 +87,13 @@ const AddScreen = props => {
 
   const TimeShow = () => {
     return (
-      <TimeShowContainer>
-        <TimeContent>{`Deadline : ${stringifyDate}`}</TimeContent>
-        <TimeContent>{`Remaining time : ${remainingTime}`}</TimeContent>
+      <TimeShowContainer color={colors.main}>
+        <TimeContent
+          color={colors.textColor}>{`Deadline : ${stringifyDate}`}</TimeContent>
+        <TimeContent
+          color={
+            colors.textColor
+          }>{`Remaining time : ${remainingTime}`}</TimeContent>
       </TimeShowContainer>
     );
   };
@@ -95,35 +108,43 @@ const AddScreen = props => {
         <Input
           placeholder="Task Content"
           value={getTask}
-          onChangeText={val => setTask(val)}
+          onChangeText={val => {
+            setTask(val);
+            setShowSnackbar(false);
+          }}
           inputContainerStyle={{
             paddingHorizontal: 8,
           }}
           containerStyle={{
             height: 50,
           }}
-          style={{fontSize: 16, color: '#5C7065'}}
-          placeholderTextColor="#5C7065"
-          inputStyle={{color: '#5C7065'}}
+          style={{fontSize: 16, color: colors.textColor}}
+          placeholderTextColor={colors.textColor}
+          inputStyle={{color: colors.textColor}}
         />
       </InputContainer>
       <DropdownComponent
         placeholder="How Importance ..."
         categoryList={impressArray}
         setDDvalue={setImportance}
+        colors={colors}
       />
       <TextInputContainer color={colors.main}>
-        <TextInputLable>More info:</TextInputLable>
-        <TextInput multiline onChangeText={val => setInfo(val)} />
+        <TextInputLable color={colors.textColor}>More info:</TextInputLable>
+        <TextInput
+          multiline
+          onChangeText={val => setInfo(val)}
+          color={colors.textColor}
+        />
       </TextInputContainer>
       <Button
         title="Choose Deadline"
         buttonStyle={{
           backgroundColor: 'transparent',
           borderWidth: 1,
-          borderColor: '#75e1a4',
+          borderColor: colors.main,
         }}
-        titleStyle={{color: '#5C7065', marginVertical: 5}}
+        titleStyle={{color: colors.textColor, marginVertical: 5}}
         style={{
           marginTop: 30,
           width: '60%',
@@ -132,6 +153,7 @@ const AddScreen = props => {
         onPress={() => setOpen(true)}
       />
       <DatePicker
+        style={{backgroundColor: colors.main}}
         modal
         open={open}
         locale="en"
@@ -143,6 +165,12 @@ const AddScreen = props => {
         onCancel={() => {
           setOpen(false);
         }}
+      />
+      <MySnackbar
+        colors={colors}
+        snackbarVisible={showSnackbar}
+        setSnackbarVisible={setShowSnackbar}
+        text="Task Content can not leave null"
       />
       {selectedTime !== undefined ? <TimeShow /> : null}
     </ScreensLayout>

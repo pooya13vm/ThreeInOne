@@ -9,6 +9,8 @@ const MySnackbar = ({snackbarVisible, setSnackbarVisible, text, colors}) => {
         wrapperStyle={{bottom: 60}}
         visible={snackbarVisible}
         style={{
+          //   position: 'absolute',
+          //   top: 350,
           backgroundColor: colors.main,
         }}
         onDismiss={() => null}

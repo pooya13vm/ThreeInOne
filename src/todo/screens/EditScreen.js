@@ -4,9 +4,9 @@ import ScreensLayout from '../../components/ScreensLayout';
 import DropdownComponent from '../../components/DropDown';
 import DatePicker from 'react-native-date-picker';
 import {TodoContext} from '../../contexts/todoContext';
-import {dateStringMaker} from '../../utility/dateHandler';
 import {differentCal} from '../../utility/timeDifferentCal';
 import styled from 'styled-components';
+import MySnackbar from '../../components/Snackbar';
 
 const InputContainer = styled.View`
   margin-horizontal: 20px;
@@ -55,10 +55,7 @@ const EditScreen = props => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [selectedTime, setSelectedTime] = useState();
-  const [stringifyDate, setStringifyDate] = useState('');
   const [remainingTime, setRemainingTime] = useState();
-
-  // const colors = {main: '#75e1a4', textColor: '#5C7065', background: '#ffffff'};
 
   const {
     editingTaskTitle,
@@ -69,11 +66,14 @@ const EditScreen = props => {
     setEditingInfo,
     setEditingDeadline,
     updateListAfterEdit,
+    showSnackbar,
+    setShowSnackbar,
   } = useContext(TodoContext);
 
   const task = props.route.params.task;
   const colors = props.route.params.colors;
   const deadlineStr = task.deadlineStr ? task.deadlineStr : null;
+  console.log(task);
 
   const impressArray = [
     {label: 'Vital', value: 'vital', id: 1},
@@ -83,17 +83,13 @@ const EditScreen = props => {
   ];
 
   useEffect(() => {
-    if (selectedTime) {
+    if (deadlineStr) {
       let now = new Date();
       let time = now.getTime();
-      let taskTime = selectedTime.getTime();
-      if (time >= taskTime) {
-        setStringifyDate('please select a future time');
-      } else {
-        let dif = differentCal(taskTime - time);
-        setStringifyDate(dateStringMaker(selectedTime, true));
-        setRemainingTime(dif);
-      }
+      let taskTime = task.deadlineSec;
+      let dif = differentCal(taskTime - time);
+      console.log(dif);
+      setRemainingTime(dif);
     }
   }, [selectedTime]);
 
@@ -101,8 +97,11 @@ const EditScreen = props => {
     return (
       <TimeShowContainer color={colors.main}>
         <TimeContent
-          color={colors.textColor}>{`Deadline : ${stringifyDate}`}</TimeContent>
-        <TimeContent>{`Remaining time : ${remainingTime}`}</TimeContent>
+          color={colors.textColor}>{`Deadline : ${deadlineStr}`}</TimeContent>
+        <TimeContent
+          color={
+            colors.textColor
+          }>{`Remaining time : ${remainingTime}`}</TimeContent>
       </TimeShowContainer>
     );
   };
@@ -117,7 +116,10 @@ const EditScreen = props => {
         <Input
           label="Task Content"
           value={editingTaskTitle}
-          onChangeText={val => setEditingTaskTitle(val)}
+          onChangeText={val => {
+            setShowSnackbar(false);
+            setEditingTaskTitle(val);
+          }}
           inputContainerStyle={{
             paddingHorizontal: 8,
           }}
@@ -134,6 +136,7 @@ const EditScreen = props => {
         placeholder={editingImportance}
         categoryList={impressArray}
         setDDvalue={setEditingImportance}
+        colors={colors}
       />
 
       <TextInputContainer color={colors.main}>
@@ -161,11 +164,13 @@ const EditScreen = props => {
         onPress={() => setOpen(true)}
       />
 
-      {selectedTime ? (
+      {deadlineStr ? (
         <TimeShow />
       ) : (
         <NoDeadlineContainer color={colors.textColor}>
-          <NoDeadlineText>No deadline has been defined </NoDeadlineText>
+          <NoDeadlineText color={colors.textColor}>
+            No deadline has been defined{' '}
+          </NoDeadlineText>
         </NoDeadlineContainer>
       )}
 
@@ -182,6 +187,12 @@ const EditScreen = props => {
         onCancel={() => {
           setOpen(false);
         }}
+      />
+      <MySnackbar
+        colors={colors}
+        snackbarVisible={showSnackbar}
+        setSnackbarVisible={setShowSnackbar}
+        text="Task Content can not leave null"
       />
     </ScreensLayout>
   );

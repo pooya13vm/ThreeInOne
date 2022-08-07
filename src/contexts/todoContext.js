@@ -18,6 +18,7 @@ export const TodoProvider = ({children}) => {
   const [editingDeadline, setEditingDeadline] = useState('');
   const [reloader, setReloader] = useState(false);
   const [sortList, setSortList] = useState([]);
+  const [showSnackbar, setShowSnackbar] = useState(false);
 
   // storage handler ///
 
@@ -49,6 +50,10 @@ export const TodoProvider = ({children}) => {
 
   const saveTask = (selectedTime, props) => {
     let now = new Date();
+    if (getTask === '') {
+      setShowSnackbar(true);
+      return;
+    }
     let task = {
       _id: uuid.v4(),
       content: getTask,
@@ -78,6 +83,10 @@ export const TodoProvider = ({children}) => {
     setEditingDeadline(task.deadline);
   };
   const updateListAfterEdit = props => {
+    if (editingTaskTitle === '') {
+      setShowSnackbar(true);
+      return;
+    }
     let item = props.route.params.task;
     let id = item._id;
     let doneStatus = item.hasDoneStatus;
@@ -211,6 +220,8 @@ export const TodoProvider = ({children}) => {
       sortList,
       saveToStorage,
       setSortList,
+      setShowSnackbar,
+      showSnackbar,
     }),
     [
       getTodoList,
@@ -224,6 +235,7 @@ export const TodoProvider = ({children}) => {
       editingDeadline,
       reloader,
       sortList,
+      showSnackbar,
     ],
   );
   return <TodoContext.Provider value={ctx}>{children}</TodoContext.Provider>;

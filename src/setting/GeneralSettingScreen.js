@@ -10,6 +10,7 @@ const Container = styled.View`
   align-items: center;
   margin: 15px;
   padding: 20px;
+  background-color: ${props => props.color};
 `;
 const Title = styled.Text`
   font-weight: bold;
@@ -29,8 +30,8 @@ const DropdownContainer = styled.View`
 
 const GeneralSettingScreen = props => {
   const [typeText, setTypeText] = useState('');
-  const {setTabType} = useContext(MainContext);
-  const colors = {main: '#4E97CE', textColor: '#2F5B7D', background: '#ffffff'};
+  const {setTabType, AllColors, saveToStorage} = useContext(MainContext);
+  const colors = AllColors.note;
 
   const typeList = [
     {label: 'Note - To do - Shopping', value: 'NTS', id: 1},
@@ -46,8 +47,8 @@ const GeneralSettingScreen = props => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <Container>
+    <SafeAreaView style={{flex: 1, backgroundColor: colors.background}}>
+      <Container color={colors.background}>
         <Title color={colors.textColor}>General Setting</Title>
         <Definition color={colors.main}>
           You can specify the layout here
@@ -57,6 +58,7 @@ const GeneralSettingScreen = props => {
             placeholder="Select Type"
             categoryList={typeList}
             setDDvalue={setTypeText}
+            colors={colors}
           />
         </DropdownContainer>
 
@@ -70,7 +72,10 @@ const GeneralSettingScreen = props => {
             paddingHorizontal: 60,
           }}
           style={{marginTop: 20}}
-          onPress={() => applyChange()}
+          onPress={() => {
+            saveToStorage(typeText);
+            applyChange();
+          }}
         />
         <Button
           title="Back"

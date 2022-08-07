@@ -10,7 +10,6 @@ const Container = styled.View`
 const DropdownComponent = ({placeholder, categoryList, setDDvalue, colors}) => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
-  console.log(colors);
 
   const renderItem = item => {
     return (

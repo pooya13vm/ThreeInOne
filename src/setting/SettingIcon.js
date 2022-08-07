@@ -55,11 +55,13 @@ const SwitchPartContainer = styled.View`
 
 const Setting = ({props}) => {
   const [visibility, setVisibility] = useState(false);
-  // const [isLightMode, setLightMode] = useState(true);
 
-  const {setLightMode, lightMode} = useContext(MainContext);
+  const {setLightMode, lightMode, saveToStorage} = useContext(MainContext);
 
-  const toggleSwitch = () => setLightMode(!lightMode);
+  const toggleSwitch = () => {
+    saveToStorage(!lightMode);
+    setLightMode(!lightMode);
+  };
 
   const Overlay = () => {
     return (
@@ -80,8 +82,9 @@ const Setting = ({props}) => {
                     if (props.route.name == 'NoteHome') {
                       props.navigation.navigate('GeneralSettingScreen');
                     } else {
-                      props.navigation.jumpTo('Note');
-                      props.navigation.navigate('GeneralSettingScreen');
+                      props.navigation.jumpTo('Note', {
+                        screen: 'GeneralSettingScreen',
+                      });
                     }
                   }}>
                   <Text>General Setting</Text>
@@ -120,7 +123,10 @@ const Setting = ({props}) => {
                       trackColor={{false: '#767577', true: '#81b0ff'}}
                       thumbColor={lightMode ? '#f5dd4b' : '#f4f3f4'}
                       ios_backgroundColor="#3e3e3e"
-                      onValueChange={toggleSwitch}
+                      onValueChange={() => {
+                        toggleSwitch();
+                        setVisibility(false);
+                      }}
                       value={lightMode}
                     />
                     <Text>Light</Text>
