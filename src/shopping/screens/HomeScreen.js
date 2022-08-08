@@ -47,7 +47,12 @@ const ShoppingHomeScreen = props => {
   const MyModal = () => {
     return (
       <Overlay visibility={visible} setVisibility={setVisible} colors={colors}>
-        <View style={{padding: 20}}>
+        <View
+          style={{
+            padding: 20,
+            backgroundColor: colors.background,
+            height: '100%',
+          }}>
           <InputContainer>
             <Input
               labelStyle={{color: colors.textColor}}

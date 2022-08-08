@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const MainContext = createContext({});
 export const MainProvider = ({children}) => {
   const [lightMode, setLightMode] = useState(true);
-  const [tabType, setTabType] = useState('SNT');
+  const [tabType, setTabType] = useState('NST');
   const AllColors = colorThemeHandler(lightMode);
 
   let AppTheme = {lightMode, tabType};

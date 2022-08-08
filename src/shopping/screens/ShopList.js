@@ -52,10 +52,15 @@ const ShopList = props => {
   };
 
   const MyModal = () => {
-    console.log(colors);
     return (
       <Overlay visibility={visible} setVisibility={setVisible}>
-        <View style={{padding: 20}}>
+        <View
+          style={{
+            padding: 20,
+            backgroundColor: colors.background,
+            height: '100%',
+            borderRadius: 5,
+          }}>
           <Input
             label="Item:  *"
             labelStyle={{color: colors.textColor}}
@@ -84,7 +89,7 @@ const ShopList = props => {
               }}
               title="Cancel"
               titleStyle={{
-                color: '#705C69',
+                color: colors.textColor,
                 fontSize: 18,
                 fontWeight: 'bold',
               }}
@@ -102,7 +107,11 @@ const ShopList = props => {
                 borderWidth: 1,
               }}
               title="Save"
-              titleStyle={{color: '#705C69', fontSize: 18, fontWeight: 'bold'}}
+              titleStyle={{
+                color: colors.textColor,
+                fontSize: 18,
+                fontWeight: 'bold',
+              }}
               onPress={() => {
                 if (name === '') {
                   setSnackbarVisible(true);
