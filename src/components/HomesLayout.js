@@ -14,17 +14,20 @@ const Header = styled.View`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  border-top-width: 5px;
+  border-top-width: 10px;
+  margin: 0;
+  padding: 0;
 `;
 const TitleContainer = styled.View`
   background-color: ${props => props.color};
   height: 100%;
-  ${'' /* padding-horizontal: 20px; */}
   justify-content: center;
   width: 60%;
   border-bottom-end-radius: 8px;
   border-bottom-start-radius: 8px;
   position: relative;
+  margin: 0;
+  padding: 0;
 `;
 const Title = styled.Text`
   font-size: 20px;
@@ -40,12 +43,14 @@ const Body = styled.View`
 const AddButton = styled.View`
   position: absolute;
   right: 30px;
-  bottom: 0px;
-  width: 50px;
+  bottom: 20px;
+  width: 60px;
+  height: 60px;
   z-index: 100;
   opacity: 0.9;
   border-width: 2px;
   border-radius: 50px;
+  justify-content: center;
   border-color: ${props => props.color.textColor};
   background-color: ${props => props.color.main};
 `;

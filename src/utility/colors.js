@@ -15,3 +15,6 @@ export const colorThemeHandler = light => {
 };
 //npx react-native run-ios
 //react-native start --reset-cache
+
+// eval "$(/opt/homebrew/bin/brew shellenv)"
+// eval "$(/opt/homebrew/bin/brew shellenv)"

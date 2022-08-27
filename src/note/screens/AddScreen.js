@@ -5,6 +5,7 @@ import {NoteContext} from '../../contexts/noteContext';
 import DropdownComponent from '../../components/DropDown';
 import styled from 'styled-components';
 import {MainContext} from '../../contexts/mainContext';
+import {KeyboardAvoidingView, Platform} from 'react-native';
 
 const InputContainer = styled.View`
   margin-horizontal: 20px;
@@ -23,7 +24,7 @@ const InputTitle = styled.Text`
   margin-left: 20px;
 `;
 const TextInput = styled.TextInput`
-  height: 70%;
+  height: 83%;
   text-align-vertical: top;
   padding: 20px;
   font-size: 18px;
@@ -34,6 +35,7 @@ const TextInput = styled.TextInput`
   border-width: 1px;
   border-color: #4e97ce;
   color: ${props => props.color};
+  z-index: 10;
 `;
 
 const AddScreen = props => {
@@ -87,14 +89,19 @@ const AddScreen = props => {
       </DropDownContainer>
 
       <InputTitle color={colors.textColor}>Note : </InputTitle>
-      <TextInput
-        multiline
-        value={getContent}
-        placeholder="Write here"
-        onChangeText={val => setContent(val)}
-        color={colors.textColor}
-        placeholderTextColor="gray"
-      />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={64}
+        style={Platform.OS !== 'ios' && {}}>
+        <TextInput
+          multiline
+          value={getContent}
+          placeholder="Write here"
+          onChangeText={val => setContent(val)}
+          color={colors.textColor}
+          placeholderTextColor="gray"
+        />
+      </KeyboardAvoidingView>
     </ScreensLayout>
   );
 };

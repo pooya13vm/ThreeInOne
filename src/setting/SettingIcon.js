@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
 import {MainContext} from '../contexts/mainContext';
-import {Icon} from '@rneui/themed';
+import {Icon} from '@rneui/base';
 import {
   TouchableOpacity,
   Text,
