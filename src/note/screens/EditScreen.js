@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import {TouchableOpacity} from 'react-native';
 import DeleteModal from '../../components/DeleteModal';
 import {MainContext} from '../../contexts/mainContext';
+import {KeyboardAvoidingView, Platform} from 'react-native';
 
 const InputContainer = styled.View`
   margin-horizontal: 20px;
@@ -26,7 +27,7 @@ const InputTitle = styled.Text`
   margin-left: 20px;
 `;
 const TextInput = styled.TextInput`
-  height: 70%;
+  height: 83s%;
   text-align-vertical: top;
   padding: 20px;
   font-size: 18px;
@@ -34,6 +35,7 @@ const TextInput = styled.TextInput`
   border-radius: 3px;
   margin-horizontal: 20px;
   padding-top: 15px;
+  padding-bottom: 15px;
   border-width: 1px;
   border-color: #4e97ce;
   color: ${props => props.color};
@@ -103,11 +105,16 @@ const EditScreen = props => {
         />
       </DropDownContainer>
       <InputTitle color={colors.textColor}>Note : </InputTitle>
-      <TextInput
-        multiline
-        value={EditingContentValue}
-        color={colors.textColor}
-        onChangeText={val => setEditingContentValue(val)}></TextInput>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={64}
+        style={Platform.OS !== 'ios' && {}}>
+        <TextInput
+          multiline
+          value={EditingContentValue}
+          color={colors.textColor}
+          onChangeText={val => setEditingContentValue(val)}></TextInput>
+      </KeyboardAvoidingView>
       <DeleteModal
         colors={colors}
         visibility={visibility}

@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {Input} from '@rneui/base';
 import ScreensLayout from '../../components/ScreensLayout';
 import {NoteContext} from '../../contexts/noteContext';
@@ -6,6 +6,7 @@ import DropdownComponent from '../../components/DropDown';
 import styled from 'styled-components';
 import {MainContext} from '../../contexts/mainContext';
 import {KeyboardAvoidingView, Platform} from 'react-native';
+import MySnackbar from '../../components/Snackbar';
 
 const InputContainer = styled.View`
   margin-horizontal: 20px;
@@ -49,20 +50,25 @@ const AddScreen = props => {
     setCategory,
   } = useContext(NoteContext);
   const {AllColors} = useContext(MainContext);
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
   let colors = AllColors.note;
-  console.log(colors);
 
   const category = [...categoryList];
   category.shift();
+
+  const snackbarMaker = () => {
+    setSnackbarVisible(true);
+  };
 
   return (
     <ScreensLayout
       title="ADD NOTE"
       props={props}
-      onPressFun={saveNote}
+      onPressFun={getContent.length > 0 ? saveNote : snackbarMaker}
       colors={colors}>
       <InputContainer>
         <Input
+          autoFocus
           placeholder="Title"
           value={getTitle}
           onChangeText={val => setTitle(val)}
@@ -97,11 +103,21 @@ const AddScreen = props => {
           multiline
           value={getContent}
           placeholder="Write here"
-          onChangeText={val => setContent(val)}
+          onChangeText={val => {
+            setSnackbarVisible(false);
+            setContent(val);
+          }}
           color={colors.textColor}
           placeholderTextColor="gray"
         />
       </KeyboardAvoidingView>
+      <MySnackbar
+        snackbarVisible={snackbarVisible}
+        setSnackbarVisible={setSnackbarVisible}
+        colors={colors}
+        text="Note without content cannot be saved"
+        position={-80}
+      />
     </ScreensLayout>
   );
 };

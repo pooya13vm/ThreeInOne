@@ -16,6 +16,7 @@ const ModalView = styled.View`
   shadow-opacity: 0.5;
   shadow-radius: 4px;
   box-shadow: 0px 0px 4px;
+  margin-bottom: 70px;
 `;
 
 const Overlay = ({children, visibility, setVisibility, colors}) => {

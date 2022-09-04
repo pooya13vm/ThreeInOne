@@ -67,7 +67,9 @@ const ShopList = props => {
             placeholderTextColor={colors.main}
             style={{color: colors.textColor}}
             placeholder="Example :Egg "
-            onChangeText={val => saveName(val)}
+            onChangeText={val => {
+              saveName(val);
+            }}
             autoFocus
           />
           <Input
@@ -205,6 +207,7 @@ const ShopList = props => {
         setSnackbarVisible={setSnackbarVisible}
         colors={colors}
         text="Item input can not leave null"
+        position={-430}
       />
     </ScreensLayout>
   );

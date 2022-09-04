@@ -1,16 +1,25 @@
 import React from 'react';
 import {View} from 'react-native';
 import {Snackbar} from 'react-native-paper';
+import styled from 'styled-components';
 
-const MySnackbar = ({snackbarVisible, setSnackbarVisible, text, colors}) => {
+const SnackbarContainer = styled.View`
+  top: ${props => props.top}px;
+`;
+
+const MySnackbar = ({
+  snackbarVisible,
+  setSnackbarVisible,
+  text,
+  colors,
+  position,
+}) => {
   return (
-    <View>
+    <View top={position}>
       <Snackbar
         wrapperStyle={{bottom: 60}}
         visible={snackbarVisible}
         style={{
-          //   position: 'absolute',
-          //   top: 350,
           backgroundColor: colors.main,
         }}
         onDismiss={() => null}

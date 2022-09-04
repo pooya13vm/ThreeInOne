@@ -139,6 +139,7 @@ const ShoppingHomeScreen = props => {
         setSnackbarVisible={setSnackbarVisible}
         colors={colors}
         text="List name can not leave null"
+        position={-80}
       />
     </HomesLayout>
   );
