@@ -1,5 +1,5 @@
 # Three in one mobile application
-# Note - Todo list - Shopping list
+## Note - Todo list - Shopping list
 ## Technologies
  Project is created with:
 *    "@react-native-async-storage/async-storage": 1.17.7
