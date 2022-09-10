@@ -43,21 +43,21 @@ To run this project, install it locally using npm:
  <img src="https://github.com/pooya13vm/ThreeInOne/blob/main/githubImages/todo6.png?raw=true" width="150">
  </p>
  
- ## Shopping list : 
+## Shopping list : 
 <p float="left">
 <img src="https://github.com/pooya13vm/ThreeInOne/blob/main/githubImages/shopping1.png?raw=true" width="150">
 <img src="https://github.com/pooya13vm/ThreeInOne/blob/main/githubImages/shopping2.png?raw=true" width="150">
 <img src="https://github.com/pooya13vm/ThreeInOne/blob/main/githubImages/shopping3.png?raw=true" width="150">
  </p>
  
-  ## Menu : 
+## Menu : 
 <p float="left">
 <img src="https://github.com/pooya13vm/ThreeInOne/blob/main/githubImages/menu.png?raw=true" width="150">
 <img src="https://github.com/pooya13vm/ThreeInOne/blob/main/githubImages/gensetting.png?raw=true" width="150">
 <img src="https://github.com/pooya13vm/ThreeInOne/blob/main/githubImages/notesetting.png?raw=true" width="150">
  <img src="https://github.com/pooya13vm/ThreeInOne/blob/main/githubImages/shopping setting.png?raw=true" width="150">
  </p>
-   ## Dark mode : 
+ ## Dark mode : 
 <p float="left">
 <img src="https://github.com/pooya13vm/ThreeInOne/blob/main/githubImages/darkmode1.png?raw=true" width="150">
 <img src="https://github.com/pooya13vm/ThreeInOne/blob/main/githubImages/darkmode2.png?raw=true" width="150">
